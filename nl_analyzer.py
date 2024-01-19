@@ -1,8 +1,8 @@
 import streamlit as st
+import matplotlib.pyplot as plt
 
 
 class Pricer:
-
     def __init__(self):
         self.max_subs = 10_000
         self.paid_ratio = 0.02
@@ -24,8 +24,17 @@ class Pricer:
         return costs
 
 
+pricer = Pricer()
+ss_costs = pricer.get_costs_substack()
 
-if __name__ == "__main__":
-    pricer = Pricer()
-    ss_costs = pricer.get_costs_substack()
-    print(ss_costs)
+# Make chart.
+x_values = range(0, pricer.max_subs, 100)
+plt.style.use("seaborn-v0_8")
+fig, ax = plt.subplots()
+ax.plot(x_values, ss_costs)
+
+ax.set_title("Annual costs")
+ax.set_xlabel("Number of subscribers")
+ax.set_ylabel("Annual cost")
+
+fig
