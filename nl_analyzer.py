@@ -1,11 +1,19 @@
+"""Compare annual costs of various newsletter platforms.
+
+DEV notes:
+- Add micro-adjustment sliders for each setting?
+- Reformat paid ratio slider as an actual percentage.
+- Make it work for Substack and Ghost, then share with group.
+"""
+
 import streamlit as st
 import matplotlib.pyplot as plt
 
 
 class Pricer:
-    def __init__(self, max_subs=10_000):
+    def __init__(self, max_subs=10_000, paid_ratio=0.02):
         self.max_subs = max_subs
-        self.paid_ratio = 0.02
+        self.paid_ratio = paid_ratio
 
         # Average annual revenue per paid user. Must take into consideration discounts.
         self.avg_revenue = 40
@@ -26,8 +34,9 @@ class Pricer:
 
 # Get attributes.
 max_subs = st.slider("Number of subscribers", value=10_000, max_value=100_000, step=100)
+paid_ratio = st.slider("Paid subscriber ratio", value=0.02, max_value=1.0, step=0.001, format="%.3f")
 
-pricer = Pricer(max_subs=max_subs)
+pricer = Pricer(max_subs=max_subs, paid_ratio=paid_ratio)
 ss_costs = pricer.get_costs_substack()
 
 # Make chart.
