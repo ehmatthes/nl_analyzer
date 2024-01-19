@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 
 
 class Pricer:
-    def __init__(self):
-        self.max_subs = 10_000
+    def __init__(self, max_subs=10_000):
+        self.max_subs = max_subs
         self.paid_ratio = 0.02
 
         # Average annual revenue per paid user. Must take into consideration discounts.
@@ -24,11 +24,14 @@ class Pricer:
         return costs
 
 
-pricer = Pricer()
+# Get attributes.
+max_subs = st.slider("Number of subscribers", value=10_000, max_value=100_000, step=100)
+
+pricer = Pricer(max_subs=max_subs)
 ss_costs = pricer.get_costs_substack()
 
 # Make chart.
-x_values = range(0, pricer.max_subs, 100)
+x_values = range(0, max_subs, 100)
 plt.style.use("seaborn-v0_8")
 fig, ax = plt.subplots()
 ax.plot(x_values, ss_costs)
