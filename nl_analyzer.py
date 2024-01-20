@@ -119,6 +119,12 @@ avg_revenue = st.slider(
 
 "---"
 
+"##### Platforms:"
+show_ss = st.checkbox("Substack", value=True)
+show_gp = st.checkbox("Ghost Pro", value=True)
+
+"---"
+
 f"##### Max number of subscribers: {max_subs:,}"
 f"##### Paid subscriber ratio: {paid_ratio*100:.1f}%"
 f"##### Average annual revenue per paid user: ${avg_revenue:.2f}"
@@ -135,18 +141,20 @@ x_values = range(0, max_subs, 10)
 plt.style.use("seaborn-v0_8")
 fig, ax = plt.subplots()
 
-# Add Substack data.
-ax.plot(x_values, ss_costs, label="Substack")
-
+# Define horizontal placement of all line labels.
 label_pos_x = x_values[-1] + 0.01 * max_subs
-label_pos_y = ss_costs[-1] - 0.005 * ax.get_ylim()[1]
-ax.annotate("Substack", (label_pos_x, label_pos_y))
+
+# Add Substack data.
+if show_ss:
+    ax.plot(x_values, ss_costs)
+    label_pos_y = ss_costs[-1] - 0.005 * ax.get_ylim()[1]
+    ax.annotate("Substack", (label_pos_x, label_pos_y))
 
 # Add Ghost data.
-ax.plot(x_values, gp_costs)
-
-label_pos_y = gp_costs[-1] - 0.01 * ax.get_ylim()[1]
-ax.annotate("Ghost Pro", (label_pos_x, label_pos_y))
+if show_gp:
+    ax.plot(x_values, gp_costs)
+    label_pos_y = gp_costs[-1] - 0.01 * ax.get_ylim()[1]
+    ax.annotate("Ghost Pro", (label_pos_x, label_pos_y))
 
 ax.set_title("Annual costs of hosting a newsletter")
 ax.set_xlabel("Number of subscribers")
