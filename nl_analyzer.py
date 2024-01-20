@@ -5,7 +5,11 @@ DEV notes:
 - Reformat paid ratio slider as an actual percentage.
 - Make it work for Substack and Ghost, then share with group.
 - Make a repo.
+- Add a checkbox for each platform.
+- Label platforms.
 """
+
+import sys
 
 import streamlit as st
 import matplotlib.pyplot as plt
@@ -46,36 +50,70 @@ class Pricer:
         Returns:
             list: [int, int, ...]
         """
-        # Use cheapest available plan. These are monthly costs, billed annually. This
-        # reflects how pricing is presented on ghost.org.
+        # Use cheapest available plan. These are annual plans.
+        # Data from: https://ghost.org/js/pricing.min.js
         price_tiers = [
-            (500, 9),
-            (3000, 15),
-            (5000, 40),
-            (8000, 65),
-            (10000, 82),
-            (15000, 99),
-            (20000, 124),
-            (25000, 149)
+            (0, 108),
+            (1000, 180),
+            (3000, 480),
+            (5000, 780),
+            (8000, 984),
+            (10000, 1188),
+            (15000, 1488),
+            (20000, 1788),
+            (25000, 1980),
+            (35000, 2580),
+            (45000, 3180),
+            (55000, 3780),
+            (65000, 4380),
+            (75000, 4980),
+            (85000, 5580),
+            (95000, 6180),
+            (105000, 6780),
+            (115000, 7380),
+            (125000, 7980),
+            (135000, 8580),
+            (145000, 9180),
+            (155000, 9780),
+            (165000, 10380),
+            (175000, 10980),
+            (185000, 11580),
+            (195000, 12180),
+            (205000, 12780),
+            (215000, 13380),
+            (225000, 13980),
+            (235000, 14580),
+            (245000, 15180),
+            (265000, 16380),
+            (285000, 17580),
+            (305000, 18780),
+            (325000, 19980),
+            (345000, 21180),
+            (365000, 22380),
+            (385000, 22980),
         ]
 
         costs = []
+        price_tiers.reverse()
         for num_users in range(0, self.max_subs, 100):
-            # Set default cost here.
-            monthly_cost = 1000
-            for limit, cost in price_tiers:
-                if num_users <= limit:
-                    monthly_cost = cost
+            yearly_cost = -1
+            for threshold, cost in price_tiers:
+                # threshold, cost = price_tier
+                # print(index, threshold, cost)
+                # sys.exit()
+                if num_users >= threshold:
+                    yearly_cost = cost
                     break
 
-            cost = 12 * monthly_cost
-            costs.append(cost)
+            costs.append(yearly_cost)
         return costs
 
 
 # Get attributes.
 max_subs = st.slider("Number of subscribers", value=10_000, max_value=100_000, step=100)
-paid_ratio = st.slider("Paid subscriber ratio", value=0.02, max_value=1.0, step=0.001, format="%.3f")
+paid_ratio = st.slider(
+    "Paid subscriber ratio", value=0.02, max_value=1.0, step=0.001, format="%.3f"
+)
 
 pricer = Pricer(max_subs=max_subs, paid_ratio=paid_ratio)
 ss_costs = pricer.get_costs_substack()
