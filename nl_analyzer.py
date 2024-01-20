@@ -114,7 +114,11 @@ avg_revenue = st.slider(
 )
 
 "---"
-f"##### Number of subscribers: {max_subs:,}"
+
+f"##### Max number of subscribers: {max_subs:,}"
+f"##### Paid subscriber ratio: {paid_ratio*100:.1f}%"
+f"##### Average annual revenue per paid user: ${avg_revenue:.2f}"
+"---"
 
 pricer = Pricer(max_subs=max_subs, paid_ratio=paid_ratio, avg_revenue=avg_revenue)
 ss_costs = pricer.get_costs_substack()
