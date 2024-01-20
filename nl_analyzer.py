@@ -1,13 +1,4 @@
-"""Compare annual costs of various newsletter platforms.
-
-DEV notes:
-- Add micro-adjustment sliders for each setting?
-- Reformat paid ratio slider as an actual percentage.
-- Make it work for Substack and Ghost, then share with group.
-- Make a repo.
-- Add a checkbox for each platform.
-- Label platforms.
-"""
+"""Compare annual costs of various newsletter platforms."""
 
 import sys
 
