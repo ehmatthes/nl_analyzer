@@ -7,12 +7,12 @@ import matplotlib.pyplot as plt
 
 
 class Pricer:
-    def __init__(self, max_subs=10_000, paid_ratio=0.02):
+    def __init__(self, max_subs=10_000, paid_ratio=0.02, avg_revenue=50):
         self.max_subs = max_subs
         self.paid_ratio = paid_ratio
 
         # Average annual revenue per paid user. Must take into consideration discounts.
-        self.avg_revenue = 40
+        self.avg_revenue = avg_revenue
 
     def get_costs_substack(self):
         """Calculate cost for every increment of 10 users.
@@ -109,10 +109,14 @@ paid_ratio = st.slider(
     "Paid subscriber ratio", value=0.02, max_value=1.0, step=0.001, format="%.3f"
 )
 
+avg_revenue = st.slider(
+    "Average annual revenue per paid user", value=50, max_value=500, step=1
+)
+
 "---"
 f"##### Number of subscribers: {max_subs:,}"
 
-pricer = Pricer(max_subs=max_subs, paid_ratio=paid_ratio)
+pricer = Pricer(max_subs=max_subs, paid_ratio=paid_ratio, avg_revenue=avg_revenue)
 ss_costs = pricer.get_costs_substack()
 ss_revenues = pricer.get_revenues_substack()
 gp_costs = pricer.get_costs_ghostpro()
@@ -121,7 +125,11 @@ gp_costs = pricer.get_costs_ghostpro()
 x_values = range(0, max_subs, 10)
 plt.style.use("seaborn-v0_8")
 fig, ax = plt.subplots()
+
+# Add Substack data.
 ax.plot(x_values, ss_costs)
+
+# Add Ghost data.
 ax.plot(x_values, gp_costs)
 
 ax.set_title("Annual costs of hosting a newsletter")
