@@ -127,10 +127,17 @@ plt.style.use("seaborn-v0_8")
 fig, ax = plt.subplots()
 
 # Add Substack data.
-ax.plot(x_values, ss_costs)
+ax.plot(x_values, ss_costs,label="Substack")
+
+label_pos_x = x_values[-1] + 0.01*max_subs
+label_pos_y = ss_costs[-1] - 0.005*ax.get_ylim()[1]
+ax.annotate("Substack", (label_pos_x, label_pos_y))
 
 # Add Ghost data.
 ax.plot(x_values, gp_costs)
+
+label_pos_y = gp_costs[-1] - 0.01*ax.get_ylim()[1]
+ax.annotate("Ghost Pro", (label_pos_x, label_pos_y))
 
 ax.set_title("Annual costs of hosting a newsletter")
 ax.set_xlabel("Number of subscribers")
