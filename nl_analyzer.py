@@ -15,28 +15,28 @@ class Pricer:
         self.avg_revenue = 40
 
     def get_costs_substack(self):
-        """Calculate cost for every increment of 100 users.
+        """Calculate cost for every increment of 10 users.
 
         Returns:
             list: [int, int, ...]
         """
         costs = []
-        for num_users in range(0, self.max_subs, 100):
+        for num_users in range(0, self.max_subs, 10):
             revenue = num_users * self.paid_ratio * self.avg_revenue
             cost = int(0.1 * revenue)
             costs.append(cost)
         return costs
 
     def get_revenues_substack(self):
-        """Calculate revenue for increments of 100 users."""
+        """Calculate revenue for increments of 10 users."""
         revenues = []
-        for num_users in range(0, self.max_subs, 100):
+        for num_users in range(0, self.max_subs, 10):
             revenue = num_users * self.paid_ratio * self.avg_revenue
             revenues.append(revenue)
         return revenues
 
     def get_costs_ghostpro(self):
-        """Calculate cost for every increment of 100 users.
+        """Calculate cost for every increment of 10 users.
 
         Returns:
             list: [int, int, ...]
@@ -86,7 +86,7 @@ class Pricer:
 
         costs = []
         price_tiers.reverse()
-        for num_users in range(0, self.max_subs, 100):
+        for num_users in range(0, self.max_subs, 10):
             yearly_cost = -1
             for threshold, cost in price_tiers:
                 # threshold, cost = price_tier
@@ -101,10 +101,16 @@ class Pricer:
 
 
 # Get attributes.
-max_subs = st.slider("Number of subscribers", value=10_000, max_value=100_000, step=100)
+max_subs_macro = st.slider("Number of subscribers", value=10_000, max_value=100_000, step=10)
+max_subs_micro = st.slider("Number of subscribers (fine tuning)", value=0, max_value=1_000, step=10)
+max_subs = max_subs_macro + max_subs_micro
+
 paid_ratio = st.slider(
     "Paid subscriber ratio", value=0.02, max_value=1.0, step=0.001, format="%.3f"
 )
+
+"---"
+f"##### Number of subscribers: {max_subs:,}"
 
 pricer = Pricer(max_subs=max_subs, paid_ratio=paid_ratio)
 ss_costs = pricer.get_costs_substack()
@@ -112,7 +118,7 @@ ss_revenues = pricer.get_revenues_substack()
 gp_costs = pricer.get_costs_ghostpro()
 
 # Make chart.
-x_values = range(0, max_subs, 100)
+x_values = range(0, max_subs, 10)
 plt.style.use("seaborn-v0_8")
 fig, ax = plt.subplots()
 ax.plot(x_values, ss_costs)
