@@ -86,13 +86,16 @@ fig
 
 # Make percentage chart.
 fig, ax = plt.subplots()
-if show_ss:
+
+fill_plot = bool(sum(pricer.revenues))
+
+if show_ss and fill_plot:
     ss_percentages = pricer.get_percentages_substack()
     ax.plot(x_values, ss_percentages)
     label_pos_y = ss_percentages[-1] - 0.02 * ax.get_ylim()[1]
     ax.annotate("Substack", (label_pos_x, label_pos_y))
 
-if show_gp:
+if show_gp and fill_plot:
     gp_percentages = pricer.get_percentages_ghostpro()
     ax.plot(x_values, gp_percentages)
     label_pos_y = gp_percentages[-1] - 0.0002 * ax.get_ylim()[1]
@@ -101,10 +104,11 @@ if show_gp:
 # Limit of y-axis needs to be at least 15%, but shouldn't over-emphasize high values
 # for only the lowest subscriber levels. Use percentage 1/10 of the way through the set
 # of values, so most of each platform's line is visible.
-y_max = max(0.15, gp_percentages[int(0.1 * len(gp_percentages))])
-ax.axis([0, 1.05 * max_subs, 0, y_max])
-y_vals = ax.get_yticks()
-ax.set_yticklabels(["{:,.1%}".format(y_val) for y_val in y_vals])
+if fill_plot:
+    y_max = max(0.15, gp_percentages[int(0.1 * len(gp_percentages))])
+    ax.axis([0, 1.05 * max_subs, 0, y_max])
+    y_vals = ax.get_yticks()
+    ax.set_yticklabels(["{:,.1%}".format(y_val) for y_val in y_vals])
 
 ax.set_title("Annual cost as percent of revenue")
 ax.set_xlabel("Number of subscribers")
