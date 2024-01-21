@@ -179,13 +179,13 @@ fig, ax = plt.subplots()
 if show_ss:
     ss_percentages = pricer.get_percentages_substack()
     ax.plot(x_values, ss_percentages)
-    label_pos_y = ss_percentages[-1] - 0.005 * ax.get_ylim()[1]
+    label_pos_y = ss_percentages[-1] - 0.02 * ax.get_ylim()[1]
     ax.annotate("Substack", (label_pos_x, label_pos_y))
 
 if show_gp:
     gp_percentages = pricer.get_percentages_ghostpro()
     ax.plot(x_values, gp_percentages)
-    label_pos_y = gp_percentages[-1] - 0.01 * ax.get_ylim()[1]
+    label_pos_y = gp_percentages[-1] - 0.0002 * ax.get_ylim()[1]
     ax.annotate("Ghost Pro", (label_pos_x, label_pos_y))
 
 # ax.set_ylim([0,1])
