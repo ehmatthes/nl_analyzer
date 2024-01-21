@@ -35,6 +35,11 @@ class Pricer:
             revenues.append(revenue)
         return revenues
 
+    def get_percentages_substack(self):
+        """Sustack has a flat 0.10 across all levels."""
+        return [0.1 for _ in range(0, self.max_subs, 10)]
+
+
     def get_costs_ghostpro(self):
         """Calculate cost for every increment of 10 users.
 
@@ -99,6 +104,12 @@ class Pricer:
             costs.append(yearly_cost)
         return costs
 
+    def get_percentages_ghostpro(self):
+        """Return list of percentages of cost/rev."""
+        revenues = self.get_revenues_substack()
+        costs = self.get_costs_ghostpro()
+        return [cost/rev if rev > 0 else None for cost, rev in zip(costs, revenues)]
+
 
 # Get attributes.
 max_subs_macro = st.slider(
@@ -136,7 +147,7 @@ ss_costs = pricer.get_costs_substack()
 ss_revenues = pricer.get_revenues_substack()
 gp_costs = pricer.get_costs_ghostpro()
 
-# Make chart.
+# Make cost chart.
 x_values = range(0, max_subs, 10)
 plt.style.use("seaborn-v0_8")
 fig, ax = plt.subplots()
@@ -156,8 +167,35 @@ if show_gp:
     label_pos_y = gp_costs[-1] - 0.01 * ax.get_ylim()[1]
     ax.annotate("Ghost Pro", (label_pos_x, label_pos_y))
 
-ax.set_title("Annual costs of hosting a newsletter")
+ax.set_title("Annual cost of hosting a newsletter")
 ax.set_xlabel("Number of subscribers")
 ax.set_ylabel("Annual cost")
+
+fig
+
+"---"
+
+# Make percentage chart.
+fig, ax = plt.subplots()
+if show_ss:
+    ss_percentages = pricer.get_percentages_substack()
+    ax.plot(x_values, ss_percentages)
+    label_pos_y = ss_percentages[-1] - 0.005 * ax.get_ylim()[1]
+    ax.annotate("Substack", (label_pos_x, label_pos_y))
+
+if show_gp:
+    gp_percentages = pricer.get_percentages_ghostpro()
+    ax.plot(x_values, gp_percentages)
+    label_pos_y = gp_percentages[-1] - 0.01 * ax.get_ylim()[1]
+    ax.annotate("Ghost Pro", (label_pos_x, label_pos_y))
+
+# ax.set_ylim([0,1])
+ax.axis([0, 1.05*max_subs, 0, 0.2])
+y_vals = ax.get_yticks()
+ax.set_yticklabels(['{:,.1%}'.format(y_val) for y_val in y_vals])
+
+ax.set_title("Annual cost as percent of revenue")
+ax.set_xlabel("Number of subscribers")
+ax.set_ylabel("Percent of revenue")
 
 fig
