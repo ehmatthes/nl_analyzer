@@ -9,11 +9,14 @@ from pricer import Pricer
 
 
 # Build sidebar.
+
+# Platforms to include.
 st.sidebar.write("**Platforms:**")
 show_ss = st.sidebar.checkbox("Substack", value=True)
 show_gp = st.sidebar.checkbox("Ghost Pro", value=True)
 st.sidebar.write("---")
 
+# Max number of subscribers.
 max_subs_macro = st.sidebar.slider(
     "Number of subscribers", value=10_000, max_value=100_000, step=1_000
 )
@@ -22,17 +25,24 @@ max_subs_micro = st.sidebar.slider(
 )
 max_subs = max_subs_macro + max_subs_micro
 
-
-paid_ratio = st.sidebar.slider(
+# Paid subscriber ratio.
+paid_ratio_macro = st.sidebar.slider(
     "Paid subscriber ratio", value=0.02, max_value=1.0, step=0.001, format="%.3f"
 )
 
+paid_ratio_micro = st.sidebar.slider(
+    "Paid subscriber ratio (fine tuning)", value=0.0, max_value=0.1, step=0.001, format="%.3f"
+)
+paid_ratio = paid_ratio_macro + paid_ratio_micro
+
+# Average annual revenue per paid user.
 avg_revenue = st.sidebar.slider(
     "Average annual revenue per paid user", value=50, max_value=500, step=1
 )
 
 st.sidebar.write("---")
 
+# Summarize settings.
 st.sidebar.write(f"**Max subscribers:** {max_subs:,}")
 st.sidebar.write(f"**Paid ratio:** {paid_ratio*100:.1f}%")
 st.sidebar.write(f"**Average revenue/ paid user:** ${avg_revenue:.2f}")
