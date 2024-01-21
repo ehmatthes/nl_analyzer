@@ -188,9 +188,9 @@ if show_gp:
     label_pos_y = gp_percentages[-1] - 0.0002 * ax.get_ylim()[1]
     ax.annotate("Ghost Pro", (label_pos_x, label_pos_y))
 
-# ax.set_ylim([0,1])
 # Limit of y-axis needs to be at least 15%, but shouldn't over-emphasize high values
-# for only the lowest subscriber levels.
+# for only the lowest subscriber levels. Use percentage 1/10 of the way through the set
+# of values, so most of each platform's line is visible.
 y_max = max(0.15, gp_percentages[int(0.1*len(gp_percentages))])
 ax.axis([0, 1.05*max_subs, 0, y_max])
 y_vals = ax.get_yticks()
