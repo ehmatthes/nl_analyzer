@@ -118,7 +118,7 @@ show_gp = st.sidebar.checkbox("Ghost Pro", value=True)
 st.sidebar.write("---")
 
 max_subs_macro = st.sidebar.slider(
-    "Number of subscribers", value=10_000, max_value=100_000, step=10
+    "Number of subscribers", value=10_000, max_value=100_000, step=1_000
 )
 max_subs_micro = st.sidebar.slider(
     "Number of subscribers (fine tuning)", value=0, max_value=1_000, step=10
@@ -189,7 +189,10 @@ if show_gp:
     ax.annotate("Ghost Pro", (label_pos_x, label_pos_y))
 
 # ax.set_ylim([0,1])
-ax.axis([0, 1.05*max_subs, 0, 0.2])
+# Limit of y-axis needs to be at least 15%, but shouldn't over-emphasize high values
+# for only the lowest subscriber levels.
+y_max = max(0.15, gp_percentages[int(0.1*len(gp_percentages))])
+ax.axis([0, 1.05*max_subs, 0, y_max])
 y_vals = ax.get_yticks()
 ax.set_yticklabels(['{:,.1%}'.format(y_val) for y_val in y_vals])
 
