@@ -31,7 +31,11 @@ paid_ratio_macro = st.sidebar.slider(
 )
 
 paid_ratio_micro = st.sidebar.slider(
-    "Paid subscriber ratio (fine tuning)", value=0.0, max_value=0.1, step=0.001, format="%.3f"
+    "Paid subscriber ratio (fine tuning)",
+    value=0.0,
+    max_value=0.1,
+    step=0.001,
+    format="%.3f",
 )
 paid_ratio = paid_ratio_macro + paid_ratio_micro
 
@@ -50,7 +54,6 @@ st.sidebar.write(f"**Average revenue/ paid user:** ${avg_revenue:.2f}")
 
 pricer = Pricer(max_subs=max_subs, paid_ratio=paid_ratio, avg_revenue=avg_revenue)
 ss_costs = pricer.get_costs_substack()
-ss_revenues = pricer.get_revenues_substack()
 gp_costs = pricer.get_costs_ghostpro()
 
 # Make cost chart.
@@ -98,10 +101,10 @@ if show_gp:
 # Limit of y-axis needs to be at least 15%, but shouldn't over-emphasize high values
 # for only the lowest subscriber levels. Use percentage 1/10 of the way through the set
 # of values, so most of each platform's line is visible.
-y_max = max(0.15, gp_percentages[int(0.1*len(gp_percentages))])
-ax.axis([0, 1.05*max_subs, 0, y_max])
+y_max = max(0.15, gp_percentages[int(0.1 * len(gp_percentages))])
+ax.axis([0, 1.05 * max_subs, 0, y_max])
 y_vals = ax.get_yticks()
-ax.set_yticklabels(['{:,.1%}'.format(y_val) for y_val in y_vals])
+ax.set_yticklabels(["{:,.1%}".format(y_val) for y_val in y_vals])
 
 ax.set_title("Annual cost as percent of revenue")
 ax.set_xlabel("Number of subscribers")

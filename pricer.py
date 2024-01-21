@@ -6,31 +6,20 @@ class Pricer:
         # Average annual revenue per paid user. Must take into consideration discounts.
         self.avg_revenue = avg_revenue
 
+        self._calculate_revenues()
+
     def get_costs_substack(self):
         """Calculate cost for every increment of 10 users.
 
         Returns:
             list: [int, int, ...]
         """
-        costs = []
-        for num_users in range(0, self.max_subs, 10):
-            revenue = num_users * self.paid_ratio * self.avg_revenue
-            cost = int(0.1 * revenue)
-            costs.append(cost)
-        return costs
+        return [int(0.1*rev) for rev in self.revenues]
 
-    def get_revenues_substack(self):
-        """Calculate revenue for increments of 10 users."""
-        revenues = []
-        for num_users in range(0, self.max_subs, 10):
-            revenue = num_users * self.paid_ratio * self.avg_revenue
-            revenues.append(revenue)
-        return revenues
 
     def get_percentages_substack(self):
         """Sustack has a flat 0.10 across all levels."""
         return [0.1 for _ in range(0, self.max_subs, 10)]
-
 
     def get_costs_ghostpro(self):
         """Calculate cost for every increment of 10 users.
@@ -98,6 +87,14 @@ class Pricer:
 
     def get_percentages_ghostpro(self):
         """Return list of percentages of cost/rev."""
-        revenues = self.get_revenues_substack()
         costs = self.get_costs_ghostpro()
-        return [cost/rev if rev > 0 else None for cost, rev in zip(costs, revenues)]
+        return [cost / rev if rev > 0 else None for cost, rev in zip(costs, self.revenues)]
+
+    # --- Helper methods ---
+
+    def _calculate_revenues(self):
+        """Calculate revenue for increments of 10 users."""
+        self.revenues = [
+            num_users * self.paid_ratio * self.avg_revenue
+            for num_users in range(0, self.max_subs, 10)
+        ]
