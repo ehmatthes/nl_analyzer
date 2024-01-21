@@ -109,25 +109,25 @@ max_subs_micro = st.slider(
 )
 max_subs = max_subs_macro + max_subs_micro
 
-paid_ratio = st.slider(
+# Build sidebar.
+st.sidebar.write("**Platforms:**")
+show_ss = st.sidebar.checkbox("Substack", value=True)
+show_gp = st.sidebar.checkbox("Ghost Pro", value=True)
+st.sidebar.write("---")
+
+paid_ratio = st.sidebar.slider(
     "Paid subscriber ratio", value=0.02, max_value=1.0, step=0.001, format="%.3f"
 )
 
-avg_revenue = st.slider(
+avg_revenue = st.sidebar.slider(
     "Average annual revenue per paid user", value=50, max_value=500, step=1
 )
 
-"---"
+st.sidebar.write("---")
 
-"##### Platforms:"
-show_ss = st.checkbox("Substack", value=True)
-show_gp = st.checkbox("Ghost Pro", value=True)
-
-"---"
-
-f"##### Max number of subscribers: {max_subs:,}"
-f"##### Paid subscriber ratio: {paid_ratio*100:.1f}%"
-f"##### Average annual revenue per paid user: ${avg_revenue:.2f}"
+st.sidebar.write(f"**Max subscribers:** {max_subs:,}")
+st.sidebar.write(f"**Paid ratio:** {paid_ratio*100:.1f}%")
+st.sidebar.write(f"**Average revenue/ paid user:** ${avg_revenue:.2f}")
 
 "---"
 
