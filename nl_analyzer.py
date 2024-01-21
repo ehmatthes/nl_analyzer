@@ -111,20 +111,20 @@ class Pricer:
         return [cost/rev if rev > 0 else None for cost, rev in zip(costs, revenues)]
 
 
-# Get attributes.
-max_subs_macro = st.slider(
-    "Number of subscribers", value=10_000, max_value=100_000, step=10
-)
-max_subs_micro = st.slider(
-    "Number of subscribers (fine tuning)", value=0, max_value=1_000, step=10
-)
-max_subs = max_subs_macro + max_subs_micro
-
 # Build sidebar.
 st.sidebar.write("**Platforms:**")
 show_ss = st.sidebar.checkbox("Substack", value=True)
 show_gp = st.sidebar.checkbox("Ghost Pro", value=True)
 st.sidebar.write("---")
+
+max_subs_macro = st.sidebar.slider(
+    "Number of subscribers", value=10_000, max_value=100_000, step=10
+)
+max_subs_micro = st.sidebar.slider(
+    "Number of subscribers (fine tuning)", value=0, max_value=1_000, step=10
+)
+max_subs = max_subs_macro + max_subs_micro
+
 
 paid_ratio = st.sidebar.slider(
     "Paid subscriber ratio", value=0.02, max_value=1.0, step=0.001, format="%.3f"
@@ -140,7 +140,6 @@ st.sidebar.write(f"**Max subscribers:** {max_subs:,}")
 st.sidebar.write(f"**Paid ratio:** {paid_ratio*100:.1f}%")
 st.sidebar.write(f"**Average revenue/ paid user:** ${avg_revenue:.2f}")
 
-"---"
 
 pricer = Pricer(max_subs=max_subs, paid_ratio=paid_ratio, avg_revenue=avg_revenue)
 ss_costs = pricer.get_costs_substack()
