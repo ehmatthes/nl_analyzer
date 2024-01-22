@@ -105,7 +105,11 @@ if show_gp and fill_plot:
 # for only the lowest subscriber levels. Use percentage 1/10 of the way through the set
 # of values, so most of each platform's line is visible.
 if fill_plot:
-    y_max = max(0.15, gp_percentages[int(0.1 * len(gp_percentages))])
+    try:
+        y_max = max(0.15, gp_percentages[int(0.1 * len(gp_percentages))])
+    except NameError:
+        # Temp fix for when Ghost Pro is not selected.
+        y_max = 0.2
     ax.axis([0, 1.05 * max_subs, 0, y_max])
     y_vals = ax.get_yticks()
     ax.set_yticklabels(["{:,.1%}".format(y_val) for y_val in y_vals])
