@@ -58,10 +58,12 @@ class Pricer:
     def _fill_data(self):
         """Build the dataframe that will be used throughout class."""
         user_levels = pd.Series([num_users for num_users in range(0, self.max_subs, 10)])
+
         revenues = pd.Series([
             num_users * self.paid_ratio * self.avg_revenue
             for num_users in range(0, self.max_subs, 10)
         ])
+
         self.df = pd.DataFrame({
             "user_levels": user_levels,
             "revenues": revenues,
@@ -70,3 +72,8 @@ class Pricer:
             "costs_gp": np.nan,
             "percent_rev_gp": np.nan,
             })
+
+
+# Simple profiling tool.
+if __name__ == "__main__":
+    pricer = Pricer()
