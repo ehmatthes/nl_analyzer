@@ -8,19 +8,20 @@ class Pricer:
         self.config = config
 
         self._initialize_data()
+        self._fill_platform_data()
 
-    def get_costs_substack(self):
-        """Calculate cost for every increment of 10 users.
+    # def get_costs_substack(self):
+    #     """Calculate cost for every increment of 10 users.
 
-        Returns:
-            list: [int, int, ...]
-        """
-        return [int(0.1*rev) for rev in self.df["revenues"]]
+    #     Returns:
+    #         list: [int, int, ...]
+    #     """
+    #     return [int(0.1*rev) for rev in self.df["revenues"]]
 
 
-    def get_percentages_substack(self):
-        """Sustack has a flat 0.10 across all levels."""
-        return [0.1 for _ in range(0, self.config.max_subs, 10)]
+    # def get_percentages_substack(self):
+    #     """Sustack has a flat 0.10 across all levels."""
+    #     return [0.1 for _ in range(0, self.config.max_subs, 10)]
 
     def get_costs_ghostpro(self):
         """Calculate cost for every increment of 10 users.
@@ -68,6 +69,23 @@ class Pricer:
             "costs_gp": np.nan,
             "percent_rev_gp": np.nan,
             })
+
+    def _fill_platform_data(self):
+        """Fill only platform data that's currently being used."""
+        if self.config.show_ss:
+            self._fill_data_ss()
+        if self.config.show_gp:
+            self._fill_data_gp()
+
+    def _fill_data_ss(self):
+        """Fill Substack data."""
+        self.df["costs_ss"] = pd.Series([int(0.1*rev) for rev in self.df["revenues"]])
+        self.df["percent_rev_ss"] = pd.Series([0.1 for _ in self.df["user_levels"]])
+
+
+    def _fill_data_gp(self):
+        """Fill Ghost Pro data."""
+        pass
 
 
 # Simple profiling tool.

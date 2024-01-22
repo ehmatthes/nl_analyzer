@@ -55,7 +55,7 @@ st.sidebar.write(f"**Average revenue/ paid user:** ${config.avg_revenue:.2f}")
 
 
 pricer = Pricer(config)
-ss_costs = pricer.get_costs_substack()
+ss_costs = pricer.df["costs_ss"]
 gp_costs = pricer.get_costs_ghostpro()
 
 # Make cost chart.
@@ -69,7 +69,7 @@ label_pos_x = x_values[-1] + 0.01 * config.max_subs
 # Add Substack data.
 if config.show_ss:
     ax.plot(x_values, ss_costs)
-    label_pos_y = ss_costs[-1] - 0.005 * ax.get_ylim()[1]
+    label_pos_y = ss_costs.iloc[-1] - 0.005 * ax.get_ylim()[1]
     ax.annotate("Substack", (label_pos_x, label_pos_y))
 
 # Add Ghost data.
@@ -92,9 +92,9 @@ fig, ax = plt.subplots()
 fill_plot = bool(sum(pricer.df["revenues"]))
 
 if config.show_ss and fill_plot:
-    ss_percentages = pricer.get_percentages_substack()
+    ss_percentages = pricer.df["percent_rev_ss"]
     ax.plot(x_values, ss_percentages)
-    label_pos_y = ss_percentages[-1] - 0.02 * ax.get_ylim()[1]
+    label_pos_y = ss_percentages.iloc[-1] - 0.02 * ax.get_ylim()[1]
     ax.annotate("Substack", (label_pos_x, label_pos_y))
 
 if config.show_gp and fill_plot:
