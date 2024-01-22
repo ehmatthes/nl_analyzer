@@ -10,19 +10,6 @@ class Pricer:
         self._initialize_data()
         self._fill_platform_data()
 
-    # def get_costs_substack(self):
-    #     """Calculate cost for every increment of 10 users.
-
-    #     Returns:
-    #         list: [int, int, ...]
-    #     """
-    #     return [int(0.1*rev) for rev in self.df["revenues"]]
-
-
-    # def get_percentages_substack(self):
-    #     """Sustack has a flat 0.10 across all levels."""
-    #     return [0.1 for _ in range(0, self.config.max_subs, 10)]
-
     def get_costs_ghostpro(self):
         """Calculate cost for every increment of 10 users.
 
@@ -35,9 +22,6 @@ class Pricer:
         for num_users in range(0, self.config.max_subs, 10):
             yearly_cost = -1
             for threshold, cost in price_tiers:
-                # threshold, cost = price_tier
-                # print(index, threshold, cost)
-                # sys.exit()
                 if num_users >= threshold:
                     yearly_cost = cost
                     break
