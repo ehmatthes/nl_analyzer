@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 
+from config import Config
 from data import ghost_resources as gr
 
 class Pricer:
@@ -10,29 +11,6 @@ class Pricer:
         self._initialize_data()
         self._fill_platform_data()
 
-    # def get_costs_ghostpro(self):
-    #     """Calculate cost for every increment of 10 users.
-
-    #     Returns:
-    #         list: [int, int, ...]
-    #     """
-    #     costs = []
-    #     price_tiers = gr.get_price_tiers()
-    #     price_tiers.reverse()
-    #     for num_users in range(0, self.config.max_subs, 10):
-    #         yearly_cost = -1
-    #         for threshold, cost in price_tiers:
-    #             if num_users >= threshold:
-    #                 yearly_cost = cost
-    #                 break
-
-    #         costs.append(yearly_cost)
-    #     return costs
-
-    # def get_percentages_ghostpro(self):
-    #     """Return list of percentages of cost/rev."""
-    #     costs = self.get_costs_ghostpro()
-    #     return [cost / rev if rev > 0 else None for cost, rev in zip(costs, self.df["revenues"])]
 
     # --- Helper methods ---
 
@@ -66,7 +44,6 @@ class Pricer:
         self.df["costs_ss"] = pd.Series([int(0.1*rev) for rev in self.df["revenues"]])
         self.df["percent_rev_ss"] = pd.Series([0.1 for _ in self.df["user_levels"]])
 
-
     def _fill_data_gp(self):
         """Fill Ghost Pro data."""
         self._fill_costs_gp()
@@ -91,4 +68,5 @@ class Pricer:
 
 # Simple profiling tool.
 if __name__ == "__main__":
-    pricer = Pricer()
+    config = Config()
+    pricer = Pricer(config)
