@@ -12,7 +12,6 @@ class Pricer:
         self.avg_revenue = avg_revenue
 
         self._fill_data()
-        # self._calculate_revenues()
 
     def get_costs_substack(self):
         """Calculate cost for every increment of 10 users.
@@ -71,10 +70,3 @@ class Pricer:
             "costs_gp": np.nan,
             "percent_rev_gp": np.nan,
             })
-
-    # def _calculate_revenues(self):
-    #     """Calculate revenue for increments of 10 users."""
-    #     self.revenues = [
-    #         num_users * self.paid_ratio * self.avg_revenue
-    #         for num_users in self.df["user_levels"]
-    #     ]
