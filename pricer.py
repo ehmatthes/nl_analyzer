@@ -55,7 +55,7 @@ class Pricer:
         self._fill_costs_gp()
         self.df["percent_rev_gp"] = pd.Series(
             [
-                cost / rev if rev > 0 else None
+                cost / rev if rev > 0 else np.nan
                 for cost, rev in zip(self.df["costs_gp"], self.df["revenues"])
             ]
         )
