@@ -12,7 +12,7 @@ class Pricer:
         self.avg_revenue = avg_revenue
 
         self._fill_data()
-        self._calculate_revenues()
+        # self._calculate_revenues()
 
     def get_costs_substack(self):
         """Calculate cost for every increment of 10 users.
@@ -20,7 +20,7 @@ class Pricer:
         Returns:
             list: [int, int, ...]
         """
-        return [int(0.1*rev) for rev in self.revenues]
+        return [int(0.1*rev) for rev in self.df["revenues"]]
 
 
     def get_percentages_substack(self):
@@ -52,7 +52,7 @@ class Pricer:
     def get_percentages_ghostpro(self):
         """Return list of percentages of cost/rev."""
         costs = self.get_costs_ghostpro()
-        return [cost / rev if rev > 0 else None for cost, rev in zip(costs, self.revenues)]
+        return [cost / rev if rev > 0 else None for cost, rev in zip(costs, self.df["revenues"])]
 
     # --- Helper methods ---
 
@@ -72,9 +72,9 @@ class Pricer:
             "percent_rev_gp": np.nan,
             })
 
-    def _calculate_revenues(self):
-        """Calculate revenue for increments of 10 users."""
-        self.revenues = [
-            num_users * self.paid_ratio * self.avg_revenue
-            for num_users in range(0, self.max_subs, 10)
-        ]
+    # def _calculate_revenues(self):
+    #     """Calculate revenue for increments of 10 users."""
+    #     self.revenues = [
+    #         num_users * self.paid_ratio * self.avg_revenue
+    #         for num_users in self.df["user_levels"]
+    #     ]

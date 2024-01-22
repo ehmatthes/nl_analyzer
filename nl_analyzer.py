@@ -87,7 +87,7 @@ fig
 # Make percentage chart.
 fig, ax = plt.subplots()
 
-fill_plot = bool(sum(pricer.revenues))
+fill_plot = bool(sum(pricer.df["revenues"]))
 
 if show_ss and fill_plot:
     ss_percentages = pricer.get_percentages_substack()
