@@ -10,29 +10,29 @@ class Pricer:
         self._initialize_data()
         self._fill_platform_data()
 
-    def get_costs_ghostpro(self):
-        """Calculate cost for every increment of 10 users.
+    # def get_costs_ghostpro(self):
+    #     """Calculate cost for every increment of 10 users.
 
-        Returns:
-            list: [int, int, ...]
-        """
-        costs = []
-        price_tiers = gr.get_price_tiers()
-        price_tiers.reverse()
-        for num_users in range(0, self.config.max_subs, 10):
-            yearly_cost = -1
-            for threshold, cost in price_tiers:
-                if num_users >= threshold:
-                    yearly_cost = cost
-                    break
+    #     Returns:
+    #         list: [int, int, ...]
+    #     """
+    #     costs = []
+    #     price_tiers = gr.get_price_tiers()
+    #     price_tiers.reverse()
+    #     for num_users in range(0, self.config.max_subs, 10):
+    #         yearly_cost = -1
+    #         for threshold, cost in price_tiers:
+    #             if num_users >= threshold:
+    #                 yearly_cost = cost
+    #                 break
 
-            costs.append(yearly_cost)
-        return costs
+    #         costs.append(yearly_cost)
+    #     return costs
 
-    def get_percentages_ghostpro(self):
-        """Return list of percentages of cost/rev."""
-        costs = self.get_costs_ghostpro()
-        return [cost / rev if rev > 0 else None for cost, rev in zip(costs, self.df["revenues"])]
+    # def get_percentages_ghostpro(self):
+    #     """Return list of percentages of cost/rev."""
+    #     costs = self.get_costs_ghostpro()
+    #     return [cost / rev if rev > 0 else None for cost, rev in zip(costs, self.df["revenues"])]
 
     # --- Helper methods ---
 
@@ -69,7 +69,24 @@ class Pricer:
 
     def _fill_data_gp(self):
         """Fill Ghost Pro data."""
-        pass
+        self._fill_costs_gp()
+        self.df["percent_rev_gp"] = pd.Series([cost / rev if rev > 0 else None for cost, rev in zip(self.df["costs_gp"], self.df["revenues"])])
+
+    def _fill_costs_gp(self):
+        """Fill costs column for Ghost Pro."""
+        costs = []
+        price_tiers = gr.get_price_tiers()
+        price_tiers.reverse()
+        for num_users in self.df["user_levels"]:
+            yearly_cost = -1
+            for threshold, cost in price_tiers:
+                if num_users >= threshold:
+                    yearly_cost = cost
+                    break
+
+            costs.append(yearly_cost)
+
+        self.df["costs_gp"] = pd.Series(costs)
 
 
 # Simple profiling tool.

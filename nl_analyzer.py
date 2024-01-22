@@ -56,7 +56,7 @@ st.sidebar.write(f"**Average revenue/ paid user:** ${config.avg_revenue:.2f}")
 
 pricer = Pricer(config)
 ss_costs = pricer.df["costs_ss"]
-gp_costs = pricer.get_costs_ghostpro()
+gp_costs = pricer.df["costs_gp"]
 
 # Make cost chart.
 x_values = range(0, config.max_subs, 10)
@@ -75,7 +75,7 @@ if config.show_ss:
 # Add Ghost data.
 if config.show_gp:
     ax.plot(x_values, gp_costs)
-    label_pos_y = gp_costs[-1] - 0.01 * ax.get_ylim()[1]
+    label_pos_y = gp_costs.iloc[-1] - 0.01 * ax.get_ylim()[1]
     ax.annotate("Ghost Pro", (label_pos_x, label_pos_y))
 
 ax.set_title("Annual cost of hosting a newsletter")
@@ -98,9 +98,9 @@ if config.show_ss and fill_plot:
     ax.annotate("Substack", (label_pos_x, label_pos_y))
 
 if config.show_gp and fill_plot:
-    gp_percentages = pricer.get_percentages_ghostpro()
+    gp_percentages = pricer.df["percent_rev_gp"]
     ax.plot(x_values, gp_percentages)
-    label_pos_y = gp_percentages[-1] - 0.0002 * ax.get_ylim()[1]
+    label_pos_y = gp_percentages.iloc[-1] - 0.0002 * ax.get_ylim()[1]
     ax.annotate("Ghost Pro", (label_pos_x, label_pos_y))
 
 # Limit of y-axis needs to be at least 15%, but shouldn't over-emphasize high values
