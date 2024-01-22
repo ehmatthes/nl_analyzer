@@ -11,7 +11,7 @@ class Pricer:
         # Average annual revenue per paid user. Must take into consideration discounts.
         self.avg_revenue = avg_revenue
 
-        self._fill_data()
+        self._initialize_data()
 
     def get_costs_substack(self):
         """Calculate cost for every increment of 10 users.
@@ -55,7 +55,7 @@ class Pricer:
 
     # --- Helper methods ---
 
-    def _fill_data(self):
+    def _initialize_data(self):
         """Build the dataframe that will be used throughout class."""
         user_levels = pd.Series([num_users for num_users in range(0, self.max_subs, 10)])
 
