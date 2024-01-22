@@ -5,11 +5,7 @@ from data import ghost_resources as gr
 
 class Pricer:
     def __init__(self, config):
-        self.max_subs = config["max_subs"]
-        self.paid_ratio = config["paid_ratio"]
-
-        # Average annual revenue per paid user. Must take into consideration discounts.
-        self.avg_revenue = config["avg_revenue"]
+        self.config = config
 
         self._initialize_data()
 
@@ -24,7 +20,7 @@ class Pricer:
 
     def get_percentages_substack(self):
         """Sustack has a flat 0.10 across all levels."""
-        return [0.1 for _ in range(0, self.max_subs, 10)]
+        return [0.1 for _ in range(0, self.config.max_subs, 10)]
 
     def get_costs_ghostpro(self):
         """Calculate cost for every increment of 10 users.
@@ -35,7 +31,7 @@ class Pricer:
         costs = []
         price_tiers = gr.get_price_tiers()
         price_tiers.reverse()
-        for num_users in range(0, self.max_subs, 10):
+        for num_users in range(0, self.config.max_subs, 10):
             yearly_cost = -1
             for threshold, cost in price_tiers:
                 # threshold, cost = price_tier
@@ -57,10 +53,10 @@ class Pricer:
 
     def _initialize_data(self):
         """Build the dataframe that will be used throughout class."""
-        user_levels = pd.Series([num_users for num_users in range(0, self.max_subs, 10)])
+        user_levels = pd.Series([num_users for num_users in range(0, self.config.max_subs, 10)])
 
         revenues = pd.Series([
-            num_users * self.paid_ratio * self.avg_revenue
+            num_users * self.config.paid_ratio * self.config.avg_revenue
             for num_users in user_levels
         ])
 

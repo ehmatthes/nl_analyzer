@@ -8,9 +8,9 @@ from dataclasses import dataclass
 @dataclass
 class Config:
     """Class for keeping track of overall project settings."""
-    show_ss: bool
-    show_gp: bool
+    show_ss: bool = True
+    show_gp: bool = True
 
-    max_subs: int
-    paid_ratio: float
-    avg_revenue: int
+    max_subs: int = 10_000
+    paid_ratio: float = 0.02
+    avg_revenue: int = 50
