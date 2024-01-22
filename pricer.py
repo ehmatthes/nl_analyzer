@@ -1,3 +1,5 @@
+from data import ghost_resources as gr
+
 class Pricer:
     def __init__(self, max_subs=10_000, paid_ratio=0.02, avg_revenue=50):
         self.max_subs = max_subs
@@ -27,50 +29,8 @@ class Pricer:
         Returns:
             list: [int, int, ...]
         """
-        # Use cheapest available plan. These are annual plans.
-        # Data from: https://ghost.org/js/pricing.min.js
-        price_tiers = [
-            (0, 108),
-            (1000, 180),
-            (3000, 480),
-            (5000, 780),
-            (8000, 984),
-            (10000, 1188),
-            (15000, 1488),
-            (20000, 1788),
-            (25000, 1980),
-            (35000, 2580),
-            (45000, 3180),
-            (55000, 3780),
-            (65000, 4380),
-            (75000, 4980),
-            (85000, 5580),
-            (95000, 6180),
-            (105000, 6780),
-            (115000, 7380),
-            (125000, 7980),
-            (135000, 8580),
-            (145000, 9180),
-            (155000, 9780),
-            (165000, 10380),
-            (175000, 10980),
-            (185000, 11580),
-            (195000, 12180),
-            (205000, 12780),
-            (215000, 13380),
-            (225000, 13980),
-            (235000, 14580),
-            (245000, 15180),
-            (265000, 16380),
-            (285000, 17580),
-            (305000, 18780),
-            (325000, 19980),
-            (345000, 21180),
-            (365000, 22380),
-            (385000, 22980),
-        ]
-
         costs = []
+        price_tiers = gr.get_price_tiers()
         price_tiers.reverse()
         for num_users in range(0, self.max_subs, 10):
             yearly_cost = -1
