@@ -6,10 +6,21 @@ import streamlit as st
 import matplotlib.pyplot as plt
 
 from pricer import Pricer
+from config import Config
 
 
 # Build sidebar.
 config = {}
+max_subs_macro, max_subs_micro = 10_000, 0
+paid_ratio_macro, paid_ratio_micro = 0.02, 0.0
+
+my_config = Config(
+    show_ss=True,
+    show_gp=True,
+    max_subs=max_subs_macro + max_subs_micro,
+    paid_ratio=paid_ratio_macro + paid_ratio_micro,
+    avg_revenue=50,
+)
 
 # Platforms to include.
 st.sidebar.write("**Platforms:**")
