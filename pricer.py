@@ -1,100 +1,83 @@
+import pandas as pd
+import numpy as np
+
+from config import Config
+from data import ghost_resources as gr
+
+
 class Pricer:
-    def __init__(self, max_subs=10_000, paid_ratio=0.02, avg_revenue=50):
-        self.max_subs = max_subs
-        self.paid_ratio = paid_ratio
+    def __init__(self, config):
+        self.config = config
 
-        # Average annual revenue per paid user. Must take into consideration discounts.
-        self.avg_revenue = avg_revenue
+        self._initialize_data()
+        self._fill_platform_data()
 
-        self._calculate_revenues()
+    # --- Helper methods ---
 
-    def get_costs_substack(self):
-        """Calculate cost for every increment of 10 users.
+    def _initialize_data(self):
+        """Build the dataframe that will be used throughout class."""
+        user_levels = pd.Series(
+            [num_users for num_users in range(0, self.config.max_subs, 10)]
+        )
 
-        Returns:
-            list: [int, int, ...]
-        """
-        return [int(0.1*rev) for rev in self.revenues]
+        revenues = pd.Series(
+            [
+                num_users * self.config.paid_ratio * self.config.avg_revenue
+                for num_users in user_levels
+            ]
+        )
 
+        self.df = pd.DataFrame(
+            {
+                "user_levels": user_levels,
+                "revenues": revenues,
+                "costs_ss": np.nan,
+                "percent_rev_ss": np.nan,
+                "costs_gp": np.nan,
+                "percent_rev_gp": np.nan,
+            }
+        )
 
-    def get_percentages_substack(self):
-        """Sustack has a flat 0.10 across all levels."""
-        return [0.1 for _ in range(0, self.max_subs, 10)]
+    def _fill_platform_data(self):
+        """Fill only platform data that's currently being used."""
+        if self.config.show_ss:
+            self._fill_data_ss()
+        if self.config.show_gp:
+            self._fill_data_gp()
 
-    def get_costs_ghostpro(self):
-        """Calculate cost for every increment of 10 users.
+    def _fill_data_ss(self):
+        """Fill Substack data."""
+        self.df["costs_ss"] = pd.Series([int(0.1 * rev) for rev in self.df["revenues"]])
+        self.df["percent_rev_ss"] = pd.Series([0.1 for _ in self.df["user_levels"]])
 
-        Returns:
-            list: [int, int, ...]
-        """
-        # Use cheapest available plan. These are annual plans.
-        # Data from: https://ghost.org/js/pricing.min.js
-        price_tiers = [
-            (0, 108),
-            (1000, 180),
-            (3000, 480),
-            (5000, 780),
-            (8000, 984),
-            (10000, 1188),
-            (15000, 1488),
-            (20000, 1788),
-            (25000, 1980),
-            (35000, 2580),
-            (45000, 3180),
-            (55000, 3780),
-            (65000, 4380),
-            (75000, 4980),
-            (85000, 5580),
-            (95000, 6180),
-            (105000, 6780),
-            (115000, 7380),
-            (125000, 7980),
-            (135000, 8580),
-            (145000, 9180),
-            (155000, 9780),
-            (165000, 10380),
-            (175000, 10980),
-            (185000, 11580),
-            (195000, 12180),
-            (205000, 12780),
-            (215000, 13380),
-            (225000, 13980),
-            (235000, 14580),
-            (245000, 15180),
-            (265000, 16380),
-            (285000, 17580),
-            (305000, 18780),
-            (325000, 19980),
-            (345000, 21180),
-            (365000, 22380),
-            (385000, 22980),
-        ]
+    def _fill_data_gp(self):
+        """Fill Ghost Pro data."""
+        self._fill_costs_gp()
+        self.df["percent_rev_gp"] = pd.Series(
+            [
+                cost / rev if rev > 0 else np.nan
+                for cost, rev in zip(self.df["costs_gp"], self.df["revenues"])
+            ]
+        )
 
+    def _fill_costs_gp(self):
+        """Fill costs column for Ghost Pro."""
         costs = []
+        price_tiers = gr.get_price_tiers()
         price_tiers.reverse()
-        for num_users in range(0, self.max_subs, 10):
+        for num_users in self.df["user_levels"]:
             yearly_cost = -1
             for threshold, cost in price_tiers:
-                # threshold, cost = price_tier
-                # print(index, threshold, cost)
-                # sys.exit()
                 if num_users >= threshold:
                     yearly_cost = cost
                     break
 
             costs.append(yearly_cost)
-        return costs
 
-    def get_percentages_ghostpro(self):
-        """Return list of percentages of cost/rev."""
-        costs = self.get_costs_ghostpro()
-        return [cost / rev if rev > 0 else None for cost, rev in zip(costs, self.revenues)]
+        self.df["costs_gp"] = pd.Series(costs)
 
-    # --- Helper methods ---
 
-    def _calculate_revenues(self):
-        """Calculate revenue for increments of 10 users."""
-        self.revenues = [
-            num_users * self.paid_ratio * self.avg_revenue
-            for num_users in range(0, self.max_subs, 10)
-        ]
+# Simple profiling tool.
+if __name__ == "__main__":
+    config = Config()
+    pricer = Pricer(config)
