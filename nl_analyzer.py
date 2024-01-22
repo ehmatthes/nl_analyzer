@@ -125,3 +125,25 @@ ax.set_xlabel("Number of subscribers")
 ax.set_ylabel("Percent of revenue")
 
 fig
+
+"### st chart"
+
+st.line_chart(
+    data = pricer.df,
+    x = "user_levels",
+    y = ["costs_ss", "costs_gp"],
+)
+
+
+'### altair chart'
+
+import altair as alt
+
+# Feed a subset of pricer.df into y
+
+my_chart = alt.Chart(pricer.df).mark_line().encode(
+    x = "user_levels",
+    y = ["costs_ss", "costs_gp"],
+)
+
+my_chart
