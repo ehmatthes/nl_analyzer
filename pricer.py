@@ -1,3 +1,6 @@
+import pandas as pd
+import numpy as np
+
 from data import ghost_resources as gr
 
 class Pricer:
@@ -8,6 +11,7 @@ class Pricer:
         # Average annual revenue per paid user. Must take into consideration discounts.
         self.avg_revenue = avg_revenue
 
+        self._fill_data()
         self._calculate_revenues()
 
     def get_costs_substack(self):
@@ -51,6 +55,22 @@ class Pricer:
         return [cost / rev if rev > 0 else None for cost, rev in zip(costs, self.revenues)]
 
     # --- Helper methods ---
+
+    def _fill_data(self):
+        """Build the dataframe that will be used throughout class."""
+        user_levels = pd.Series([num_users for num_users in range(0, self.max_subs, 10)])
+        revenues = pd.Series([
+            num_users * self.paid_ratio * self.avg_revenue
+            for num_users in range(0, self.max_subs, 10)
+        ])
+        self.df = pd.DataFrame({
+            "user_levels": user_levels,
+            "revenues": revenues,
+            "costs_ss": np.nan,
+            "percent_rev_ss": np.nan,
+            "costs_gp": np.nan,
+            "percent_rev_gp": np.nan,
+            })
 
     def _calculate_revenues(self):
         """Calculate revenue for increments of 10 users."""
