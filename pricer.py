@@ -4,12 +4,12 @@ import numpy as np
 from data import ghost_resources as gr
 
 class Pricer:
-    def __init__(self, max_subs=10_000, paid_ratio=0.02, avg_revenue=50):
-        self.max_subs = max_subs
-        self.paid_ratio = paid_ratio
+    def __init__(self, config):
+        self.max_subs = config["max_subs"]
+        self.paid_ratio = config["paid_ratio"]
 
         # Average annual revenue per paid user. Must take into consideration discounts.
-        self.avg_revenue = avg_revenue
+        self.avg_revenue = config["avg_revenue"]
 
         self._initialize_data()
 

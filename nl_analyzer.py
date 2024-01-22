@@ -9,11 +9,12 @@ from pricer import Pricer
 
 
 # Build sidebar.
+config = {}
 
 # Platforms to include.
 st.sidebar.write("**Platforms:**")
-show_ss = st.sidebar.checkbox("Substack", value=True)
-show_gp = st.sidebar.checkbox("Ghost Pro", value=True)
+config["show_ss"] = st.sidebar.checkbox("Substack", value=True)
+config["show_gp"] = st.sidebar.checkbox("Ghost Pro", value=True)
 st.sidebar.write("---")
 
 # Max number of subscribers.
@@ -23,7 +24,7 @@ max_subs_macro = st.sidebar.slider(
 max_subs_micro = st.sidebar.slider(
     "Number of subscribers (fine tuning)", value=0, max_value=1_000, step=10
 )
-max_subs = max_subs_macro + max_subs_micro
+config["max_subs"] = max_subs_macro + max_subs_micro
 
 # Paid subscriber ratio.
 paid_ratio_macro = st.sidebar.slider(
@@ -37,41 +38,41 @@ paid_ratio_micro = st.sidebar.slider(
     step=0.001,
     format="%.3f",
 )
-paid_ratio = paid_ratio_macro + paid_ratio_micro
+config["paid_ratio"] = paid_ratio_macro + paid_ratio_micro
 
 # Average annual revenue per paid user.
-avg_revenue = st.sidebar.slider(
+config["avg_revenue"] = st.sidebar.slider(
     "Average annual revenue per paid user", value=50, max_value=500, step=1
 )
 
 st.sidebar.write("---")
 
 # Summarize settings.
-st.sidebar.write(f"**Max subscribers:** {max_subs:,}")
-st.sidebar.write(f"**Paid ratio:** {paid_ratio*100:.1f}%")
-st.sidebar.write(f"**Average revenue/ paid user:** ${avg_revenue:.2f}")
+st.sidebar.write(f"**Max subscribers:** {config['max_subs']:,}")
+st.sidebar.write(f"**Paid ratio:** {config['paid_ratio']*100:.1f}%")
+st.sidebar.write(f"**Average revenue/ paid user:** ${config['avg_revenue']:.2f}")
 
 
-pricer = Pricer(max_subs=max_subs, paid_ratio=paid_ratio, avg_revenue=avg_revenue)
+pricer = Pricer(config)
 ss_costs = pricer.get_costs_substack()
 gp_costs = pricer.get_costs_ghostpro()
 
 # Make cost chart.
-x_values = range(0, max_subs, 10)
+x_values = range(0, pricer.max_subs, 10)
 plt.style.use("seaborn-v0_8")
 fig, ax = plt.subplots()
 
 # Define horizontal placement of all line labels.
-label_pos_x = x_values[-1] + 0.01 * max_subs
+label_pos_x = x_values[-1] + 0.01 * pricer.max_subs
 
 # Add Substack data.
-if show_ss:
+if config["show_ss"]:
     ax.plot(x_values, ss_costs)
     label_pos_y = ss_costs[-1] - 0.005 * ax.get_ylim()[1]
     ax.annotate("Substack", (label_pos_x, label_pos_y))
 
 # Add Ghost data.
-if show_gp:
+if config["show_gp"]:
     ax.plot(x_values, gp_costs)
     label_pos_y = gp_costs[-1] - 0.01 * ax.get_ylim()[1]
     ax.annotate("Ghost Pro", (label_pos_x, label_pos_y))
@@ -89,13 +90,13 @@ fig, ax = plt.subplots()
 
 fill_plot = bool(sum(pricer.df["revenues"]))
 
-if show_ss and fill_plot:
+if config["show_ss"] and fill_plot:
     ss_percentages = pricer.get_percentages_substack()
     ax.plot(x_values, ss_percentages)
     label_pos_y = ss_percentages[-1] - 0.02 * ax.get_ylim()[1]
     ax.annotate("Substack", (label_pos_x, label_pos_y))
 
-if show_gp and fill_plot:
+if config["show_gp"] and fill_plot:
     gp_percentages = pricer.get_percentages_ghostpro()
     ax.plot(x_values, gp_percentages)
     label_pos_y = gp_percentages[-1] - 0.0002 * ax.get_ylim()[1]
@@ -110,7 +111,7 @@ if fill_plot:
     except NameError:
         # Temp fix for when Ghost Pro is not selected.
         y_max = 0.2
-    ax.axis([0, 1.05 * max_subs, 0, y_max])
+    ax.axis([0, 1.05 * pricer.max_subs, 0, y_max])
     y_vals = ax.get_yticks()
     ax.set_yticklabels(["{:,.1%}".format(y_val) for y_val in y_vals])
 else:
