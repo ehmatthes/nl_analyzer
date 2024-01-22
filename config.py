@@ -5,9 +5,11 @@ included in the analysis.
 """
 from dataclasses import dataclass
 
+
 @dataclass
 class Config:
     """Class for keeping track of overall project settings."""
+
     show_ss: bool = True
     show_gp: bool = True
 

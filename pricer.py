@@ -4,6 +4,7 @@ import numpy as np
 from config import Config
 from data import ghost_resources as gr
 
+
 class Pricer:
     def __init__(self, config):
         self.config = config
@@ -11,26 +12,31 @@ class Pricer:
         self._initialize_data()
         self._fill_platform_data()
 
-
     # --- Helper methods ---
 
     def _initialize_data(self):
         """Build the dataframe that will be used throughout class."""
-        user_levels = pd.Series([num_users for num_users in range(0, self.config.max_subs, 10)])
+        user_levels = pd.Series(
+            [num_users for num_users in range(0, self.config.max_subs, 10)]
+        )
 
-        revenues = pd.Series([
-            num_users * self.config.paid_ratio * self.config.avg_revenue
-            for num_users in user_levels
-        ])
+        revenues = pd.Series(
+            [
+                num_users * self.config.paid_ratio * self.config.avg_revenue
+                for num_users in user_levels
+            ]
+        )
 
-        self.df = pd.DataFrame({
-            "user_levels": user_levels,
-            "revenues": revenues,
-            "costs_ss": np.nan,
-            "percent_rev_ss": np.nan,
-            "costs_gp": np.nan,
-            "percent_rev_gp": np.nan,
-            })
+        self.df = pd.DataFrame(
+            {
+                "user_levels": user_levels,
+                "revenues": revenues,
+                "costs_ss": np.nan,
+                "percent_rev_ss": np.nan,
+                "costs_gp": np.nan,
+                "percent_rev_gp": np.nan,
+            }
+        )
 
     def _fill_platform_data(self):
         """Fill only platform data that's currently being used."""
@@ -41,13 +47,18 @@ class Pricer:
 
     def _fill_data_ss(self):
         """Fill Substack data."""
-        self.df["costs_ss"] = pd.Series([int(0.1*rev) for rev in self.df["revenues"]])
+        self.df["costs_ss"] = pd.Series([int(0.1 * rev) for rev in self.df["revenues"]])
         self.df["percent_rev_ss"] = pd.Series([0.1 for _ in self.df["user_levels"]])
 
     def _fill_data_gp(self):
         """Fill Ghost Pro data."""
         self._fill_costs_gp()
-        self.df["percent_rev_gp"] = pd.Series([cost / rev if rev > 0 else None for cost, rev in zip(self.df["costs_gp"], self.df["revenues"])])
+        self.df["percent_rev_gp"] = pd.Series(
+            [
+                cost / rev if rev > 0 else None
+                for cost, rev in zip(self.df["costs_gp"], self.df["revenues"])
+            ]
+        )
 
     def _fill_costs_gp(self):
         """Fill costs column for Ghost Pro."""
