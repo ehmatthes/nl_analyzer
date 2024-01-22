@@ -61,7 +61,7 @@ class Pricer:
 
         revenues = pd.Series([
             num_users * self.paid_ratio * self.avg_revenue
-            for num_users in range(0, self.max_subs, 10)
+            for num_users in user_levels
         ])
 
         self.df = pd.DataFrame({
