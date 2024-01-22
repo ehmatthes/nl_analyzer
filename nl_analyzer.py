@@ -109,6 +109,10 @@ if fill_plot:
     ax.axis([0, 1.05 * max_subs, 0, y_max])
     y_vals = ax.get_yticks()
     ax.set_yticklabels(["{:,.1%}".format(y_val) for y_val in y_vals])
+else:
+    x_pos = ax.get_xlim()[1] * 0.1
+    y_pos = ax.get_ylim()[1] / 2
+    ax.annotate("No revenue generated.", (x_pos, y_pos), fontsize=16)
 
 ax.set_title("Annual cost as percent of revenue")
 ax.set_xlabel("Number of subscribers")
