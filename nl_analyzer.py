@@ -166,20 +166,23 @@ st.altair_chart(my_chart, use_container_width=True)
 
 "---"
 
+ss_color = "#DC6931"
+gp_color = "black"
+
 base_chart = alt.Chart(pricer.df).encode(
     x=alt.X('user_levels', title="Number of subscribers"))
 
 cost_chart = alt.layer(
-    base_chart.mark_line(color='blue').encode(
+    base_chart.mark_line(color=ss_color).encode(
         y=alt.Y('costs_ss', title="Annual cost")),
-    base_chart.mark_line(color='red').encode(y='costs_gp'),
+    base_chart.mark_line(color=gp_color).encode(y='costs_gp'),
 )
 cost_chart.title = "Annual cost of hosting a newsletter"
 
 ss_annotation = alt.Chart(pricer.df).mark_text(
     align='left',
     baseline='middle',
-    fontSize=10,
+    fontSize=14,
 ).encode(
     x=alt.X('user_levels:Q', aggregate='max'),
     y=alt.Y('costs_ss:Q', aggregate='max'),
@@ -189,7 +192,7 @@ ss_annotation = alt.Chart(pricer.df).mark_text(
 gp_annotation = alt.Chart(pricer.df).mark_text(
     align='left',
     baseline='middle',
-    fontSize=10
+    fontSize=14,
 ).encode(
     x=alt.X('user_levels:Q', aggregate='max'),
     y=alt.Y('costs_gp:Q', aggregate='max'),
