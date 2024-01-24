@@ -126,24 +126,39 @@ ax.set_ylabel("Percent of revenue")
 
 fig
 
-"### st chart"
-
-st.line_chart(
-    data = pricer.df,
-    x = "user_levels",
-    y = ["costs_ss", "costs_gp"],
-)
-
-
-'### altair chart'
+"---"
 
 import altair as alt
 
 # Feed a subset of pricer.df into y
+# costs_df = pricer.df[["costs_ss", "costs_gp"]]
 
-my_chart = alt.Chart(pricer.df).mark_line().encode(
-    x = "user_levels",
-    y = ["costs_ss", "costs_gp"],
+# my_chart = alt.Chart(pricer.df).mark_line().encode(
+#     x = "user_levels",
+#     y = "costs_ss",
+# )
+
+# my_chart.title = "Newsletter costs"
+# my_chart
+
+# Create the first line chart for costs_ss
+line_chart_ss = alt.Chart(pricer.df).mark_line().encode(
+    x='user_levels',
+    y='costs_ss',
+    # color=alt.value('blue')  # Optional: specify line color
 )
 
-my_chart
+# Create the second line chart for costs_gp
+line_chart_gp = alt.Chart(pricer.df).mark_line().encode(
+    x='user_levels',
+    y='costs_gp',
+    # color=alt.value('red')  # Optional: specify line color
+)
+
+# Combine the two charts and add a title
+my_chart = (line_chart_ss + line_chart_gp).properties(
+    title='Newsletter Costs'
+)
+
+# Display the chart in Streamlit
+st.altair_chart(my_chart, use_container_width=True)
