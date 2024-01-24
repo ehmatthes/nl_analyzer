@@ -166,11 +166,13 @@ st.altair_chart(my_chart, use_container_width=True)
 
 "---"
 
-base_chart = alt.Chart(pricer.df).encode(x='user_levels')
+base_chart = alt.Chart(pricer.df).encode(
+    x=alt.X('user_levels', title="Number of subscribers"))
 
 cost_chart = alt.layer(
-    base_chart.mark_line(color='blue').encode(y='costs_ss'),
+    base_chart.mark_line(color='blue').encode(
+        y=alt.Y('costs_ss', title="Annual cost")),
     base_chart.mark_line(color='red').encode(y='costs_gp'),
 )
-
+cost_chart.title = "Annual cost of hosting a newsletter"
 st.altair_chart(cost_chart, use_container_width=True)
