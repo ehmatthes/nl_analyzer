@@ -169,6 +169,7 @@ st.altair_chart(my_chart, use_container_width=True)
 ss_color = "#DC6931"
 gp_color = "black"
 
+# --- Cost chart ---
 base_chart = alt.Chart(pricer.df).encode(
     x=alt.X('user_levels', title="Number of subscribers"))
 
@@ -200,5 +201,43 @@ gp_annotation = alt.Chart(pricer.df).mark_text(
 )
 
 final_chart = alt.layer(cost_chart, ss_annotation, gp_annotation)
+
+st.altair_chart(final_chart, use_container_width=True)
+
+
+"---"
+
+# --- Percent of revenue chart
+base_chart = alt.Chart(pricer.df).encode(
+    x=alt.X('user_levels', title="Number of subscribers"))
+
+por_chart = alt.layer(
+    base_chart.mark_line(color=ss_color).encode(
+        y=alt.Y('percent_rev_ss', title="Percent of revenue")),
+    base_chart.mark_line(color=gp_color).encode(y='percent_rev_gp'),
+)
+por_chart.title = "Annual cost as percent of revenue"
+
+ss_annotation = alt.Chart(pricer.df).mark_text(
+    align='left',
+    baseline='middle',
+    fontSize=14,
+).encode(
+    x=alt.X('user_levels:Q', aggregate='max'),
+    y=alt.Y('percent_rev_ss:Q', aggregate='max'),
+    text=alt.value('- Substack')
+)
+
+gp_annotation = alt.Chart(pricer.df).mark_text(
+    align='left',
+    baseline='middle',
+    fontSize=14,
+).encode(
+    x=alt.X('user_levels:Q', aggregate='max'),
+    y=alt.Y('percent_rev_gp:Q', aggregate='max'),
+    text=alt.value('- Ghost Pro')
+)
+
+final_chart = alt.layer(por_chart, ss_annotation, gp_annotation)
 
 st.altair_chart(final_chart, use_container_width=True)
