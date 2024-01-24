@@ -175,4 +175,27 @@ cost_chart = alt.layer(
     base_chart.mark_line(color='red').encode(y='costs_gp'),
 )
 cost_chart.title = "Annual cost of hosting a newsletter"
-st.altair_chart(cost_chart, use_container_width=True)
+
+ss_annotation = alt.Chart(pricer.df).mark_text(
+    align='left',
+    baseline='middle',
+    fontSize=10,
+).encode(
+    x=alt.X('user_levels:Q', aggregate='max'),
+    y=alt.Y('costs_ss:Q', aggregate='max'),
+    text=alt.value('- Substack')
+)
+
+gp_annotation = alt.Chart(pricer.df).mark_text(
+    align='left',
+    baseline='middle',
+    fontSize=10
+).encode(
+    x=alt.X('user_levels:Q', aggregate='max'),
+    y=alt.Y('costs_gp:Q', aggregate='max'),
+    text=alt.value('- Ghost Pro')
+)
+
+final_chart = alt.layer(cost_chart, ss_annotation, gp_annotation)
+
+st.altair_chart(final_chart, use_container_width=True)
