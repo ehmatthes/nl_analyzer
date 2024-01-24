@@ -157,8 +157,20 @@ line_chart_gp = alt.Chart(pricer.df).mark_line().encode(
 
 # Combine the two charts and add a title
 my_chart = (line_chart_ss + line_chart_gp).properties(
-    title='Newsletter Costs'
+    title='Newsletter Costs: + approach'
 )
 
 # Display the chart in Streamlit
 st.altair_chart(my_chart, use_container_width=True)
+
+
+"---"
+
+base_chart = alt.Chart(pricer.df).encode(x='user_levels')
+
+cost_chart = alt.layer(
+    base_chart.mark_line(color='blue').encode(y='costs_ss'),
+    base_chart.mark_line(color='red').encode(y='costs_gp'),
+)
+
+st.altair_chart(cost_chart, use_container_width=True)
