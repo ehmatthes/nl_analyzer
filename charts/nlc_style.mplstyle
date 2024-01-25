@@ -1,7 +1,8 @@
 # Labels and titles (of axes, not axis).
 axes.titlelocation: left
 axes.labelsize: 12
-axes.titlesize: 16
+axes.titlesize: 14
+axes.titleweight: bold
 
 # Grid
 grid.alpha: 0.4
