@@ -8,11 +8,6 @@ def get_plot(config, df):
     gp_costs = df["costs_gp"]
     x_values = df["user_levels"]
 
-    # path = Path("charts/nlc_style.mplstyle")
-    # assert path.exists()
-    # assert not path.exists()
-
-    # plt.style.use(["seaborn-v0_8", "charts/nlc_style.mplstyle"])
     plt.style.use(["seaborn-v0_8-whitegrid", "charts/nlc_style.mplstyle"])
     fig, ax = plt.subplots()
 
@@ -44,8 +39,9 @@ def get_plot(config, df):
     ax.set_xlim(left=0)
     ax.set_ylim(bottom=0)
 
-    ax.set_title("Annual cost of hosting a newsletter", pad=20)
-    ax.title.set_position([0.0, 1.0])
+    ax.set_title("Annual cost of hosting a newsletter", pad=config.title_pad)
+    title = ax.title
+    title.set_position([0.0, 1.0])
     ax.set_xlabel("Number of subscribers")
     ax.set_ylabel("Annual cost")
 

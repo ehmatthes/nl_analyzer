@@ -24,3 +24,7 @@ class Config:
 
     # font sizes
     fs_brand_label: int = 12
+
+    # Spacing
+    title_pad = 20
+
