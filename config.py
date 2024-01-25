@@ -30,4 +30,3 @@ class Config:
     # Spacing
     title_x = -0.1
     title_pad = 20
-

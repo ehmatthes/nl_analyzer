@@ -12,7 +12,7 @@ def get_plot(config, df):
 
     # Set aspect ratio.
     width = fig.get_size_inches()[0]
-    height = width/config.aspect_ratio
+    height = width / config.aspect_ratio
     fig.set_size_inches(width, height)
 
     # Define horizontal placement of all line labels.
@@ -42,8 +42,8 @@ def get_plot(config, df):
 
     ax.set_xlim(left=0)
     ax.set_ylim(bottom=0)
-    ax.xaxis.set_major_formatter(mpl.ticker.StrMethodFormatter('{x:,.0f}'))
-    ax.yaxis.set_major_formatter(mpl.ticker.StrMethodFormatter('{x:,.0f}'))
+    ax.xaxis.set_major_formatter(mpl.ticker.StrMethodFormatter("{x:,.0f}"))
+    ax.yaxis.set_major_formatter(mpl.ticker.StrMethodFormatter("{x:,.0f}"))
 
     ax.set_title("Annual cost of hosting a newsletter", pad=config.title_pad, x=-0.1)
     ax.set_xlabel("Number of subscribers")
