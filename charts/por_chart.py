@@ -16,23 +16,30 @@ def get_chart(config, df):
 
     # Set aspect ratio.
     width = fig.get_size_inches()[0]
-    height = width/config.aspect_ratio
+    height = width / config.aspect_ratio
     fig.set_size_inches(width, height)
 
     if config.show_ss and nonzero_revenue:
         ss_percentages = df["percent_rev_ss"]
         ax.plot(x_values, ss_percentages, color=config.ss_color)
         label_pos_y = ss_percentages.iloc[-1] - 0.02 * ax.get_ylim()[1]
-        ax.annotate("Substack", (label_pos_x, label_pos_y), color=config.ss_color,
-            fontsize=config.fs_brand_label,)
+        ax.annotate(
+            "Substack",
+            (label_pos_x, label_pos_y),
+            color=config.ss_color,
+            fontsize=config.fs_brand_label,
+        )
 
     if config.show_gp and nonzero_revenue:
         gp_percentages = df["percent_rev_gp"]
         ax.plot(x_values, gp_percentages, color=config.gp_color)
         label_pos_y = gp_percentages.iloc[-1] - 0.0002 * ax.get_ylim()[1]
-        ax.annotate("Ghost Pro", (label_pos_x, label_pos_y),
+        ax.annotate(
+            "Ghost Pro",
+            (label_pos_x, label_pos_y),
             color=config.gp_color,
-            fontsize=config.fs_brand_label,)
+            fontsize=config.fs_brand_label,
+        )
 
     # Limit of y-axis needs to be at least 15%, but shouldn't over-emphasize high values
     # for only the lowest subscriber levels. Use percentage 1/10 of the way through the set
@@ -51,7 +58,7 @@ def get_chart(config, df):
         y_pos = ax.get_ylim()[1] / 2
         ax.annotate("No revenue generated.", (x_pos, y_pos), fontsize=16)
 
-    ax.xaxis.set_major_formatter(mpl.ticker.StrMethodFormatter('{x:,.0f}'))
+    ax.xaxis.set_major_formatter(mpl.ticker.StrMethodFormatter("{x:,.0f}"))
 
     ax.set_title("Annual cost as percent of revenue", pad=config.title_pad, x=-0.1)
     ax.set_xlabel("Number of subscribers")

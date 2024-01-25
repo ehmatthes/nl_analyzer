@@ -33,8 +33,10 @@ class Pricer:
                 "revenues": revenues,
                 "costs_ss": np.nan,
                 "percent_rev_ss": np.nan,
+                "profits_ss": np.nan,
                 "costs_gp": np.nan,
                 "percent_rev_gp": np.nan,
+                "profits_gp": np.nan,
             }
         )
 
@@ -50,6 +52,10 @@ class Pricer:
         self.df["costs_ss"] = pd.Series([int(0.1 * rev) for rev in self.df["revenues"]])
         self.df["percent_rev_ss"] = pd.Series([0.1 for _ in self.df["user_levels"]])
 
+        self.df["profits_ss"] = pd.Series(
+            [rev - cost for rev, cost in zip(self.df["revenues"], self.df["costs_ss"])]
+        )
+
     def _fill_data_gp(self):
         """Fill Ghost Pro data."""
         self._fill_costs_gp()
@@ -58,6 +64,10 @@ class Pricer:
                 cost / rev if rev > 0 else np.nan
                 for cost, rev in zip(self.df["costs_gp"], self.df["revenues"])
             ]
+        )
+
+        self.df["profits_gp"] = pd.Series(
+            [rev - cost for rev, cost in zip(self.df["revenues"], self.df["costs_gp"])]
         )
 
     def _fill_costs_gp(self):

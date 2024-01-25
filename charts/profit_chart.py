@@ -3,8 +3,8 @@ import matplotlib as mpl
 
 
 def get_plot(config, df):
-    ss_costs = df["costs_ss"]
-    gp_costs = df["costs_gp"]
+    ss_profits = df["profits_ss"]
+    gp_profits = df["profits_gp"]
     x_values = df["user_levels"]
 
     plt.style.use(["seaborn-v0_8-whitegrid", "charts/nlc_style.mplstyle"])
@@ -20,8 +20,8 @@ def get_plot(config, df):
 
     # Add Substack data.
     if config.show_ss:
-        ax.plot(x_values, ss_costs, color=config.ss_color)
-        label_pos_y = ss_costs.iloc[-1] - 0.005 * ax.get_ylim()[1]
+        ax.plot(x_values, ss_profits, color=config.ss_color)
+        label_pos_y = ss_profits.iloc[-1] - 0.005 * ax.get_ylim()[1]
         ax.annotate(
             "Substack",
             (label_pos_x, label_pos_y),
@@ -31,8 +31,8 @@ def get_plot(config, df):
 
     # Add Ghost data.
     if config.show_gp:
-        ax.plot(x_values, gp_costs, color=config.gp_color)
-        label_pos_y = gp_costs.iloc[-1] - 0.01 * ax.get_ylim()[1]
+        ax.plot(x_values, gp_profits, color=config.gp_color)
+        label_pos_y = gp_profits.iloc[-1] - 0.01 * ax.get_ylim()[1]
         ax.annotate(
             "Ghost Pro",
             (label_pos_x, label_pos_y),
@@ -45,8 +45,8 @@ def get_plot(config, df):
     ax.xaxis.set_major_formatter(mpl.ticker.StrMethodFormatter("{x:,.0f}"))
     ax.yaxis.set_major_formatter(mpl.ticker.StrMethodFormatter("{x:,.0f}"))
 
-    ax.set_title("Annual cost of hosting a newsletter", pad=config.title_pad, x=-0.1)
+    ax.set_title("Annual profit of hosting a newsletter", pad=config.title_pad, x=-0.1)
     ax.set_xlabel("Number of subscribers")
-    ax.set_ylabel("Annual cost")
+    ax.set_ylabel("Annual profit")
 
     return fig

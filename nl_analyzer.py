@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from pricer import Pricer
 from config import Config
 
-from charts import cost_plot, por_chart
+from charts import cost_plot, por_chart, profit_chart, profit_comparison_chart
 
 
 # Build sidebar.
@@ -70,3 +70,13 @@ st.pyplot(cost_fig)
 # Percent of revenue chart.
 por_fig = por_chart.get_chart(config, pricer.df)
 st.pyplot(por_fig)
+
+"---"
+
+# Profit chart.
+profit_fig = profit_chart.get_plot(config, pricer.df)
+st.pyplot(profit_fig)
+
+# Profit comparison chart.
+pc_fig = profit_comparison_chart.get_plot(config, pricer.df)
+st.pyplot(pc_fig)
