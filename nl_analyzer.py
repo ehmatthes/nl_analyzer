@@ -89,15 +89,15 @@ fig
 # Make percentage chart.
 fig, ax = plt.subplots()
 
-fill_plot = bool(sum(pricer.df["revenues"]))
+nonzero_revenue = bool(sum(pricer.df["revenues"]))
 
-if config.show_ss and fill_plot:
+if config.show_ss and nonzero_revenue:
     ss_percentages = pricer.df["percent_rev_ss"]
     ax.plot(x_values, ss_percentages)
     label_pos_y = ss_percentages.iloc[-1] - 0.02 * ax.get_ylim()[1]
     ax.annotate("Substack", (label_pos_x, label_pos_y))
 
-if config.show_gp and fill_plot:
+if config.show_gp and nonzero_revenue:
     gp_percentages = pricer.df["percent_rev_gp"]
     ax.plot(x_values, gp_percentages)
     label_pos_y = gp_percentages.iloc[-1] - 0.0002 * ax.get_ylim()[1]
@@ -106,7 +106,7 @@ if config.show_gp and fill_plot:
 # Limit of y-axis needs to be at least 15%, but shouldn't over-emphasize high values
 # for only the lowest subscriber levels. Use percentage 1/10 of the way through the set
 # of values, so most of each platform's line is visible.
-if fill_plot:
+if nonzero_revenue:
     try:
         y_max = max(0.15, gp_percentages[int(0.1 * len(gp_percentages))])
     except NameError:
