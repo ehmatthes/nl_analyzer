@@ -8,8 +8,12 @@ def get_plot(config, df):
     x_values = df["user_levels"]
 
     plt.style.use(["seaborn-v0_8-whitegrid", "charts/nlc_style.mplstyle"])
-    # fig, ax = plt.subplots(figsize=(6.4, 4))
     fig, ax = plt.subplots()
+
+    # Set aspect ratio.
+    width = fig.get_size_inches()[0]
+    height = width/config.aspect_ratio
+    fig.set_size_inches(width, height)
 
     # Define horizontal placement of all line labels.
     label_pos_x = x_values.iloc[-1] + 0.01 * config.max_subs

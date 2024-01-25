@@ -62,10 +62,6 @@ pricer = Pricer(config)
 
 # Get chart, and then resize it based on streamlit's work.
 cost_fig = cost_plot.get_plot(config, pricer.df)
-width = cost_fig.get_size_inches()[0]
-height = width/1.6
-cost_fig.set_size_inches(width, height)
-
 st.pyplot(cost_fig, use_container_width=True)
 
 

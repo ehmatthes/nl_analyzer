@@ -22,6 +22,8 @@ class Config:
     ss_color: str = "#DC6931"
     gp_color: str = "black"
 
+    aspect_ratio: float = 2.0
+
     # font sizes
     fs_brand_label: int = 10
 
