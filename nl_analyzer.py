@@ -137,12 +137,9 @@ base_chart = alt.Chart(df_por).encode(
 
 por_chart = alt.layer(
     base_chart.mark_line(color=ss_color).encode(
-        # y=alt.Y('percent_rev_ss', title="Percent of revenue", scale=alt.Scale(domain=[0, y_max]))),
-        # y=alt.Y('percent_rev_ss', title="Percent of revenue")), # works
         y=alt.Y(
             "percent_rev_ss",
             title="Percent of revenue",
-            scale=alt.Scale(domain=[0, y_max]),
         )
     ),
     base_chart.mark_line(color=gp_color).encode(y="percent_rev_gp"),
@@ -159,7 +156,7 @@ ss_annotation = (
     .encode(
         x=alt.X("user_levels:Q", aggregate="max"),
         y=alt.Y(
-            "percent_rev_ss:Q", aggregate="max", scale=alt.Scale(domain=[0, y_max])
+            "percent_rev_ss:Q", aggregate="max"
         ),
         text=alt.value("- Substack"),
     )
@@ -175,11 +172,27 @@ gp_annotation = (
     .encode(
         x=alt.X("user_levels:Q", aggregate="max"),
         y=alt.Y(
-            "percent_rev_gp:Q", aggregate="max", scale=alt.Scale(domain=[0, y_max])
+            "percent_rev_gp:Q", aggregate="max"
         ),
         text=alt.value("- Ghost Pro"),
     )
 )
+
+# import pandas as pd
+# last_row = df_por.iloc[-1]
+
+# # Create the Ghost Pro annotation using the last row values
+# gp_annotation = (
+#     alt.Chart(pd.DataFrame({'x': [last_row['user_levels']], 'y': [last_row['percent_rev_gp']]}))
+#     .mark_text(
+#         align="left",
+#         baseline="middle",
+#         fontSize=14,
+#         x='x:Q',  # Use the final user_levels value
+#         y='y:Q',  # Use the final percent_rev_gp value
+#         text=alt.value("- Ghost Pro"),
+#     )
+# )
 
 empty_annotation = (
     alt.Chart(df_por)
