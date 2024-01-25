@@ -8,6 +8,8 @@ import matplotlib.pyplot as plt
 from pricer import Pricer
 from config import Config
 
+import cost_plot
+
 
 # Build sidebar.
 config = Config()
@@ -53,40 +55,23 @@ st.sidebar.write(f"**Max subscribers:** {config.max_subs:,}")
 st.sidebar.write(f"**Paid ratio:** {config.paid_ratio*100:.1f}%")
 st.sidebar.write(f"**Average revenue/ paid user:** ${config.avg_revenue:.2f}")
 
-
 pricer = Pricer(config)
-ss_costs = pricer.df["costs_ss"]
-gp_costs = pricer.df["costs_gp"]
 
-# Make cost chart.
-x_values = range(0, config.max_subs, 10)
-plt.style.use("seaborn-v0_8")
-fig, ax = plt.subplots()
 
-# Define horizontal placement of all line labels.
-label_pos_x = x_values[-1] + 0.01 * config.max_subs
+# --- Charts ---
 
-# Add Substack data.
-if config.show_ss:
-    ax.plot(x_values, ss_costs)
-    label_pos_y = ss_costs.iloc[-1] - 0.005 * ax.get_ylim()[1]
-    ax.annotate("Substack", (label_pos_x, label_pos_y))
-
-# Add Ghost data.
-if config.show_gp:
-    ax.plot(x_values, gp_costs)
-    label_pos_y = gp_costs.iloc[-1] - 0.01 * ax.get_ylim()[1]
-    ax.annotate("Ghost Pro", (label_pos_x, label_pos_y))
-
-ax.set_title("Annual cost of hosting a newsletter")
-ax.set_xlabel("Number of subscribers")
-ax.set_ylabel("Annual cost")
-
-fig
+cost_fig = cost_plot.get_plot(config, pricer.df)
+st.pyplot(cost_fig)
 
 "---"
 
-# Make percentage chart.
+# --- percentage of revenue chart ---
+
+x_values = range(0, config.max_subs, 10)
+
+# # Define horizontal placement of all line labels.
+label_pos_x = x_values[-1] + 0.01 * config.max_subs
+
 fig, ax = plt.subplots()
 
 nonzero_revenue = bool(sum(pricer.df["revenues"]))
