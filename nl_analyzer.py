@@ -61,7 +61,7 @@ pricer = Pricer(config)
 # --- Charts ---
 
 cost_fig = cost_plot.get_plot(config, pricer.df)
-st.pyplot(cost_fig)
+st.pyplot(cost_fig, use_container_width=True)
 
 "---"
 

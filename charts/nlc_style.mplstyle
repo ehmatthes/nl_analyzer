@@ -1,9 +1,15 @@
+# Labels and titles (of axes, not axis).
 axes.titlelocation: left
-
 axes.labelsize: 14
 axes.titlesize: 18
+
+# Grid
 grid.alpha: 0.4
 
 axes.spines.top: False
 axes.spines.right: False
 
+# Axis
+axes.labelcolor: 0, 0, 0, 0.7
+xtick.color: 0, 0, 0, 0.7
+ytick.color: 0, 0, 0, 0.7

@@ -9,6 +9,7 @@ def get_plot(config, df):
     x_values = df["user_levels"]
 
     plt.style.use(["seaborn-v0_8-whitegrid", "charts/nlc_style.mplstyle"])
+    # plt.style.use("seaborn-v0_8-whitegrid")
     fig, ax = plt.subplots()
 
     # Define horizontal placement of all line labels.
@@ -39,9 +40,8 @@ def get_plot(config, df):
     ax.set_xlim(left=0)
     ax.set_ylim(bottom=0)
 
-    ax.set_title("Annual cost of hosting a newsletter", pad=config.title_pad)
-    title = ax.title
-    title.set_position([0.0, 1.0])
+    ax.set_title("Annual cost of hosting a newsletter", pad=config.title_pad, x=-0.1)
+    # ax.set_title("Annual cost of hosting a newsletter", pad=config.title_pad)
     ax.set_xlabel("Number of subscribers")
     ax.set_ylabel("Annual cost")
 

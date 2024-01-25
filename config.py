@@ -26,5 +26,6 @@ class Config:
     fs_brand_label: int = 12
 
     # Spacing
+    title_x = -0.1
     title_pad = 20
 
