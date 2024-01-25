@@ -174,7 +174,8 @@ st.altair_chart(final_chart, use_container_width=True)
 
 # --- Percent of revenue chart
 fill_plot = bool(sum(pricer.df["revenues"]))
-fill_plot = True
+
+
 if fill_plot:
     try:
         y_max = max(0.15, gp_percentages[int(0.1 * len(gp_percentages))])
@@ -189,9 +190,14 @@ else:
     # y_pos = ax.get_ylim()[1] / 2
     # ax.annotate("No revenue generated.", (x_pos, y_pos), fontsize=16)
     pass
-y_max = 5
+# y_max = 5
 
-base_chart = alt.Chart(pricer.df).encode(
+df_por = pricer.df.copy()
+
+df_por['percent_rev_ss'] = df_por['percent_rev_ss'].clip(upper=y_max).where(df_por['percent_rev_ss'] <= y_max)
+df_por['percent_rev_gp'] = df_por['percent_rev_gp'].clip(upper=y_max).where(df_por['percent_rev_gp'] <= y_max)
+
+base_chart = alt.Chart(df_por).encode(
     x=alt.X('user_levels', title="Number of subscribers"))
 
 por_chart = alt.layer(
@@ -203,7 +209,7 @@ por_chart = alt.layer(
 )
 por_chart.title = "Annual cost as percent of revenue"
 
-ss_annotation = alt.Chart(pricer.df).mark_text(
+ss_annotation = alt.Chart(df_por).mark_text(
     align='left',
     baseline='middle',
     fontSize=14,
@@ -213,7 +219,7 @@ ss_annotation = alt.Chart(pricer.df).mark_text(
     text=alt.value('- Substack')
 )
 
-gp_annotation = alt.Chart(pricer.df).mark_text(
+gp_annotation = alt.Chart(df_por).mark_text(
     align='left',
     baseline='middle',
     fontSize=14,
