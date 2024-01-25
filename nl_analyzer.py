@@ -57,6 +57,7 @@ pricer = Pricer(config)
 ss_costs = pricer.df["costs_ss"]
 gp_costs = pricer.df["costs_gp"]
 
+
 # --- Charts ---
 
 ss_color = "#DC6931"
