@@ -33,10 +33,10 @@ class Pricer:
                 "revenues": revenues,
                 "costs_ss": np.nan,
                 "percent_rev_ss": np.nan,
-                "profit_ss": np.nan,
+                "profits_ss": np.nan,
                 "costs_gp": np.nan,
                 "percent_rev_gp": np.nan,
-                "profit_gp": np.nan,
+                "profits_gp": np.nan,
             }
         )
 
@@ -52,7 +52,7 @@ class Pricer:
         self.df["costs_ss"] = pd.Series([int(0.1 * rev) for rev in self.df["revenues"]])
         self.df["percent_rev_ss"] = pd.Series([0.1 for _ in self.df["user_levels"]])
 
-        self.df["profit_ss"] = pd.Series(
+        self.df["profits_ss"] = pd.Series(
             [rev - cost for rev, cost in zip(self.df["revenues"], self.df["costs_ss"])]
         )
 
@@ -66,7 +66,7 @@ class Pricer:
             ]
         )
 
-        self.df["profit_gp"] = pd.Series(
+        self.df["profits_gp"] = pd.Series(
             [rev - cost for rev, cost in zip(self.df["revenues"], self.df["costs_gp"])]
         )
 
