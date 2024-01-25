@@ -178,21 +178,7 @@ gp_annotation = (
     )
 )
 
-# import pandas as pd
-# last_row = df_por.iloc[-1]
 
-# # Create the Ghost Pro annotation using the last row values
-# gp_annotation = (
-#     alt.Chart(pd.DataFrame({'x': [last_row['user_levels']], 'y': [last_row['percent_rev_gp']]}))
-#     .mark_text(
-#         align="left",
-#         baseline="middle",
-#         fontSize=14,
-#         x='x:Q',  # Use the final user_levels value
-#         y='y:Q',  # Use the final percent_rev_gp value
-#         text=alt.value("- Ghost Pro"),
-#     )
-# )
 
 empty_annotation = (
     alt.Chart(df_por)
