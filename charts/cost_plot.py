@@ -1,6 +1,5 @@
 from matplotlib import pyplot as plt
-
-from pathlib import Path
+import matplotlib as mpl
 
 
 def get_plot(config, df):
@@ -39,6 +38,8 @@ def get_plot(config, df):
 
     ax.set_xlim(left=0)
     ax.set_ylim(bottom=0)
+    ax.xaxis.set_major_formatter(mpl.ticker.StrMethodFormatter('{x:,.0f}'))
+    ax.yaxis.set_major_formatter(mpl.ticker.StrMethodFormatter('{x:,.0f}'))
 
     ax.set_title("Annual cost of hosting a newsletter", pad=config.title_pad, x=-0.1)
     # ax.set_title("Annual cost of hosting a newsletter", pad=config.title_pad)
