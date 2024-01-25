@@ -13,6 +13,7 @@ class Config:
     # Input widget settings.
     show_ss: bool = True
     show_gp: bool = True
+    show_bh: bool = True
 
     max_subs: int = 10_000
     paid_ratio: float = 0.02
@@ -21,6 +22,7 @@ class Config:
     # Plot settings, that can't be covered in a Matplotlib stylesheet.
     ss_color: str = "#DC6931"
     gp_color: str = "black"
+    bh_color: str = "lightblue"
 
     aspect_ratio: float = 2.0
 

@@ -28,10 +28,24 @@ def get_plot(config, df):
     fig.set_size_inches(width, height)
 
     ax.plot(x_values, pos_diffs, color="lightgreen")
-    ax.fill_between(x_values, pos_diffs, where=pos_diffs > 0, interpolate=True, color="lightgreen", alpha=0.3)
+    ax.fill_between(
+        x_values,
+        pos_diffs,
+        where=pos_diffs > 0,
+        interpolate=True,
+        color="lightgreen",
+        alpha=0.3,
+    )
 
     ax.plot(x_values, neg_diffs, color="salmon")
-    ax.fill_between(x_values, neg_diffs, where=neg_diffs < 0, interpolate=True, color="salmon", alpha=0.3)
+    ax.fill_between(
+        x_values,
+        neg_diffs,
+        where=neg_diffs < 0,
+        interpolate=True,
+        color="salmon",
+        alpha=0.3,
+    )
 
     ax.plot(x_values, zero_diffs, color="black")
 
