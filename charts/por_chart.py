@@ -1,4 +1,5 @@
 from matplotlib import pyplot as plt
+import matplotlib as mpl
 
 
 def get_chart(config, df):
@@ -10,7 +11,13 @@ def get_chart(config, df):
     # Won't have data if there's no revenue.
     nonzero_revenue = bool(sum(df["revenues"]))
 
+    plt.style.use(["seaborn-v0_8-whitegrid", "charts/nlc_style.mplstyle"])
     fig, ax = plt.subplots()
+
+    # Set aspect ratio.
+    width = fig.get_size_inches()[0]
+    height = width/config.aspect_ratio
+    fig.set_size_inches(width, height)
 
     if config.show_ss and nonzero_revenue:
         ss_percentages = df["percent_rev_ss"]
@@ -44,7 +51,9 @@ def get_chart(config, df):
         y_pos = ax.get_ylim()[1] / 2
         ax.annotate("No revenue generated.", (x_pos, y_pos), fontsize=16)
 
-    ax.set_title("Annual cost as percent of revenue")
+    ax.xaxis.set_major_formatter(mpl.ticker.StrMethodFormatter('{x:,.0f}'))
+
+    ax.set_title("Annual cost as percent of revenue", pad=config.title_pad, x=-0.1)
     ax.set_xlabel("Number of subscribers")
     ax.set_ylabel("Percent of revenue")
 

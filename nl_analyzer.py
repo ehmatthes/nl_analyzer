@@ -62,11 +62,11 @@ pricer = Pricer(config)
 
 # Get chart, and then resize it based on streamlit's work.
 cost_fig = cost_plot.get_plot(config, pricer.df)
-st.pyplot(cost_fig, use_container_width=True)
+st.pyplot(cost_fig)
 
 
 "---"
 
 # Percent of revenue chart.
 por_fig = por_chart.get_chart(config, pricer.df)
-por_fig
+st.pyplot(por_fig)

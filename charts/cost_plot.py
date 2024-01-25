@@ -46,7 +46,6 @@ def get_plot(config, df):
     ax.yaxis.set_major_formatter(mpl.ticker.StrMethodFormatter('{x:,.0f}'))
 
     ax.set_title("Annual cost of hosting a newsletter", pad=config.title_pad, x=-0.1)
-    # ax.set_title("Annual cost of hosting a newsletter", pad=config.title_pad)
     ax.set_xlabel("Number of subscribers")
     ax.set_ylabel("Annual cost")
 
