@@ -18,8 +18,9 @@ class Config:
     paid_ratio: float = 0.02
     avg_revenue: int = 50
 
-    # Plot settings.
+    # Plot settings, that can't be covered in a Matplotlib stylesheet.
     ss_color: str = "#DC6931"
     gp_color: str = "black"
 
-    label_font_size: int = 12
+    # font sizes
+    fs_brand_label: int = 12

@@ -1,12 +1,19 @@
 from matplotlib import pyplot as plt
 
+from pathlib import Path
+
 
 def get_plot(config, df):
     ss_costs = df["costs_ss"]
     gp_costs = df["costs_gp"]
     x_values = df["user_levels"]
 
-    plt.style.use("seaborn-v0_8")
+    # path = Path("charts/nlc_style.mplstyle")
+    # assert path.exists()
+    # assert not path.exists()
+
+    # plt.style.use(["seaborn-v0_8", "charts/nlc_style.mplstyle"])
+    plt.style.use(["seaborn-v0_8-whitegrid", "charts/nlc_style.mplstyle"])
     fig, ax = plt.subplots()
 
     # Define horizontal placement of all line labels.
@@ -20,7 +27,7 @@ def get_plot(config, df):
             "Substack",
             (label_pos_x, label_pos_y),
             color=config.ss_color,
-            fontsize=config.label_font_size,
+            fontsize=config.fs_brand_label,
         )
 
     # Add Ghost data.
@@ -31,10 +38,14 @@ def get_plot(config, df):
             "Ghost Pro",
             (label_pos_x, label_pos_y),
             color=config.gp_color,
-            fontsize=config.label_font_size,
+            fontsize=config.fs_brand_label,
         )
 
-    ax.set_title("Annual cost of hosting a newsletter")
+    ax.set_xlim(left=0)
+    ax.set_ylim(bottom=0)
+
+    ax.set_title("Annual cost of hosting a newsletter", pad=20)
+    ax.title.set_position([0.0, 1.0])
     ax.set_xlabel("Number of subscribers")
     ax.set_ylabel("Annual cost")
 

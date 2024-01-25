@@ -1,0 +1,9 @@
+axes.titlelocation: left
+
+axes.labelsize: 14
+axes.titlesize: 18
+grid.alpha: 0.4
+
+axes.spines.top: False
+axes.spines.right: False
+
