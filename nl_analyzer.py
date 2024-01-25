@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from pricer import Pricer
 from config import Config
 
-import cost_plot
+from charts import cost_plot
 
 
 # Build sidebar.
