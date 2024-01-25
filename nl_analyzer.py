@@ -64,33 +64,43 @@ gp_color = "black"
 
 # --- Cost chart ---
 base_chart = alt.Chart(pricer.df).encode(
-    x=alt.X('user_levels', title="Number of subscribers"))
+    x=alt.X("user_levels", title="Number of subscribers")
+)
 
 cost_chart = alt.layer(
     base_chart.mark_line(color=ss_color).encode(
-        y=alt.Y('costs_ss', title="Annual cost")),
-    base_chart.mark_line(color=gp_color).encode(y='costs_gp'),
+        y=alt.Y("costs_ss", title="Annual cost")
+    ),
+    base_chart.mark_line(color=gp_color).encode(y="costs_gp"),
 )
 cost_chart.title = "Annual cost of hosting a newsletter"
 
-ss_annotation = alt.Chart(pricer.df).mark_text(
-    align='left',
-    baseline='middle',
-    fontSize=14,
-).encode(
-    x=alt.X('user_levels:Q', aggregate='max'),
-    y=alt.Y('costs_ss:Q', aggregate='max'),
-    text=alt.value('- Substack')
+ss_annotation = (
+    alt.Chart(pricer.df)
+    .mark_text(
+        align="left",
+        baseline="middle",
+        fontSize=14,
+    )
+    .encode(
+        x=alt.X("user_levels:Q", aggregate="max"),
+        y=alt.Y("costs_ss:Q", aggregate="max"),
+        text=alt.value("- Substack"),
+    )
 )
 
-gp_annotation = alt.Chart(pricer.df).mark_text(
-    align='left',
-    baseline='middle',
-    fontSize=14,
-).encode(
-    x=alt.X('user_levels:Q', aggregate='max'),
-    y=alt.Y('costs_gp:Q', aggregate='max'),
-    text=alt.value('- Ghost Pro')
+gp_annotation = (
+    alt.Chart(pricer.df)
+    .mark_text(
+        align="left",
+        baseline="middle",
+        fontSize=14,
+    )
+    .encode(
+        x=alt.X("user_levels:Q", aggregate="max"),
+        y=alt.Y("costs_gp:Q", aggregate="max"),
+        text=alt.value("- Ghost Pro"),
+    )
 )
 
 final_chart = alt.layer(cost_chart, ss_annotation, gp_annotation)
@@ -117,39 +127,61 @@ else:
 
 df_por = pricer.df.copy()
 
-df_por['percent_rev_ss'] = df_por['percent_rev_ss'].clip(upper=y_max).where(df_por['percent_rev_ss'] <= y_max)
-df_por['percent_rev_gp'] = df_por['percent_rev_gp'].clip(upper=y_max).where(df_por['percent_rev_gp'] <= y_max)
+df_por["percent_rev_ss"] = (
+    df_por["percent_rev_ss"].clip(upper=y_max).where(df_por["percent_rev_ss"] <= y_max)
+)
+df_por["percent_rev_gp"] = (
+    df_por["percent_rev_gp"].clip(upper=y_max).where(df_por["percent_rev_gp"] <= y_max)
+)
 
 base_chart = alt.Chart(df_por).encode(
-    x=alt.X('user_levels', title="Number of subscribers"))
+    x=alt.X("user_levels", title="Number of subscribers")
+)
 
 por_chart = alt.layer(
     base_chart.mark_line(color=ss_color).encode(
         # y=alt.Y('percent_rev_ss', title="Percent of revenue", scale=alt.Scale(domain=[0, y_max]))),
         # y=alt.Y('percent_rev_ss', title="Percent of revenue")), # works
-        y=alt.Y('percent_rev_ss', title="Percent of revenue", scale=alt.Scale(domain=[0, y_max]))),
-    base_chart.mark_line(color=gp_color).encode(y='percent_rev_gp'),
+        y=alt.Y(
+            "percent_rev_ss",
+            title="Percent of revenue",
+            scale=alt.Scale(domain=[0, y_max]),
+        )
+    ),
+    base_chart.mark_line(color=gp_color).encode(y="percent_rev_gp"),
 )
 por_chart.title = "Annual cost as percent of revenue"
 
-ss_annotation = alt.Chart(df_por).mark_text(
-    align='left',
-    baseline='middle',
-    fontSize=14,
-).encode(
-    x=alt.X('user_levels:Q', aggregate='max'),
-    y=alt.Y('percent_rev_ss:Q', aggregate='max', scale=alt.Scale(domain=[0, y_max])),
-    text=alt.value('- Substack')
+ss_annotation = (
+    alt.Chart(df_por)
+    .mark_text(
+        align="left",
+        baseline="middle",
+        fontSize=14,
+    )
+    .encode(
+        x=alt.X("user_levels:Q", aggregate="max"),
+        y=alt.Y(
+            "percent_rev_ss:Q", aggregate="max", scale=alt.Scale(domain=[0, y_max])
+        ),
+        text=alt.value("- Substack"),
+    )
 )
 
-gp_annotation = alt.Chart(df_por).mark_text(
-    align='left',
-    baseline='middle',
-    fontSize=14,
-).encode(
-    x=alt.X('user_levels:Q', aggregate='max'),
-    y=alt.Y('percent_rev_gp:Q', aggregate='max', scale=alt.Scale(domain=[0, y_max])),
-    text=alt.value('- Ghost Pro')
+gp_annotation = (
+    alt.Chart(df_por)
+    .mark_text(
+        align="left",
+        baseline="middle",
+        fontSize=14,
+    )
+    .encode(
+        x=alt.X("user_levels:Q", aggregate="max"),
+        y=alt.Y(
+            "percent_rev_gp:Q", aggregate="max", scale=alt.Scale(domain=[0, y_max])
+        ),
+        text=alt.value("- Ghost Pro"),
+    )
 )
 
 final_por_chart = alt.layer(por_chart, ss_annotation, gp_annotation)
