@@ -23,7 +23,7 @@ class Config:
     gp_color: str = "black"
 
     # font sizes
-    fs_brand_label: int = 12
+    fs_brand_label: int = 10
 
     # Spacing
     title_x = -0.1
