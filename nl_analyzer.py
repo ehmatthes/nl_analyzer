@@ -111,21 +111,18 @@ st.altair_chart(final_chart, use_container_width=True)
 "---"
 
 # --- Percent of revenue chart
-fill_plot = bool(sum(pricer.df["revenues"]))
+nonzero_revenue = bool(sum(pricer.df["revenues"]))
+df_por = pricer.df.copy()
 
-if fill_plot:
+if nonzero_revenue:
     try:
         y_max = max(0.15, gp_percentages[int(0.1 * len(gp_percentages))])
     except NameError:
         # Temp fix for when Ghost Pro is not selected.
         y_max = 0.2
 else:
-    # x_pos = ax.get_xlim()[1] * 0.1
-    # y_pos = ax.get_ylim()[1] / 2
-    # ax.annotate("No revenue generated.", (x_pos, y_pos), fontsize=16)
-    pass
+    y_max = 0
 
-df_por = pricer.df.copy()
 
 df_por["percent_rev_ss"] = (
     df_por["percent_rev_ss"].clip(upper=y_max).where(df_por["percent_rev_ss"] <= y_max)
@@ -184,6 +181,25 @@ gp_annotation = (
     )
 )
 
-final_por_chart = alt.layer(por_chart, ss_annotation, gp_annotation)
+empty_annotation = (
+    alt.Chart(df_por)
+    .mark_text(
+        align="left",
+        baseline="middle",
+        fontSize=16,
+        dx=10,
+        dy=100,
+    )
+    .encode(
+        x=alt.X(value=0),
+        y=alt.Y(value=0),
+        text=alt.value("No revenue generated"),
+    )
+)
+
+if nonzero_revenue:
+    final_por_chart = alt.layer(por_chart, ss_annotation, gp_annotation)
+else:
+    final_por_chart = alt.layer(por_chart, empty_annotation)
 
 st.altair_chart(final_por_chart, use_container_width=True)
