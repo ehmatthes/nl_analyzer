@@ -8,7 +8,7 @@ def get_plot(config, df):
     x_values = df["user_levels"]
 
     plt.style.use(["seaborn-v0_8-whitegrid", "charts/nlc_style.mplstyle"])
-    # plt.style.use("seaborn-v0_8-whitegrid")
+    # fig, ax = plt.subplots(figsize=(6.4, 4))
     fig, ax = plt.subplots()
 
     # Define horizontal placement of all line labels.

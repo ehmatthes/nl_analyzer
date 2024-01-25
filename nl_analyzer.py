@@ -61,7 +61,10 @@ pricer = Pricer(config)
 # --- Charts ---
 
 cost_fig = cost_plot.get_plot(config, pricer.df)
+fsi = cost_fig.get_size_inches()
+f"fig size: {fsi}"
 st.pyplot(cost_fig, use_container_width=True)
+
 
 "---"
 
