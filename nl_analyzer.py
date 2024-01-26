@@ -58,16 +58,24 @@ config.avg_revenue = st.sidebar.slider(
 
 st.sidebar.write("---")
 
-# Summarize settings.
-st.sidebar.write(f"**Max subscribers:** {config.max_subs:,}")
-st.sidebar.write(f"**Paid ratio:** {config.paid_ratio*100:.1f}%")
-st.sidebar.write(f"**Average revenue/ paid user:** ${config.avg_revenue:.2f}")
-
-st.sidebar.write("---")
-
 config.show_exp_features = st.sidebar.checkbox(
     "Show experimental features", value=False
 )
+
+# --- Main section ---
+
+# --- Summary of settings
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.write(f"**Max subscribers:** {config.max_subs:,}")
+with col2:
+    st.write(f"**Paid ratio:** {config.paid_ratio*100:.1f}%")
+with col3:
+    st.write(f"**Average revenue/ paid user:** ${config.avg_revenue:.2f}")
+
+st.write("---")
 
 # --- Charts ---
 
