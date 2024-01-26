@@ -19,11 +19,12 @@ st.sidebar.title("Settings")
 st.sidebar.write("---")
 
 # Max number of subscribers.
+st.sidebar.write("*How many subscribers will you need to support?*")
 max_subs_macro = st.sidebar.slider(
-    "Number of subscribers", value=10_000, max_value=100_000, step=1_000
+    "", value=10_000, max_value=100_000, step=1_000, label_visibility="collapsed"
 )
 max_subs_micro = st.sidebar.slider(
-    "Number of subscribers (fine tuning)", value=0, max_value=1_000, step=10
+    "(fine adjustment)", value=0, max_value=1_000, step=10
 )
 config.max_subs = max_subs_macro + max_subs_micro
 
@@ -31,12 +32,13 @@ config.max_subs = max_subs_macro + max_subs_micro
 st.sidebar.write("---")
 
 # Paid subscriber ratio.
+st.sidebar.write("*What percent of your subscribers have a paid subscription?*")
 paid_ratio_macro = st.sidebar.slider(
-    "Paid subscriber ratio", value=0.02, max_value=1.0, step=0.001, format="%.3f"
+    "", value=0.02, max_value=1.0, step=0.001, format="%.3f", label_visibility="collapsed"
 )
 
 paid_ratio_micro = st.sidebar.slider(
-    "Paid subscriber ratio (fine tuning)",
+    "(fine adjustment)",
     value=0.0,
     max_value=0.1,
     step=0.001,
@@ -47,8 +49,9 @@ config.paid_ratio = paid_ratio_macro + paid_ratio_micro
 st.sidebar.write("---")
 
 # Average annual revenue per paid user.
+st.sidebar.write("*What is your average annual revenue per paid subscriber?*")
 config.avg_revenue = st.sidebar.slider(
-    "Average annual revenue per paid user", value=50, max_value=500, step=1
+    "", value=50, max_value=500, step=1, label_visibility="collapsed"
 )
 
 st.sidebar.write("---")
