@@ -34,17 +34,17 @@ st.sidebar.write("---")
 # Paid subscriber ratio.
 st.sidebar.write("*What percent of your subscribers have a paid subscription?*")
 paid_ratio_macro = st.sidebar.slider(
-    "", value=0.02, max_value=1.0, step=0.001, format="%.3f", label_visibility="collapsed"
+    "", value=2.0, max_value=100.0, step=0.1, format="%.1f", label_visibility="collapsed"
 )
 
 paid_ratio_micro = st.sidebar.slider(
     "(fine adjustment)",
     value=0.0,
-    max_value=0.1,
-    step=0.001,
-    format="%.3f",
+    max_value=10.0,
+    step=0.1,
+    format="%.1f",
 )
-config.paid_ratio = paid_ratio_macro + paid_ratio_micro
+config.paid_ratio = round((paid_ratio_macro + paid_ratio_micro) / 100.0, 3)
 
 st.sidebar.write("---")
 
@@ -65,7 +65,7 @@ config.show_exp_features = st.sidebar.checkbox(
 # --- Summary of settings
 st.write("#### Settings in use:")
 st.write(
-    f"Up to **{config.max_subs:,}** subscribers, with a paid ratio of **{config.paid_ratio*100:.1f}%**, and an average annual revenue of **${config.avg_revenue:.2f}** per paid subscriber."
+    f"Up to **{config.max_subs:,}** subscribers, with a paid ratio of **{config.paid_ratio*100}%**, and an average annual revenue of **${config.avg_revenue:.2f}** per paid subscriber."
 )
 
 # Platforms to include.
