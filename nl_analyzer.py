@@ -15,12 +15,6 @@ from charts import cost_chart, por_chart, profit_chart, profit_comparison_chart
 
 config = Config()
 
-# Platforms to include.
-st.sidebar.write("**Platforms:**")
-config.show_ss = st.sidebar.checkbox("Substack", value=True)
-config.show_gp = st.sidebar.checkbox("Ghost Pro", value=True)
-config.show_bh = st.sidebar.checkbox("beehiiv", value=True)
-config.show_bd = st.sidebar.checkbox("Buttondown", value=True)
 st.sidebar.write("---")
 
 # Max number of subscribers.
@@ -70,6 +64,17 @@ st.write("#### Settings in use:")
 st.write(
     f"Up to **{config.max_subs:,}** subscribers, with a paid ratio of **{config.paid_ratio*100:.1f}%**, and an average annual revenue of **${config.avg_revenue:.2f}** per paid subscriber."
 )
+
+# Platforms to include.
+cols = st.columns(4)
+with cols[0]:
+    config.show_ss = st.checkbox("Substack", value=True)
+with cols[1]:
+    config.show_gp = st.checkbox("Ghost Pro", value=True)
+with cols[2]:
+    config.show_bh = st.checkbox("beehiiv", value=True)
+with cols[3]:
+    config.show_bd = st.checkbox("Buttondown", value=True)
 
 st.write("---")
 
