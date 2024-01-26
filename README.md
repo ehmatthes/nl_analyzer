@@ -9,3 +9,5 @@ If you're comparing newsletter platforms, it's not entirely straightfoward to co
 - What features do you need from the platform?
 
 This tool helps you see what *your* costs are likely to be on each of the major platforms.
+
+Hosted version: [nl-compare.streamlit.app](nl-compare.streamlit.app)
