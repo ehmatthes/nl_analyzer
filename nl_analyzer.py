@@ -11,13 +11,15 @@ from config import Config
 from charts import cost_plot, por_chart, profit_chart, profit_comparison_chart
 
 
-# Build sidebar.
+# --- Sidebar ---
+
 config = Config()
 
 # Platforms to include.
 st.sidebar.write("**Platforms:**")
 config.show_ss = st.sidebar.checkbox("Substack", value=True)
 config.show_gp = st.sidebar.checkbox("Ghost Pro", value=True)
+config.show_bh = st.sidebar.checkbox("beehiiv", value=True)
 st.sidebar.write("---")
 
 # Max number of subscribers.
@@ -55,10 +57,15 @@ st.sidebar.write(f"**Max subscribers:** {config.max_subs:,}")
 st.sidebar.write(f"**Paid ratio:** {config.paid_ratio*100:.1f}%")
 st.sidebar.write(f"**Average revenue/ paid user:** ${config.avg_revenue:.2f}")
 
-pricer = Pricer(config)
+st.write("---")
 
+config.show_exp_features = st.sidebar.checkbox(
+    "Show experimental features", value=False
+)
 
 # --- Charts ---
+
+pricer = Pricer(config)
 
 # Get chart, and then resize it based on streamlit's work.
 cost_fig = cost_plot.get_plot(config, pricer.df)
@@ -78,5 +85,6 @@ profit_fig = profit_chart.get_plot(config, pricer.df)
 st.pyplot(profit_fig)
 
 # Profit comparison chart.
-pc_fig = profit_comparison_chart.get_plot(config, pricer.df)
-st.pyplot(pc_fig)
+if config.show_exp_features:
+    pc_fig = profit_comparison_chart.get_plot(config, pricer.df)
+    st.pyplot(pc_fig)

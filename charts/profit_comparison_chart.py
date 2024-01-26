@@ -1,4 +1,5 @@
 from matplotlib import pyplot as plt
+import matplotlib as mpl
 import pandas as pd
 import numpy as np
 
@@ -28,12 +29,28 @@ def get_plot(config, df):
     fig.set_size_inches(width, height)
 
     ax.plot(x_values, pos_diffs, color="lightgreen")
-    ax.fill_between(x_values, pos_diffs, where=pos_diffs > 0, interpolate=True, color="lightgreen", alpha=0.3)
+    ax.fill_between(
+        x_values,
+        pos_diffs,
+        where=pos_diffs > 0,
+        interpolate=True,
+        color="lightgreen",
+        alpha=0.3,
+    )
 
     ax.plot(x_values, neg_diffs, color="salmon")
-    ax.fill_between(x_values, neg_diffs, where=neg_diffs < 0, interpolate=True, color="salmon", alpha=0.3)
+    ax.fill_between(
+        x_values,
+        neg_diffs,
+        where=neg_diffs < 0,
+        interpolate=True,
+        color="salmon",
+        alpha=0.3,
+    )
 
     ax.plot(x_values, zero_diffs, color="black")
+
+    ax.xaxis.set_major_formatter(mpl.ticker.StrMethodFormatter("{x:,.0f}"))
 
     ax.set_title("Ghost Pro profit vs Substack profit", pad=config.title_pad, x=-0.1)
     ax.set_xlabel("Number of subscribers")
