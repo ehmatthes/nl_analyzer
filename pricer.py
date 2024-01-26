@@ -80,12 +80,7 @@ class Pricer:
 
     def _fill_data_bh(self):
         """Fill beehiiv data."""
-        self.df["costs_bh"] = pd.Series(
-            [
-                42 * 12 if num_users <= 10_000 else 84 * 12
-                for num_users in self.df["user_levels"]
-            ]
-        )
+        self._fill_costs_bh()
         self.df["percent_rev_bh"] = pd.Series(
             [
                 cost / rev if rev > 0 else np.nan
@@ -112,6 +107,18 @@ class Pricer:
             costs.append(yearly_cost)
 
         self.df["costs_gp"] = pd.Series(costs)
+
+    def _fill_costs_bh(self):
+        """Fill costs column for beehiiv."""
+        costs = []
+        for num_users in self.df["user_levels"]:
+            if num_users <= 2500:
+                costs.append(0)
+            elif num_users <= 10_000:
+                costs.append(42*12)
+            elif num_users <= 100_000:
+                costs.append(84*12)
+        self.df["costs_bh"] = pd.Series(costs)
 
 
 # Simple profiling tool.
