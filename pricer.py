@@ -19,7 +19,9 @@ class Pricer:
         # Fig size is 6.4x4, so 6.4" * 200dpi -> 1280 pixels per chart.
         # Use of int makes this fairly approximate, but aiming for order of magnitude.
         step_size = int(self.config.max_subs / 1280)
-        
+        if step_size == 0:
+            step_size = 1
+
         user_levels = pd.Series(
             [num_users for num_users in range(0, self.config.max_subs, step_size)]
         )

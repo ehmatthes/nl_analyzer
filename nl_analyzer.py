@@ -32,6 +32,7 @@ max_subs_micro = st.sidebar.slider(
 )
 config.max_subs = max_subs_macro + max_subs_micro
 
+
 st.sidebar.write("---")
 
 # Paid subscriber ratio.
@@ -69,6 +70,10 @@ config.show_exp_features = st.sidebar.checkbox(
 )
 
 # --- Charts ---
+
+if config.max_subs == 0:
+    st.write("Number of subscribers must be more than 0.")
+    st.stop()
 
 pricer = Pricer(config)
 
