@@ -115,9 +115,9 @@ class Pricer:
             if num_users <= 2500:
                 costs.append(0)
             elif num_users <= 10_000:
-                costs.append(42*12)
+                costs.append(42 * 12)
             elif num_users <= 100_000:
-                costs.append(84*12)
+                costs.append(84 * 12)
         self.df["costs_bh"] = pd.Series(costs)
 
 
