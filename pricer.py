@@ -16,8 +16,11 @@ class Pricer:
 
     def _initialize_data(self):
         """Build the dataframe that will be used throughout class."""
+        # Fig size is 6.4x4, so 6.4" * 200dpi -> 1280 pixels per chart.
+        step_size = int(self.config.max_subs / 1280)
+        
         user_levels = pd.Series(
-            [num_users for num_users in range(0, self.config.max_subs, 10)]
+            [num_users for num_users in range(0, self.config.max_subs, step_size)]
         )
 
         revenues = pd.Series(
