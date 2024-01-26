@@ -38,7 +38,7 @@ paid_ratio_macro = st.sidebar.slider(
     value=2.0,
     max_value=100.0,
     step=0.1,
-    format="%.1f",
+    format="%.1f%%",
     label_visibility="collapsed",
 )
 
@@ -47,7 +47,7 @@ paid_ratio_micro = st.sidebar.slider(
     value=0.0,
     max_value=10.0,
     step=0.1,
-    format="%.1f",
+    format="%.1f%%",
 )
 config.paid_ratio = round((paid_ratio_macro + paid_ratio_micro) / 100.0, 3)
 
@@ -56,7 +56,7 @@ st.sidebar.write("---")
 # Average annual revenue per paid user.
 st.sidebar.write("*What is your average annual revenue per paid subscriber?*")
 config.avg_revenue = st.sidebar.slider(
-    "", value=50, max_value=500, step=1, label_visibility="collapsed"
+    "", value=50, max_value=500, step=1, label_visibility="collapsed", format="$%d"
 )
 
 st.sidebar.write("---")
