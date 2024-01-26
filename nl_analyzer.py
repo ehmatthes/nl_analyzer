@@ -66,14 +66,10 @@ config.show_exp_features = st.sidebar.checkbox(
 
 # --- Summary of settings
 
-col1, col2, col3 = st.columns(3)
-
-with col1:
-    st.write(f"**Max subscribers:** {config.max_subs:,}")
-with col2:
-    st.write(f"**Paid ratio:** {config.paid_ratio*100:.1f}%")
-with col3:
-    st.write(f"**Average revenue/ paid user:** ${config.avg_revenue:.2f}")
+st.write("#### Settings in use:")
+st.write(
+    f"Up to **{config.max_subs:,}** subscribers, with a paid ratio of **{config.paid_ratio*100:.1f}%**, and an average annual revenue of **${config.avg_revenue:.2f}** per paid subscriber."
+)
 
 st.write("---")
 
