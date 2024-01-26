@@ -6,6 +6,7 @@ def get_plot(config, df):
     ss_costs = df["costs_ss"]
     gp_costs = df["costs_gp"]
     bh_costs = df["costs_bh"]
+    bd_costs = df["costs_bd"]
     x_values = df["user_levels"]
 
     plt.style.use(["seaborn-v0_8-whitegrid", "charts/nlc_style.mplstyle"])
@@ -49,6 +50,17 @@ def get_plot(config, df):
             "beehiiv",
             (label_pos_x, label_pos_y),
             color=config.bh_color,
+            fontsize=config.fs_brand_label,
+        )
+
+    # Add Buttondown data.
+    if config.show_bd:
+        ax.plot(x_values, bd_costs, color=config.bd_color)
+        label_pos_y = bd_costs.iloc[-1] - 0.01 * ax.get_ylim()[1]
+        ax.annotate(
+            "Buttondown",
+            (label_pos_x, label_pos_y),
+            color=config.bd_color,
             fontsize=config.fs_brand_label,
         )
 

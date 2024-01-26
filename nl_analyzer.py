@@ -20,6 +20,7 @@ st.sidebar.write("**Platforms:**")
 config.show_ss = st.sidebar.checkbox("Substack", value=True)
 config.show_gp = st.sidebar.checkbox("Ghost Pro", value=True)
 config.show_bh = st.sidebar.checkbox("beehiiv", value=True)
+config.show_bd = st.sidebar.checkbox("Buttondown", value=True)
 st.sidebar.write("---")
 
 # Max number of subscribers.

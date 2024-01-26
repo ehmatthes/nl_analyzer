@@ -43,6 +43,10 @@ class Pricer:
                 "costs_bh": np.nan,
                 "percent_rev_bh": np.nan,
                 "profits_bh": np.nan,
+                # Buttondown
+                "costs_bd": np.nan,
+                "percent_rev_bd": np.nan,
+                "profits_bd": np.nan,
             }
         )
 
@@ -54,6 +58,8 @@ class Pricer:
             self._fill_data_gp()
         if self.config.show_bh:
             self._fill_data_bh()
+        if self.config.show_bd:
+            self._fill_data_bd()
 
     def _fill_data_ss(self):
         """Fill Substack data."""
@@ -92,6 +98,20 @@ class Pricer:
             [rev - cost for rev, cost in zip(self.df["revenues"], self.df["costs_bh"])]
         )
 
+    def _fill_data_bd(self):
+        """Fill Buttondown data."""
+        self._fill_costs_bd()
+        self.df["percent_rev_bd"] = pd.Series(
+            [
+                cost / rev if rev > 0 else np.nan
+                for cost, rev in zip(self.df["costs_bd"], self.df["revenues"])
+            ]
+        )
+
+        self.df["profits_bd"] = pd.Series(
+            [rev - cost for rev, cost in zip(self.df["revenues"], self.df["costs_bd"])]
+        )
+
     def _fill_costs_gp(self):
         """Fill costs column for Ghost Pro."""
         costs = []
@@ -119,6 +139,27 @@ class Pricer:
             elif num_users <= 100_000:
                 costs.append(84 * 12)
         self.df["costs_bh"] = pd.Series(costs)
+
+    def _fill_costs_bd(self):
+        """Fill costs column for Buttondown.
+
+        Annual plan gets two months free, so cost is 10*monthly rate.
+        """
+        costs = []
+        for num_users in self.df["user_levels"]:
+            if num_users <= 100:
+                costs.append(0)
+            elif num_users <= 1_000:
+                costs.append(90)
+            elif num_users <= 5_000:
+                costs.append(290)
+            elif num_users <= 10_000:
+                costs.append(790)
+            elif num_users <= 20_000:
+                costs.append(1390)
+            else:
+                costs.append(np.nan)
+        self.df["costs_bd"] = pd.Series(costs)
 
 
 # Simple profiling tool.
