@@ -5,6 +5,7 @@ import matplotlib as mpl
 def get_plot(config, df):
     ss_profits = df["profits_ss"]
     gp_profits = df["profits_gp"]
+    bh_profits = df["profits_bh"]
     x_values = df["user_levels"]
 
     plt.style.use(["seaborn-v0_8-whitegrid", "charts/nlc_style.mplstyle"])
@@ -37,6 +38,17 @@ def get_plot(config, df):
             "Ghost Pro",
             (label_pos_x, label_pos_y),
             color=config.gp_color,
+            fontsize=config.fs_brand_label,
+        )
+
+    # Add beehiiv data.
+    if config.show_bh:
+        ax.plot(x_values, bh_profits, color=config.bh_color)
+        label_pos_y = bh_profits.iloc[-1] - 0.01 * ax.get_ylim()[1]
+        ax.annotate(
+            "beehiiv",
+            (label_pos_x, label_pos_y),
+            color=config.bh_color,
             fontsize=config.fs_brand_label,
         )
 
