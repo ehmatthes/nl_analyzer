@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from pricer import Pricer
 from config import Config
 
-from charts import cost_plot, por_chart, profit_chart, profit_comparison_chart
+from charts import cost_chart, por_chart, profit_chart, profit_comparison_chart
 
 
 # --- Sidebar ---
@@ -78,7 +78,7 @@ if config.max_subs == 0:
 pricer = Pricer(config)
 
 # Get chart, and then resize it based on streamlit's work.
-cost_fig = cost_plot.get_plot(config, pricer.df)
+cost_fig = cost_chart.get_plot(config, pricer.df)
 st.pyplot(cost_fig)
 
 
