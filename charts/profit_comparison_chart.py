@@ -1,4 +1,5 @@
 from matplotlib import pyplot as plt
+import matplotlib as mpl
 import pandas as pd
 import numpy as np
 
@@ -48,6 +49,8 @@ def get_plot(config, df):
     )
 
     ax.plot(x_values, zero_diffs, color="black")
+
+    ax.xaxis.set_major_formatter(mpl.ticker.StrMethodFormatter("{x:,.0f}"))
 
     ax.set_title("Ghost Pro profit vs Substack profit", pad=config.title_pad, x=-0.1)
     ax.set_xlabel("Number of subscribers")
