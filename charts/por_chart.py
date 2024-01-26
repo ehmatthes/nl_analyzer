@@ -52,6 +52,17 @@ def get_chart(config, df):
             fontsize=config.fs_brand_label,
         )
 
+    if config.show_bd and nonzero_revenue:
+        bd_percentages = df["percent_rev_bd"]
+        ax.plot(x_values, bd_percentages, color=config.bd_color)
+        label_pos_y = bd_percentages.iloc[-1] - 0.0002 * ax.get_ylim()[1]
+        ax.annotate(
+            "Buttondown",
+            (label_pos_x, label_pos_y),
+            color=config.bd_color,
+            fontsize=config.fs_brand_label,
+        )
+
     # Limit of y-axis needs to be at least 15%, but shouldn't over-emphasize high values
     # for only the lowest subscriber levels. Use percentage 1/10 of the way through the set
     # of values, so most of each platform's line is visible.
