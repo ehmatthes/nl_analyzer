@@ -71,7 +71,6 @@ config.show_exp_features = st.sidebar.checkbox(
 # --- Charts ---
 
 pricer = Pricer(config)
-f"Number of data points: {pricer.df['user_levels'].size:,}"
 
 # Get chart, and then resize it based on streamlit's work.
 cost_fig = cost_plot.get_plot(config, pricer.df)

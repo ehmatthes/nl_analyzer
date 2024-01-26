@@ -17,6 +17,7 @@ class Pricer:
     def _initialize_data(self):
         """Build the dataframe that will be used throughout class."""
         # Fig size is 6.4x4, so 6.4" * 200dpi -> 1280 pixels per chart.
+        # Use of int makes this fairly approximate, but aiming for order of magnitude.
         step_size = int(self.config.max_subs / 1280)
         
         user_levels = pd.Series(
