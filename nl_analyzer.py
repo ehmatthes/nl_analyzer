@@ -58,7 +58,7 @@ st.sidebar.write(f"**Max subscribers:** {config.max_subs:,}")
 st.sidebar.write(f"**Paid ratio:** {config.paid_ratio*100:.1f}%")
 st.sidebar.write(f"**Average revenue/ paid user:** ${config.avg_revenue:.2f}")
 
-st.write("---")
+st.sidebar.write("---")
 
 config.show_exp_features = st.sidebar.checkbox(
     "Show experimental features", value=False

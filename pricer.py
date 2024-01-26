@@ -158,8 +158,21 @@ class Pricer:
             elif num_users <= 20_000:
                 costs.append(1390)
             else:
-                costs.append(np.nan)
+                cost = self._get_cost_bd_high(num_users)
+                costs.append(cost)
         self.df["costs_bd"] = pd.Series(costs)
+
+    @staticmethod
+    def _get_cost_bd_high(num_users):
+        """Get the Buttondown cost for over 20k users."""
+        # Round up to next highest thousand.
+        pricing_users = ((num_users // 1_000) + 1) * 1_000
+        if num_users <= 40_000:
+            additional_cost = (pricing_users / 1_000) * 50
+        else:
+            return np.nan
+
+        return 1390 + additional_cost
 
 
 # Simple profiling tool.
