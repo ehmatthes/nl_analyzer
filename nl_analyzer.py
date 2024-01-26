@@ -32,6 +32,8 @@ max_subs_micro = st.sidebar.slider(
 )
 config.max_subs = max_subs_macro + max_subs_micro
 
+st.sidebar.write("---")
+
 # Paid subscriber ratio.
 paid_ratio_macro = st.sidebar.slider(
     "Paid subscriber ratio", value=0.02, max_value=1.0, step=0.001, format="%.3f"
@@ -45,6 +47,8 @@ paid_ratio_micro = st.sidebar.slider(
     format="%.3f",
 )
 config.paid_ratio = paid_ratio_macro + paid_ratio_micro
+
+st.sidebar.write("---")
 
 # Average annual revenue per paid user.
 config.avg_revenue = st.sidebar.slider(
