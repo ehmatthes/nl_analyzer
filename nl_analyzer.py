@@ -14,6 +14,7 @@ from charts import cost_chart, por_chart, profit_chart, profit_comparison_chart
 # --- Sidebar ---
 
 config = Config()
+st.sidebar.title("Settings")
 
 st.sidebar.write("---")
 
@@ -59,7 +60,6 @@ config.show_exp_features = st.sidebar.checkbox(
 # --- Main section ---
 
 # --- Summary of settings
-
 st.write("#### Settings in use:")
 st.write(
     f"Up to **{config.max_subs:,}** subscribers, with a paid ratio of **{config.paid_ratio*100:.1f}%**, and an average annual revenue of **${config.avg_revenue:.2f}** per paid subscriber."
