@@ -20,6 +20,7 @@ st.sidebar.write("**Platforms:**")
 config.show_ss = st.sidebar.checkbox("Substack", value=True)
 config.show_gp = st.sidebar.checkbox("Ghost Pro", value=True)
 config.show_bh = st.sidebar.checkbox("beehiiv", value=True)
+config.show_bd = st.sidebar.checkbox("Buttondown", value=True)
 st.sidebar.write("---")
 
 # Max number of subscribers.
@@ -57,7 +58,7 @@ st.sidebar.write(f"**Max subscribers:** {config.max_subs:,}")
 st.sidebar.write(f"**Paid ratio:** {config.paid_ratio*100:.1f}%")
 st.sidebar.write(f"**Average revenue/ paid user:** ${config.avg_revenue:.2f}")
 
-st.write("---")
+st.sidebar.write("---")
 
 config.show_exp_features = st.sidebar.checkbox(
     "Show experimental features", value=False

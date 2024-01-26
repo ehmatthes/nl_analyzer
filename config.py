@@ -14,6 +14,7 @@ class Config:
     show_ss: bool = True
     show_gp: bool = True
     show_bh: bool = True
+    show_bd: bool = True
 
     show_exp_features: bool = False
 
@@ -24,7 +25,8 @@ class Config:
     # Plot settings, that can't be covered in a Matplotlib stylesheet.
     ss_color: str = "#DC6931"
     gp_color: str = "black"
-    bh_color: str = "#3A43C8"
+    bh_color: str = "#ee87d8"
+    bd_color: str = "#006aff"
 
     aspect_ratio: float = 2.0
 
