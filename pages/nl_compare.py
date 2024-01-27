@@ -11,6 +11,10 @@ from config import Config
 from charts import cost_chart, por_chart, profit_chart, profit_comparison_chart
 
 
+# Suppress matplotlib warning about ticks.
+import warnings
+warnings.filterwarnings("ignore", message=".*set_ticklabels() should only be used")
+
 # Streamlit config
 st.set_page_config(layout="wide")
 
