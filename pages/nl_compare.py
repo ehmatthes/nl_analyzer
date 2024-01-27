@@ -13,7 +13,8 @@ from charts import cost_chart, por_chart, profit_chart, profit_comparison_chart
 
 # Suppress matplotlib warning about ticks.
 import warnings
-warnings.filterwarnings("ignore", message=".*set_ticklabels() should only be used")
+
+warnings.filterwarnings("ignore", message=".*set_ticklabels().*")
 
 # Streamlit config
 st.set_page_config(layout="wide")
@@ -28,7 +29,11 @@ st.sidebar.write("---")
 # Max number of subscribers.
 st.sidebar.write("*How many subscribers will you need to support?*")
 max_subs_macro = st.sidebar.slider(
-    "Number of subscribers", value=10_000, max_value=100_000, step=1_000, label_visibility="collapsed"
+    "Number of subscribers",
+    value=10_000,
+    max_value=100_000,
+    step=1_000,
+    label_visibility="collapsed",
 )
 max_subs_micro = st.sidebar.slider(
     "(fine adjustment)", value=0, max_value=1_000, step=10
@@ -63,7 +68,12 @@ st.sidebar.write("---")
 # Average annual revenue per paid user.
 st.sidebar.write("*What is your average annual revenue per paid subscriber?*")
 config.avg_revenue = st.sidebar.slider(
-    "Avergae annual revenue per paid subscriber", value=50, max_value=500, step=1, label_visibility="collapsed", format="$%d"
+    "Avergae annual revenue per paid subscriber",
+    value=50,
+    max_value=500,
+    step=1,
+    label_visibility="collapsed",
+    format="$%d",
 )
 
 st.sidebar.write("---")
