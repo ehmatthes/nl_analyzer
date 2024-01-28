@@ -139,9 +139,13 @@ with st.expander("Annual cost as percent of revenue", expanded=True):
 
 
 # Profit chart
+msg_profit = """
+"Profit" here refers to your overall revenue, minus the platform's fees and/or percentage. This does not include payment processing fees, and any other costs associated with hosting.
+"""
 profit_fig = profit_chart.get_plot(nl_config, pricer.df)
-with st.expander("Annual profit", expanded=True):
+with st.expander("Annual profit*", expanded=True):
     st.pyplot(profit_fig)
+    st.info(msg_profit)
 
 # Profit comparison chart.
 if nl_config.show_exp_features:
