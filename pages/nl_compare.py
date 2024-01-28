@@ -133,4 +133,5 @@ with st.expander("Annual profit", expanded=True):
 # Profit comparison chart.
 if nl_config.show_exp_features:
     pc_fig = profit_comparison_chart.get_plot(nl_config, pricer.df)
-    st.pyplot(pc_fig)
+    with st.expander("Profit comparison", expanded=True):
+        st.pyplot(pc_fig)

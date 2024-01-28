@@ -41,3 +41,6 @@ This tool lets you set the **number of subscribers**, your **percentage of paid 
 You'll then be able to directly compare the costs associated with all platforms, for your unique situation.
 """
 st.info(msg)
+
+st.write("---")
+
