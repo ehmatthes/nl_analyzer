@@ -21,26 +21,28 @@ if st.button("Compare platforms", type="primary"):
 
 st.write("---")
 
-st.write("##### Why is pricing dificult?")
+st.write("##### Why is pricing difficult?")
 
 msg = "There are a number of reasons it's hard to figure out how much a newsletter hosting service will actually cost:"
 st.write(msg)
 
 msg = """
-- The number of subscribers is likely to change, so you're not just looking at one price.
+- The number of subscribers is likely to change, so you're not just considering one fixed price.
 - Your revenue depends on a number of factors:
     - How many subscribers you have;
     - How many of your subscribers have paid subscriptions;
-    - Your average annual revenue per paid subscriber depends on things like discounts and promotions. It's usually not as simple as "$5 per month per paid user", or anything like that.
+    - The average revenue per paid subscriber depends on things like discounts and promotions. It's not as simple as"$5 per month per paid user".
 """
 st.write(msg)
 
 msg = """
-This tool lets you set the **number of subscribers**, your **percentage of paid subscribers**, and your **average revenue per paid subscriber**.
+This tool lets you set the **number of subscribers**, your **percentage of paid subscribers**, and your **average annual revenue per paid subscriber**.
 
 You'll then be able to directly compare the costs associated with all platforms, for your unique situation.
 """
 st.info(msg)
+
+st.write("(To get started, click the *Compare platforms* button above.)")
 
 st.write("---")
 
