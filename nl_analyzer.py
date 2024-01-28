@@ -1,7 +1,5 @@
 import streamlit as st
 
-# Streamlit config
-st.set_page_config(layout="centered")
 
 st.header("Comparing newsletter platforms")
 
@@ -46,3 +44,22 @@ st.write("(To get started, click the *Compare platforms* button above.)")
 
 st.write("---")
 
+
+# Sidebar.
+st.sidebar.header("About")
+
+msg = """
+This project was developed by [Eric Matthes](https://fosstodon.org/@ehmatthes).
+
+I write a weekly newsletter called [Mostly Python](https://www.mostlypython.com). If you're a Python programmer, please check it out. (It's currently hosted on Substack, but I'll be using Ghost starting in late February.)
+"""
+st.sidebar.write(msg)
+
+st.sidebar.write("---")
+
+msg = """
+If you find anything broken or notice any inaccuracies here, please [open an issue](https://github.com/ehmatthes/nl_comparison) and I'll be happy to address it.
+
+I'm also happy to hear any [feedback](https://github.com/ehmatthes/nl_comparison) about how this has helped you decide which platform to use, or any suggestions for what might be more helpful. 
+"""
+st.sidebar.write(msg)
