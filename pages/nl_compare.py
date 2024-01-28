@@ -84,6 +84,9 @@ config.show_exp_features = st.sidebar.checkbox(
 
 # --- Main section ---
 
+if st.button("Home"):
+    st.switch_page("nl_analyzer.py")
+
 # --- Summary of settings
 st.write("#### Settings in use:")
 st.write(
