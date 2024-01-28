@@ -58,8 +58,8 @@ st.sidebar.write(msg)
 st.sidebar.write("---")
 
 msg = """
-If you find anything broken or notice any inaccuracies here, please [open an issue](https://github.com/ehmatthes/nl_comparison) and I'll be happy to address it.
+If you find anything broken or notice any inaccuracies here, please [open an issue](https://github.com/ehmatthes/nl_analyzer) and I'll be happy to address it.
 
-I'm also happy to hear any [feedback](https://github.com/ehmatthes/nl_comparison) about how this has helped you decide which platform to use, or any suggestions for what might be more helpful. 
+I'm also happy to hear any [feedback](https://github.com/ehmatthes/nl_analyzer) about how this has helped you decide which platform to use, or any suggestions for what might be more helpful. 
 """
 st.sidebar.write(msg)
