@@ -40,8 +40,6 @@ You'll then be able to directly compare the costs associated with all platforms,
 """
 st.info(msg)
 
-st.write("(To get started, click the *Compare platforms* button above.)")
-
 st.write("---")
 
 

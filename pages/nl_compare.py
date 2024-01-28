@@ -160,3 +160,8 @@ msg_data_src = """
 - Substack [pricing page](https://substack.com/going-paid)
 """
 st.info(msg_data_src)
+
+st.write("---")
+
+if st.button("Home", type="primary", key="home_2"):
+    st.switch_page("nl_analyzer.py")
