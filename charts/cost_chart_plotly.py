@@ -51,11 +51,11 @@ def get_plot(nl_config, df):
         fig.add_trace(trace_ss)
 
     # Label lines.
-    for col, name in [
-        ("costs_gp", "Ghost Pro"),
-        ("costs_bd", "Buttondown"),
-        ("costs_bh", "beehiiv"),
-        ("costs_ss", "Substack"),
+    for col, name, color in [
+        ("costs_gp", "Ghost Pro", nl_config.ss_color),
+        ("costs_bd", "Buttondown", nl_config.bd_color),
+        ("costs_bh", "beehiiv", nl_config.bh_color),
+        ("costs_ss", "Substack", nl_config.ss_color),
     ]:
         fig.add_annotation(
             x=df["user_levels"].iloc[-1],
@@ -64,6 +64,7 @@ def get_plot(nl_config, df):
             showarrow=False,
             xanchor="left",
             xshift=5,
+            font=dict(color=color)
         )
 
     # Update layout with title and axis labels
