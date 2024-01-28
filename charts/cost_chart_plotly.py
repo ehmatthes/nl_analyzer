@@ -71,7 +71,7 @@ def get_plot(nl_config, df):
     fig.update_layout(
         title=title,
         xaxis_title=labels["x"],
-        xaxis=dict(tickformat=","),
+        xaxis=dict(tickformat=",", showgrid=True),
         yaxis_title=labels["y"],
         yaxis=dict(tickprefix="$", tickformat=","),
         showlegend=False,
