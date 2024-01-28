@@ -109,7 +109,7 @@ st.write("---")
 # --- Charts ---
 
 if config.max_subs == 0:
-    st.write("Number of subscribers must be more than 0.")
+    st.error("Number of subscribers must be more than 0.")
     st.stop()
 
 pricer = Pricer(config)
