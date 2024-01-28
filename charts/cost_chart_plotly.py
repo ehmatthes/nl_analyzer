@@ -9,13 +9,6 @@ def get_plot(nl_config, df):
     title = "Annual cost of hosting a newsletter"
     labels = {"x": "Number of subscribers", "y": "Annual cost ($)"}
 
-    # fig = px.line(
-    #     x=df["user_levels"],
-    #     y=df["costs_ss"],
-    #     title=title,
-    #     labels=labels,
-    #     # color=nl_config.ss_color,
-    # )
     ss_color = pd.Series(["purple" for _ in df["user_levels"]])
 
     fig = px.line(
@@ -26,11 +19,17 @@ def get_plot(nl_config, df):
         labels=labels,
     )
 
-    # fig.add_trace(go.Line(
-    #     x=df["user_levels"],
-    #     y=df["costs_gp"],
-    # ))
+    fig.add_trace(
+        go.Scatter(
+            x=df["user_levels"],
+            y=df["costs_gp"],
+            mode="lines",
+            name="Costs GP",
+            line=dict(color=nl_config.gp_color),
+        )
+    )
 
-    fig.update_traces(line_color=nl_config.ss_color)
 
     return fig
+
+    fig.update_traces(line_color=nl_config.ss_color)
