@@ -104,8 +104,6 @@ with cols[2]:
 with cols[3]:
     config.show_bd = st.checkbox("Buttondown", value=True)
 
-st.write("---")
-
 # --- Charts ---
 
 if config.max_subs == 0:
@@ -114,22 +112,22 @@ if config.max_subs == 0:
 
 pricer = Pricer(config)
 
-# Get chart, and then resize it based on streamlit's work.
+# Cost chart
 cost_fig = cost_chart.get_plot(config, pricer.df)
-st.pyplot(cost_fig)
+with st.expander("Annual cost", expanded=True):
+    st.pyplot(cost_fig)
 
 
-"---"
-
-# Percent of revenue chart.
+# Percent of revenue chart
 por_fig = por_chart.get_chart(config, pricer.df)
-st.pyplot(por_fig)
+with st.expander("Annual cost as percent of revenue", expanded=True):
+    st.pyplot(por_fig)
 
-"---"
 
-# Profit chart.
+# Profit chart
 profit_fig = profit_chart.get_plot(config, pricer.df)
-st.pyplot(profit_fig)
+with st.expander("Annual profit", expanded=True):
+    st.pyplot(profit_fig)
 
 # Profit comparison chart.
 if config.show_exp_features:
