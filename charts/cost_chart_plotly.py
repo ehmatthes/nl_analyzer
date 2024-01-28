@@ -5,10 +5,11 @@ import streamlit as st
 
 
 def get_plot(nl_config, df):
+    """Generate the cost chart, using Plotly."""
     title = "Annual cost of hosting a newsletter"
     labels = {"x": "Number of subscribers", "y": "Annual cost ($)"}
 
-    # Keep names in traces, for hover data.
+    # Define each trace. Include names for hover data.
     trace_gp = go.Scatter(
         x=df["user_levels"],
         y=df["costs_gp"],
@@ -49,6 +50,7 @@ def get_plot(nl_config, df):
     if nl_config.show_ss:
         fig.add_trace(trace_ss)
 
+    # Label lines.
     for col, name in [
         ("costs_gp", "Ghost Pro"),
         ("costs_bd", "Buttondown"),
@@ -68,7 +70,9 @@ def get_plot(nl_config, df):
     fig.update_layout(
         title=title,
         xaxis_title=labels["x"],
+        xaxis=dict(tickformat=","),
         yaxis_title=labels["y"],
+        yaxis=dict(tickprefix="$", tickformat=","),
         showlegend=False,
     )
 
