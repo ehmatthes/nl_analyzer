@@ -1,117 +1,65 @@
-"""Compare annual costs of various newsletter platforms."""
-
-import sys
-
 import streamlit as st
-import matplotlib.pyplot as plt
-
-from pricer import Pricer
-from config import Config
-
-from charts import cost_chart, por_chart, profit_chart, profit_comparison_chart
 
 
-# --- Sidebar ---
+st.header("Comparing newsletter platforms")
 
-config = Config()
-st.sidebar.title("Settings")
+st.write("*How much will it cost to host **my** newsletter?*")
 
-st.sidebar.write("---")
+msg = """
+Figuring out how much it will cost to host your newsletter on a platform such as [Ghost](https://ghost.org), [Buttondown](https://buttondown.email), [beehiiv](https://www.beehiiv.com), or [Substack](https://substack.com) can be really confusing. This is especially true if you expect your newsletter to grow over time.
 
-# Max number of subscribers.
-st.sidebar.write("*How many subscribers will you need to support?*")
-max_subs_macro = st.sidebar.slider(
-    "", value=10_000, max_value=100_000, step=1_000, label_visibility="collapsed"
-)
-max_subs_micro = st.sidebar.slider(
-    "(fine adjustment)", value=0, max_value=1_000, step=10
-)
-config.max_subs = max_subs_macro + max_subs_micro
+This tool can help, by letting you set the parameters that match your situation.
+"""
 
+# msg = "If you're trying to figure out where to host an email newsletter on a platform such as Ghost or Substack, it can be really confusing to figure out how much it might cost. This is especially true if you expect your newsletter to grow. This tool can help."
+st.info(msg)
 
-st.sidebar.write("---")
-
-# Paid subscriber ratio.
-st.sidebar.write("*What percent of your subscribers have a paid subscription?*")
-paid_ratio_macro = st.sidebar.slider(
-    "",
-    value=2.0,
-    max_value=100.0,
-    step=0.1,
-    format="%.1f%%",
-    label_visibility="collapsed",
-)
-
-paid_ratio_micro = st.sidebar.slider(
-    "(fine adjustment)",
-    value=0.0,
-    max_value=10.0,
-    step=0.1,
-    format="%.1f%%",
-)
-config.paid_ratio = round((paid_ratio_macro + paid_ratio_micro) / 100.0, 3)
-
-st.sidebar.write("---")
-
-# Average annual revenue per paid user.
-st.sidebar.write("*What is your average annual revenue per paid subscriber?*")
-config.avg_revenue = st.sidebar.slider(
-    "", value=50, max_value=500, step=1, label_visibility="collapsed", format="$%d"
-)
-
-st.sidebar.write("---")
-
-config.show_exp_features = st.sidebar.checkbox(
-    "Show experimental features", value=False
-)
-
-# --- Main section ---
-
-# --- Summary of settings
-st.write("#### Settings in use:")
-st.write(
-    f"Up to **{config.max_subs:,}** subscribers, with a paid ratio of **{config.paid_ratio*100}%**, and an average annual revenue of **${config.avg_revenue:.2f}** per paid subscriber."
-)
-
-# Platforms to include.
-cols = st.columns(4)
-with cols[0]:
-    config.show_ss = st.checkbox("Substack", value=True)
-with cols[1]:
-    config.show_gp = st.checkbox("Ghost Pro", value=True)
-with cols[2]:
-    config.show_bh = st.checkbox("beehiiv", value=True)
-with cols[3]:
-    config.show_bd = st.checkbox("Buttondown", value=True)
+if st.button("Compare platforms", type="primary"):
+    st.switch_page("pages/nl_compare.py")
 
 st.write("---")
 
-# --- Charts ---
+st.write("##### Why is pricing difficult?")
 
-if config.max_subs == 0:
-    st.write("Number of subscribers must be more than 0.")
-    st.stop()
+msg = "There are a number of reasons it's hard to figure out how much a newsletter hosting service will actually cost:"
+st.write(msg)
 
-pricer = Pricer(config)
+msg = """
+- The number of subscribers is likely to change, so you're not just considering one fixed price.
+- Your revenue depends on a number of factors:
+    - How many subscribers you have;
+    - How many of your subscribers have paid subscriptions;
+    - The average revenue per paid subscriber depends on things like discounts and promotions. It's not as simple as"$5 per month per paid user".
+"""
+st.write(msg)
 
-# Get chart, and then resize it based on streamlit's work.
-cost_fig = cost_chart.get_plot(config, pricer.df)
-st.pyplot(cost_fig)
+msg = """
+This tool lets you set the **number of subscribers**, your **percentage of paid subscribers**, and your **average annual revenue per paid subscriber**.
+
+You'll then be able to directly compare the costs associated with all platforms, for your unique situation.
+"""
+st.info(msg)
+
+st.write("(To get started, click the *Compare platforms* button above.)")
+
+st.write("---")
 
 
-"---"
+# Sidebar.
+st.sidebar.header("About")
 
-# Percent of revenue chart.
-por_fig = por_chart.get_chart(config, pricer.df)
-st.pyplot(por_fig)
+msg = """
+This project was developed by [Eric Matthes](https://fosstodon.org/@ehmatthes).
 
-"---"
+I write a weekly newsletter called [Mostly Python](https://www.mostlypython.com). If you're a Python programmer, please check it out. (It's currently hosted on Substack, but I'll be using Ghost starting in late February.)
+"""
+st.sidebar.write(msg)
 
-# Profit chart.
-profit_fig = profit_chart.get_plot(config, pricer.df)
-st.pyplot(profit_fig)
+st.sidebar.write("---")
 
-# Profit comparison chart.
-if config.show_exp_features:
-    pc_fig = profit_comparison_chart.get_plot(config, pricer.df)
-    st.pyplot(pc_fig)
+msg = """
+If you find anything broken or notice any inaccuracies here, please [open an issue](https://github.com/ehmatthes/nl_comparison) and I'll be happy to address it.
+
+I'm also happy to hear any [feedback](https://github.com/ehmatthes/nl_comparison) about how this has helped you decide which platform to use, or any suggestions for what might be more helpful. 
+"""
+st.sidebar.write(msg)

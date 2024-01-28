@@ -1,13 +1,13 @@
 import pandas as pd
 import numpy as np
 
-from config import Config
+from nl_config import NLConfig
 from data import ghost_resources as gr
 
 
 class Pricer:
-    def __init__(self, config):
-        self.config = config
+    def __init__(self, nl_config):
+        self.nl_config = nl_config
 
         self._initialize_data()
         self._fill_platform_data()
@@ -18,17 +18,17 @@ class Pricer:
         """Build the dataframe that will be used throughout class."""
         # Fig size is 6.4x4, so 6.4" * 200dpi -> 1280 pixels per chart.
         # Use of int makes this fairly approximate, but aiming for order of magnitude.
-        step_size = int(self.config.max_subs / 1280)
+        step_size = int(self.nl_config.max_subs / 1280)
         if step_size == 0:
             step_size = 1
 
         user_levels = pd.Series(
-            [num_users for num_users in range(0, self.config.max_subs, step_size)]
+            [num_users for num_users in range(0, self.nl_config.max_subs, step_size)]
         )
 
         revenues = pd.Series(
             [
-                num_users * self.config.paid_ratio * self.config.avg_revenue
+                num_users * self.nl_config.paid_ratio * self.nl_config.avg_revenue
                 for num_users in user_levels
             ]
         )
@@ -58,13 +58,13 @@ class Pricer:
 
     def _fill_platform_data(self):
         """Fill only platform data that's currently being used."""
-        if self.config.show_ss:
+        if self.nl_config.show_ss:
             self._fill_data_ss()
-        if self.config.show_gp:
+        if self.nl_config.show_gp:
             self._fill_data_gp()
-        if self.config.show_bh:
+        if self.nl_config.show_bh:
             self._fill_data_bh()
-        if self.config.show_bd:
+        if self.nl_config.show_bd:
             self._fill_data_bd()
 
     def _fill_data_ss(self):
@@ -227,5 +227,5 @@ class Pricer:
 
 # Simple profiling tool.
 if __name__ == "__main__":
-    config = Config()
-    pricer = Pricer(config)
+    nl_config = NLConfig()
+    pricer = Pricer(nl_config)
