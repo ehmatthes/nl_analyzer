@@ -109,13 +109,13 @@ Remember that Substack is not free if you have paid subscribers. It might *seem*
 """
 cols = st.columns(4)
 with cols[0]:
-    nl_config.show_ss = st.checkbox("Substack", value=True, help=help_ss)
-with cols[1]:
     nl_config.show_gp = st.checkbox("Ghost Pro", value=True)
+with cols[1]:
+    nl_config.show_bd = st.checkbox("Buttondown", value=True)
 with cols[2]:
     nl_config.show_bh = st.checkbox("beehiiv", value=True)
 with cols[3]:
-    nl_config.show_bd = st.checkbox("Buttondown", value=True)
+    nl_config.show_ss = st.checkbox("Substack", value=True, help=help_ss)
 
 
 # --- Charts ---
@@ -148,3 +148,11 @@ if nl_config.show_exp_features:
     pc_fig = profit_comparison_chart.get_plot(nl_config, pricer.df)
     with st.expander("Profit comparison", expanded=True):
         st.pyplot(pc_fig)
+
+st.write("---")
+
+st.write("#### Data sources:")
+st.write("- Ghost Pro [pricing page](https://ghost.org/pricing/)")
+st.write("- Buttondown [pricing page](https://buttondown.email/pricing)")
+st.write("- beehiiv [pricing page](https://www.beehiiv.com/pricing)")
+st.write("- Substack [pricing page](https://substack.com/going-paid)")
