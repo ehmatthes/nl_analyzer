@@ -2,12 +2,14 @@
 
 These are the settings that affect the overall calculuations, and which platforms are
 included in the analysis.
+
+Note: Named NLConfig and nl_config to avoid collision with Streamlit's config.toml.
 """
 from dataclasses import dataclass
 
 
 @dataclass
-class Config:
+class NLConfig:
     """Class for keeping track of overall project settings."""
 
     # Input widget settings.

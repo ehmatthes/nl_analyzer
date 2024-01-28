@@ -7,12 +7,16 @@ st.header("Comparing newsletter platforms")
 
 st.write("*How much will it cost to host **my** newsletter?*")
 
-msg = "It can be really confusing to figure out how much it will cost to host a newsletter on a platform such as [Ghost](https://ghost.org), [Buttondown](https://buttondown.email), [beehiiv](https://www.beehiiv.com), or [Substack](https://substack.com). This is especially true if you expect your newsletter to grow. This tool can help, by letting you set the parameters that match your situation."
+msg = """
+Figuring out how much it will cost to host your newsletter on a platform such as [Ghost](https://ghost.org), [Buttondown](https://buttondown.email), [beehiiv](https://www.beehiiv.com), or [Substack](https://substack.com) can be really confusing. This is especially true if you expect your newsletter to grow over time.
+
+This tool can help, by letting you set the parameters that match your situation.
+"""
 
 # msg = "If you're trying to figure out where to host an email newsletter on a platform such as Ghost or Substack, it can be really confusing to figure out how much it might cost. This is especially true if you expect your newsletter to grow. This tool can help."
 st.info(msg)
 
-if st.button("Compare platforms"):
+if st.button("Compare platforms", type="primary"):
     st.switch_page("pages/nl_compare.py")
 
 st.write("---")

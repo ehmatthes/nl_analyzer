@@ -6,7 +6,7 @@ import streamlit as st
 import matplotlib.pyplot as plt
 
 from pricer import Pricer
-from config import Config
+from nl_config import NLConfig
 
 from charts import cost_chart, por_chart, profit_chart, profit_comparison_chart
 
@@ -21,7 +21,7 @@ st.set_page_config(layout="wide")
 
 # --- Sidebar ---
 
-config = Config()
+nl_config = NLConfig()
 st.sidebar.title("Settings")
 
 st.sidebar.write("---")
@@ -38,7 +38,7 @@ max_subs_macro = st.sidebar.slider(
 max_subs_micro = st.sidebar.slider(
     "(fine adjustment)", value=0, max_value=1_000, step=10
 )
-config.max_subs = max_subs_macro + max_subs_micro
+nl_config.max_subs = max_subs_macro + max_subs_micro
 
 
 st.sidebar.write("---")
@@ -61,13 +61,13 @@ paid_ratio_micro = st.sidebar.slider(
     step=0.1,
     format="%.1f%%",
 )
-config.paid_ratio = round((paid_ratio_macro + paid_ratio_micro) / 100.0, 3)
+nl_config.paid_ratio = round((paid_ratio_macro + paid_ratio_micro) / 100.0, 3)
 
 st.sidebar.write("---")
 
 # Average annual revenue per paid user.
 st.sidebar.write("*What is your average annual revenue per paid subscriber?*")
-config.avg_revenue = st.sidebar.slider(
+nl_config.avg_revenue = st.sidebar.slider(
     "Avergae annual revenue per paid subscriber",
     value=50,
     max_value=500,
@@ -78,59 +78,59 @@ config.avg_revenue = st.sidebar.slider(
 
 st.sidebar.write("---")
 
-config.show_exp_features = st.sidebar.checkbox(
+nl_config.show_exp_features = st.sidebar.checkbox(
     "Show experimental features", value=False
 )
 
 # --- Main section ---
 
-if st.button("Home"):
+if st.button("Home", type="primary"):
     st.switch_page("nl_analyzer.py")
 
 # --- Summary of settings
 st.write("#### Settings in use:")
 st.write(
-    f"Up to **{config.max_subs:,}** subscribers, with a paid ratio of **{config.paid_ratio*100}%**, and an average annual revenue of **${config.avg_revenue:.2f}** per paid subscriber."
+    f"Up to **{nl_config.max_subs:,}** subscribers, with a paid ratio of **{nl_config.paid_ratio*100}%**, and an average annual revenue of **${nl_config.avg_revenue:.2f}** per paid subscriber."
 )
 
 # Platforms to include.
 cols = st.columns(4)
 with cols[0]:
-    config.show_ss = st.checkbox("Substack", value=True)
+    nl_config.show_ss = st.checkbox("Substack", value=True)
 with cols[1]:
-    config.show_gp = st.checkbox("Ghost Pro", value=True)
+    nl_config.show_gp = st.checkbox("Ghost Pro", value=True)
 with cols[2]:
-    config.show_bh = st.checkbox("beehiiv", value=True)
+    nl_config.show_bh = st.checkbox("beehiiv", value=True)
 with cols[3]:
-    config.show_bd = st.checkbox("Buttondown", value=True)
+    nl_config.show_bd = st.checkbox("Buttondown", value=True)
 
 
 # --- Charts ---
 
-if config.max_subs == 0:
+if nl_config.max_subs == 0:
     st.error("Number of subscribers must be more than 0.")
     st.stop()
 
-pricer = Pricer(config)
+pricer = Pricer(nl_config)
 
 # Cost chart
-cost_fig = cost_chart.get_plot(config, pricer.df)
+cost_fig = cost_chart.get_plot(nl_config, pricer.df)
 with st.expander("Annual cost", expanded=True):
     st.pyplot(cost_fig)
 
 
 # Percent of revenue chart
-por_fig = por_chart.get_chart(config, pricer.df)
+por_fig = por_chart.get_chart(nl_config, pricer.df)
 with st.expander("Annual cost as percent of revenue", expanded=True):
     st.pyplot(por_fig)
 
 
 # Profit chart
-profit_fig = profit_chart.get_plot(config, pricer.df)
+profit_fig = profit_chart.get_plot(nl_config, pricer.df)
 with st.expander("Annual profit", expanded=True):
     st.pyplot(profit_fig)
 
 # Profit comparison chart.
-if config.show_exp_features:
-    pc_fig = profit_comparison_chart.get_plot(config, pricer.df)
+if nl_config.show_exp_features:
+    pc_fig = profit_comparison_chart.get_plot(nl_config, pricer.df)
     st.pyplot(pc_fig)
