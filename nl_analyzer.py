@@ -29,7 +29,7 @@ msg = """
 - Your revenue depends on a number of factors:
     - How many subscribers you have;
     - How many of your subscribers have paid subscriptions;
-    - The average revenue per paid subscriber depends on things like discounts and promotions. It's not as simple as"$5 per month per paid user".
+    - The average revenue per paid subscriber depends on things like discounts, promotions, and montly vs annual plans. It's not as simple as"$5 per month per paid user".
 """
 st.write(msg)
 
