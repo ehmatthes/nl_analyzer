@@ -48,11 +48,29 @@ def get_plot(nl_config, df):
     if nl_config.show_ss:
         fig.add_trace(trace_ss)
 
+    # # Label lines.
+    # fig.add_annotation(
+    #     x=df["user_levels"].iloc[-1],
+    #     y=df["costs_gp"].iloc[-1],
+    #     text="Ghost Pro",
+    # )
+
+    for col, name in [("costs_gp", "Ghost Pro"), ("costs_bd", "Buttondown")]:
+        fig.add_annotation(
+            x=df["user_levels"].iloc[-1],
+            y=df[col].iloc[-1],
+            text=name,
+            showarrow=False,
+            xshift=40
+        )
+
+
     # Update layout with title and axis labels
     fig.update_layout(
         title=title,
         xaxis_title=labels["x"],
         yaxis_title=labels["y"],
+        showlegend=False,
     )
 
     return fig
