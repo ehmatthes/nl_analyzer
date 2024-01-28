@@ -151,8 +151,12 @@ if nl_config.show_exp_features:
 
 st.write("---")
 
-st.write("#### Data sources:")
-st.write("- Ghost Pro [pricing page](https://ghost.org/pricing/)")
-st.write("- Buttondown [pricing page](https://buttondown.email/pricing)")
-st.write("- beehiiv [pricing page](https://www.beehiiv.com/pricing)")
-st.write("- Substack [pricing page](https://substack.com/going-paid)")
+msg_data_src = """
+##### Data sources
+
+- Ghost Pro [pricing page](https://ghost.org/pricing/)
+- Buttondown [pricing page](https://buttondown.email/pricing)
+- beehiiv [pricing page](https://www.beehiiv.com/pricing)
+- Substack [pricing page](https://substack.com/going-paid)
+"""
+st.info(msg_data_src)
