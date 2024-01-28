@@ -8,6 +8,7 @@ def get_plot(nl_config, df):
     title = "Annual cost of hosting a newsletter"
     labels = {"x": "Number of subscribers", "y": "Annual cost ($)"}
 
+    # Keep names in traces, for hover data.
     trace_gp = go.Scatter(
         x=df["user_levels"],
         y=df["costs_gp"],
@@ -48,22 +49,20 @@ def get_plot(nl_config, df):
     if nl_config.show_ss:
         fig.add_trace(trace_ss)
 
-    # # Label lines.
-    # fig.add_annotation(
-    #     x=df["user_levels"].iloc[-1],
-    #     y=df["costs_gp"].iloc[-1],
-    #     text="Ghost Pro",
-    # )
-
-    for col, name in [("costs_gp", "Ghost Pro"), ("costs_bd", "Buttondown")]:
+    for col, name in [
+        ("costs_gp", "Ghost Pro"),
+        ("costs_bd", "Buttondown"),
+        ("costs_bh", "beehiiv"),
+        ("costs_ss", "Substack"),
+    ]:
         fig.add_annotation(
             x=df["user_levels"].iloc[-1],
             y=df[col].iloc[-1],
             text=name,
             showarrow=False,
-            xshift=40
+            xanchor="left",
+            xshift=5,
         )
-
 
     # Update layout with title and axis labels
     fig.update_layout(
