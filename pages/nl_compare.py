@@ -65,7 +65,7 @@ paid_ratio_micro = st.sidebar.slider(
     max_value=10.0,
     step=0.1,
     format="%.1f%%",
-    help = help_micro_pr,
+    help=help_micro_pr,
 )
 nl_config.paid_ratio = round((paid_ratio_macro + paid_ratio_micro) / 100.0, 3)
 
@@ -83,7 +83,7 @@ nl_config.avg_revenue = st.sidebar.slider(
     step=1,
     label_visibility="collapsed",
     format="$%d",
-    help = help_rev_paid,
+    help=help_rev_paid,
 )
 
 st.sidebar.write("---")
@@ -104,9 +104,12 @@ st.write(
 )
 
 # Platforms to include.
+help_ss = """
+Remember that Substack is not free if you have paid subscribers. It might *seem* free because you never pay them directly, but they keep 10% of the revenue you generate.
+"""
 cols = st.columns(4)
 with cols[0]:
-    nl_config.show_ss = st.checkbox("Substack", value=True)
+    nl_config.show_ss = st.checkbox("Substack", value=True, help=help_ss)
 with cols[1]:
     nl_config.show_gp = st.checkbox("Ghost Pro", value=True)
 with cols[2]:
