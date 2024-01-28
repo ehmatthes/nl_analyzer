@@ -35,8 +35,11 @@ max_subs_macro = st.sidebar.slider(
     step=1_000,
     label_visibility="collapsed",
 )
+help_micro_subs = """
+To focus on a smaller number of subscribers, move the main slider to zero and then adjust this slider. The app will combine the values from each slider.
+"""
 max_subs_micro = st.sidebar.slider(
-    "(fine adjustment)", value=0, max_value=1_000, step=10
+    "(fine adjustment)", value=0, max_value=1_000, step=10, help=help_micro_subs
 )
 nl_config.max_subs = max_subs_macro + max_subs_micro
 
@@ -53,13 +56,16 @@ paid_ratio_macro = st.sidebar.slider(
     format="%.1f%%",
     label_visibility="collapsed",
 )
-
+help_micro_pr = """
+To focus on a smaller percentage, move the main slider to zero and then adjust this slider. The app will combine the values from each slider.
+"""
 paid_ratio_micro = st.sidebar.slider(
     "(fine adjustment)",
     value=0.0,
     max_value=10.0,
     step=0.1,
     format="%.1f%%",
+    help = help_micro_pr,
 )
 nl_config.paid_ratio = round((paid_ratio_macro + paid_ratio_micro) / 100.0, 3)
 
@@ -67,6 +73,9 @@ st.sidebar.write("---")
 
 # Average annual revenue per paid user.
 st.sidebar.write("*What is your average annual revenue per paid subscriber?*")
+help_rev_paid = """
+Remember to take into account discounts, and differences between monthly and annual plans.
+"""
 nl_config.avg_revenue = st.sidebar.slider(
     "Avergae annual revenue per paid subscriber",
     value=50,
@@ -74,6 +83,7 @@ nl_config.avg_revenue = st.sidebar.slider(
     step=1,
     label_visibility="collapsed",
     format="$%d",
+    help = help_rev_paid,
 )
 
 st.sidebar.write("---")
