@@ -9,6 +9,7 @@ from pricer import Pricer
 from nl_config import NLConfig
 
 from charts import cost_chart, por_chart, profit_chart, profit_comparison_chart
+from charts import cost_chart_plotly, por_chart_plotly
 
 
 # Suppress matplotlib warning about ticks.
@@ -126,29 +127,15 @@ if nl_config.max_subs == 0:
 
 pricer = Pricer(nl_config)
 
-# # Cost chart
-# cost_fig = cost_chart.get_plot(nl_config, pricer.df)
-# with st.expander("Annual cost", expanded=True):
-#     st.pyplot(cost_fig)
-
-
-# Cost chart plotly.
-from charts import cost_chart_plotly, por_chart_plotly
-
+# Cost chart.
 cost_fig = cost_chart_plotly.get_plot(nl_config, pricer.df)
 with st.expander("Annual cost", expanded=True):
     st.plotly_chart(cost_fig)
 
-
 # Percent of revenue chart
-por_fig = por_chart.get_chart(nl_config, pricer.df)
-with st.expander("Annual cost as percent of revenue", expanded=True):
-    st.pyplot(por_fig)
-
 por_fig = por_chart_plotly.get_plot(nl_config, pricer.df)
 with st.expander("Annual cost as percent of revenue plotly", expanded=True):
     st.plotly_chart(por_fig)
-
 
 # Profit chart
 msg_profit = """
