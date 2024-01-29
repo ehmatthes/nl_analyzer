@@ -133,7 +133,7 @@ pricer = Pricer(nl_config)
 
 
 # Cost chart plotly.
-from charts import cost_chart_plotly
+from charts import cost_chart_plotly, por_chart_plotly
 
 cost_fig = cost_chart_plotly.get_plot(nl_config, pricer.df)
 with st.expander("Annual cost", expanded=True):
@@ -144,6 +144,10 @@ with st.expander("Annual cost", expanded=True):
 por_fig = por_chart.get_chart(nl_config, pricer.df)
 with st.expander("Annual cost as percent of revenue", expanded=True):
     st.pyplot(por_fig)
+
+por_fig = por_chart_plotly.get_plot(nl_config, pricer.df)
+with st.expander("Annual cost as percent of revenue plotly", expanded=True):
+    st.plotly_chart(por_fig)
 
 
 # Profit chart
