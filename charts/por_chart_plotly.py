@@ -12,23 +12,6 @@ def get_plot(nl_config, df):
     # Won't have data if there's no revenue.
     nonzero_revenue = bool(sum(df["revenues"]))
 
-    # Limit of y-axis needs to be at least 15%, but shouldn't over-emphasize high values
-    # for only the lowest subscriber levels. Use percentage 1/10 of the way through the set
-    # of values, so most of each platform's line is visible.
-    if nonzero_revenue:
-        try:
-            # y_max = max(0.15, df["percent_rev_gp"][int(0.1 * len(gp_percentages))])
-            y_max = max(0.15, df["percent_rev_gp"][int(0.1 * df["user_levels"].size)])
-        except NameError:
-            # Temp fix for when Ghost Pro is not selected.
-            y_max = 0.15
-    else:
-        x_pos = ax.get_xlim()[1] * 0.1
-        y_pos = ax.get_ylim()[1] / 2
-        # ax.annotate("No revenue generated.", (x_pos, y_pos), fontsize=16)
-    # y_max = max(0.15, df["percent_rev_gp"][int(0.1 * len(gp_percentages))])
-    # y_max=0.2
-
     # Define each trace. Include names for hover data.
     trace_gp = go.Scatter(
         x=df["user_levels"],
@@ -61,13 +44,14 @@ def get_plot(nl_config, df):
 
     # Create the figure and add the traces
     fig = go.Figure()
-    if nl_config.show_gp:
+
+    if nl_config.show_gp and nonzero_revenue:
         fig.add_trace(trace_gp)
-    if nl_config.show_bd:
+    if nl_config.show_bd and nonzero_revenue:
         fig.add_trace(trace_bd)
-    if nl_config.show_bh:
+    if nl_config.show_bh and nonzero_revenue:
         fig.add_trace(trace_bh)
-    if nl_config.show_ss:
+    if nl_config.show_ss and nonzero_revenue:
         fig.add_trace(trace_ss)
 
     # Label lines.
@@ -87,17 +71,66 @@ def get_plot(nl_config, df):
             font=dict(color=color)
         )
 
+    # Limit of y-axis needs to be at least 15%, but shouldn't over-emphasize high values
+    # for only the lowest subscriber levels. Use percentage 1/10 of the way through the set
+    # of values, so most of each platform's line is visible.
+    if nonzero_revenue:
+        try:
+            y_max = max(0.15, df["percent_rev_gp"][int(0.1 * df["user_levels"].size)])
+        except NameError:
+            # Temp fix for when Ghost Pro is not selected.
+            y_max = 0.15
+    else:
+        # x_pos = ax.get_xlim()[1] * 0.1
+        # y_pos = ax.get_ylim()[1] / 2
+        # ax.annotate("No revenue generated.", (x_pos, y_pos), fontsize=16)
+        # x_pos = fig.layout.xaxis.range[1] * 0.1
+        # y_pos = fig.layout.yaxis.range[1] * 0.5
+        # print(x_pos, y_pos)
+        # return fig
+        y_max = 0.15
+
+
     # Update layout with title and axis labels
     fig.update_layout(
         title=title,
         xaxis_title=labels["x"],
-        xaxis=dict(tickformat=",", showgrid=True),
+        xaxis=dict(
+            tickformat=",",
+            showgrid=True,
+            range=[0, df["user_levels"].iloc[-1]]
+        ),
         yaxis_title=labels["y"],
         # yaxis=dict(tickprefix="$", tickformat=","),
         yaxis=dict(
             range=[0, y_max],
         ),
+        # xaxis=dict(
+        #     range=[0, df["user_levels"].size]
+        # ),
         showlegend=False,
     )
+
+    # if nonzero_revenue:
+    #     fig.update_layout(
+    #         yaxis=dict(
+    #             range=[0, y_max],
+    #         ),
+    #     )
+
+    if not nonzero_revenue:
+        fig.add_annotation(
+            x=fig.layout.xaxis.range[1] * 0.1,
+            y=fig.layout.yaxis.range[1] * 0.5,
+            text="No revenue generated.",
+            xanchor="left",
+            showarrow=False,
+            font=dict(
+                size=20,
+            )
+        )
+
+    # my_xlim = fig.layout.xaxis.range
+    # print(my_xlim)
 
     return fig
