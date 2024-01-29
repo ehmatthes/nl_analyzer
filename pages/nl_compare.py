@@ -50,7 +50,7 @@ st.sidebar.write("---")
 st.sidebar.write("*What percent of your subscribers have a paid subscription?*")
 paid_ratio_macro = st.sidebar.slider(
     "Ratio of paid subscribers",
-    value=2.0,
+    value=0.0,
     max_value=100.0,
     step=0.1,
     format="%.1f%%",
@@ -61,7 +61,7 @@ To focus on a smaller percentage, move the main slider to zero and then adjust t
 """
 paid_ratio_micro = st.sidebar.slider(
     "(fine adjustment)",
-    value=0.0,
+    value=2.0,
     max_value=10.0,
     step=0.1,
     format="%.1f%%",
