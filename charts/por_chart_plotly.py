@@ -88,7 +88,8 @@ def get_plot(nl_config, df):
         title=title,
         xaxis_title=labels["x"],
         xaxis=dict(
-            tickformat=",", showgrid=True, range=[0, df["user_levels"].iloc[-1]]
+            tickformat=",",
+            showgrid=True,
         ),
         yaxis_title=labels["y"],
         yaxis=dict(
@@ -98,7 +99,13 @@ def get_plot(nl_config, df):
     )
 
     if not nonzero_revenue:
-        # Empty chart; show appropriate message.
+        # Empty chart. Set consistent bounds, then show appropriate message.
+        fig.update_layout(
+            xaxis=dict(
+                range=[0, df["user_levels"].iloc[-1]],
+            ),
+        )
+
         fig.add_annotation(
             x=fig.layout.xaxis.range[1] * 0.1,
             y=fig.layout.yaxis.range[1] * 0.5,
