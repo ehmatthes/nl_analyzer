@@ -1,7 +1,4 @@
 import plotly.graph_objects as go
-import pandas as pd
-
-import streamlit as st
 
 
 def get_plot(nl_config, df):
