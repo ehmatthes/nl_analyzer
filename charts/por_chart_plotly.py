@@ -98,6 +98,7 @@ def get_plot(nl_config, df):
     )
 
     if not nonzero_revenue:
+        # Empty chart; show appropriate message.
         fig.add_annotation(
             x=fig.layout.xaxis.range[1] * 0.1,
             y=fig.layout.yaxis.range[1] * 0.5,
