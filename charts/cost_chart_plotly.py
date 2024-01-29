@@ -7,7 +7,7 @@ import streamlit as st
 def get_plot(nl_config, df):
     """Generate the cost chart, using Plotly."""
     title = "Annual cost of hosting a newsletter"
-    labels = {"x": "Number of subscribers", "y": "Annual cost ($)"}
+    labels = {"x": "Number of subscribers", "y": "Annual cost"}
 
     # Define each trace. Include names for hover data.
     trace_gp = go.Scatter(
