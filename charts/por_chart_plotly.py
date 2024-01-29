@@ -68,7 +68,7 @@ def get_plot(nl_config, df):
             showarrow=False,
             xanchor="left",
             xshift=5,
-            font=dict(color=color)
+            font=dict(color=color),
         )
 
     # Limit of y-axis needs to be at least 15%, but shouldn't over-emphasize high values
@@ -88,9 +88,7 @@ def get_plot(nl_config, df):
         title=title,
         xaxis_title=labels["x"],
         xaxis=dict(
-            tickformat=",",
-            showgrid=True,
-            range=[0, df["user_levels"].iloc[-1]]
+            tickformat=",", showgrid=True, range=[0, df["user_levels"].iloc[-1]]
         ),
         yaxis_title=labels["y"],
         yaxis=dict(
@@ -108,7 +106,7 @@ def get_plot(nl_config, df):
             showarrow=False,
             font=dict(
                 size=20,
-            )
+            ),
         )
 
     return fig

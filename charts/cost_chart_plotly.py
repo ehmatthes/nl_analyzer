@@ -64,7 +64,7 @@ def get_plot(nl_config, df):
             showarrow=False,
             xanchor="left",
             xshift=5,
-            font=dict(color=color)
+            font=dict(color=color),
         )
 
     # Update layout with title and axis labels
