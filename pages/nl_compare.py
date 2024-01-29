@@ -3,12 +3,12 @@
 import sys
 
 import streamlit as st
-import matplotlib.pyplot as plt
 
 from pricer import Pricer
 from nl_config import NLConfig
 
-from charts import cost_chart, por_chart, profit_chart, profit_comparison_chart
+from charts import cost_chart, por_chart, profit_chart
+from charts import profit_comparison_chart
 
 
 # Suppress matplotlib warning about ticks.
@@ -121,30 +121,28 @@ with cols[3]:
 # --- Charts ---
 
 if nl_config.max_subs == 0:
-    st.error("Number of subscribers must be more than 0.")
+    st.error("Number of subscribers must be greater than 0.")
     st.stop()
 
 pricer = Pricer(nl_config)
 
-# Cost chart
+# Cost chart.
 cost_fig = cost_chart.get_plot(nl_config, pricer.df)
 with st.expander("Annual cost", expanded=True):
-    st.pyplot(cost_fig)
+    st.plotly_chart(cost_fig)
 
-
-# Percent of revenue chart
-por_fig = por_chart.get_chart(nl_config, pricer.df)
+# Percent of revenue chart.
+por_fig = por_chart.get_plot(nl_config, pricer.df)
 with st.expander("Annual cost as percent of revenue", expanded=True):
-    st.pyplot(por_fig)
+    st.plotly_chart(por_fig)
 
-
-# Profit chart
+# Profit chart.
 msg_profit = """
 "Profit" here refers to your overall revenue, minus the platform's fees and/or percentage. This does not include payment processing fees, and any other costs associated with hosting.
 """
 profit_fig = profit_chart.get_plot(nl_config, pricer.df)
 with st.expander("Annual profit*", expanded=True):
-    st.pyplot(profit_fig)
+    st.plotly_chart(profit_fig)
     st.info(msg_profit)
 
 # Profit comparison chart.

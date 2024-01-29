@@ -1,76 +1,107 @@
-from matplotlib import pyplot as plt
-import matplotlib as mpl
+import plotly.graph_objects as go
 
 
-def get_plot(config, df):
-    ss_profits = df["profits_ss"]
-    gp_profits = df["profits_gp"]
-    bh_profits = df["profits_bh"]
-    bd_profits = df["profits_bd"]
-    x_values = df["user_levels"]
+def get_plot(nl_config, df):
+    """Generate the cost chart, using Plotly."""
+    title = "Annual profit"
+    labels = {"x": "Number of subscribers", "y": "Annual profit"}
 
-    plt.style.use(["seaborn-v0_8-whitegrid", "charts/nlc_style.mplstyle"])
-    fig, ax = plt.subplots()
+    # Won't have data if there's no revenue.
+    nonzero_revenue = bool(sum(df["revenues"]))
 
-    # Set aspect ratio.
-    width = fig.get_size_inches()[0]
-    height = width / config.aspect_ratio
-    fig.set_size_inches(width, height)
+    # Define each trace. Include names for hover data.
+    trace_gp = go.Scatter(
+        x=df["user_levels"],
+        y=df["profits_gp"],
+        mode="lines",
+        name="Ghost Pro",
+        line=dict(color=nl_config.gp_color),
+    )
+    trace_bd = go.Scatter(
+        x=df["user_levels"],
+        y=df["profits_bd"],
+        mode="lines",
+        name="Buttondown",
+        line=dict(color=nl_config.bd_color),
+    )
+    trace_bh = go.Scatter(
+        x=df["user_levels"],
+        y=df["profits_bh"],
+        mode="lines",
+        name="beehiiv",
+        line=dict(color=nl_config.bh_color),
+    )
+    trace_ss = go.Scatter(
+        x=df["user_levels"],
+        y=df["profits_ss"],
+        mode="lines",
+        name="Substack",
+        line=dict(color=nl_config.ss_color),
+    )
 
-    # Define horizontal placement of all line labels.
-    label_pos_x = x_values.iloc[-1] + 0.01 * config.max_subs
+    # Create the figure and add the traces
+    fig = go.Figure()
 
-    # Add Substack data.
-    if config.show_ss:
-        ax.plot(x_values, ss_profits, color=config.ss_color)
-        label_pos_y = ss_profits.iloc[-1] - 0.005 * ax.get_ylim()[1]
-        ax.annotate(
-            "Substack",
-            (label_pos_x, label_pos_y),
-            color=config.ss_color,
-            fontsize=config.fs_brand_label,
+    if nl_config.show_gp and nonzero_revenue:
+        fig.add_trace(trace_gp)
+    if nl_config.show_bd and nonzero_revenue:
+        fig.add_trace(trace_bd)
+    if nl_config.show_bh and nonzero_revenue:
+        fig.add_trace(trace_bh)
+    if nl_config.show_ss and nonzero_revenue:
+        fig.add_trace(trace_ss)
+
+    # Label lines.
+    for col, name, color, show in [
+        ("profits_gp", "Ghost Pro", nl_config.gp_color, nl_config.show_gp),
+        ("profits_bd", "Buttondown", nl_config.bd_color, nl_config.show_bd),
+        ("profits_bh", "beehiiv", nl_config.bh_color, nl_config.show_bh),
+        ("profits_ss", "Substack", nl_config.ss_color, nl_config.show_ss),
+    ]:
+        if show:
+            fig.add_annotation(
+                x=df["user_levels"].iloc[-1],
+                y=df[col].iloc[-1],
+                text=name,
+                showarrow=False,
+                xanchor="left",
+                xshift=5,
+                font=dict(color=color),
+            )
+
+    # Update layout with title and axis labels
+    fig.update_layout(
+        title=title,
+        xaxis_title=labels["x"],
+        xaxis=dict(
+            tickformat=",",
+            showgrid=True,
+        ),
+        yaxis_title=labels["y"],
+        yaxis=dict(tickprefix="$", tickformat=","),
+        showlegend=False,
+    )
+
+    if not nonzero_revenue:
+        # Empty chart. Set consistent bounds, then show appropriate message.
+        fig.update_layout(
+            xaxis=dict(
+                range=[0, df["user_levels"].iloc[-1]],
+            ),
+            yaxis=dict(
+                range=[0, 1_000],
+            ),
         )
 
-    # Add Ghost data.
-    if config.show_gp:
-        ax.plot(x_values, gp_profits, color=config.gp_color)
-        label_pos_y = gp_profits.iloc[-1] - 0.01 * ax.get_ylim()[1]
-        ax.annotate(
-            "Ghost Pro",
-            (label_pos_x, label_pos_y),
-            color=config.gp_color,
-            fontsize=config.fs_brand_label,
+        fig.add_annotation(
+            x=fig.layout.xaxis.range[1] * 0.1,
+            y=fig.layout.yaxis.range[1] * 0.5,
+            text="No revenue generated.",
+            xanchor="left",
+            showarrow=False,
+            font=dict(
+                size=20,
+            ),
         )
-
-    # Add beehiiv data.
-    if config.show_bh:
-        ax.plot(x_values, bh_profits, color=config.bh_color)
-        label_pos_y = bh_profits.iloc[-1] - 0.01 * ax.get_ylim()[1]
-        ax.annotate(
-            "beehiiv",
-            (label_pos_x, label_pos_y),
-            color=config.bh_color,
-            fontsize=config.fs_brand_label,
-        )
-
-    # Add Buttondown data.
-    if config.show_bd:
-        ax.plot(x_values, bd_profits, color=config.bd_color)
-        label_pos_y = bd_profits.iloc[-1] - 0.01 * ax.get_ylim()[1]
-        ax.annotate(
-            "Buttondown",
-            (label_pos_x, label_pos_y),
-            color=config.bd_color,
-            fontsize=config.fs_brand_label,
-        )
-
-    ax.set_xlim(left=0)
-    ax.set_ylim(bottom=0)
-    ax.xaxis.set_major_formatter(mpl.ticker.StrMethodFormatter("{x:,.0f}"))
-    ax.yaxis.set_major_formatter(mpl.ticker.StrMethodFormatter("{x:,.0f}"))
-
-    ax.set_title("Annual profit of hosting a newsletter", pad=config.title_pad, x=-0.1)
-    ax.set_xlabel("Number of subscribers")
-    ax.set_ylabel("Annual profit")
 
     return fig

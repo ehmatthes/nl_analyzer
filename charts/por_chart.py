@@ -1,89 +1,119 @@
-from matplotlib import pyplot as plt
-import matplotlib as mpl
+import plotly.graph_objects as go
 
 
-def get_chart(config, df):
-    x_values = df["user_levels"]
-
-    # Define horizontal placement of all line labels.
-    label_pos_x = x_values.iloc[-1] + 0.01 * config.max_subs
+def get_plot(nl_config, df):
+    """Generate the cost chart, using Plotly."""
+    title = "Annual cost as percent of revenue"
+    labels = {"x": "Number of subscribers", "y": "Percent of revenue"}
 
     # Won't have data if there's no revenue.
     nonzero_revenue = bool(sum(df["revenues"]))
 
-    plt.style.use(["seaborn-v0_8-whitegrid", "charts/nlc_style.mplstyle"])
-    fig, ax = plt.subplots()
+    # Define each trace. Include names for hover data.
+    trace_gp = go.Scatter(
+        x=df["user_levels"],
+        y=df["percent_rev_gp"],
+        mode="lines",
+        name="Ghost Pro",
+        line=dict(color=nl_config.gp_color),
+    )
+    trace_bd = go.Scatter(
+        x=df["user_levels"],
+        y=df["percent_rev_bd"],
+        mode="lines",
+        name="Buttondown",
+        line=dict(color=nl_config.bd_color),
+    )
+    trace_bh = go.Scatter(
+        x=df["user_levels"],
+        y=df["percent_rev_bh"],
+        mode="lines",
+        name="beehiiv",
+        line=dict(color=nl_config.bh_color),
+    )
+    trace_ss = go.Scatter(
+        x=df["user_levels"],
+        y=df["percent_rev_ss"],
+        mode="lines",
+        name="Substack",
+        line=dict(color=nl_config.ss_color),
+    )
 
-    # Set aspect ratio.
-    width = fig.get_size_inches()[0]
-    height = width / config.aspect_ratio
-    fig.set_size_inches(width, height)
+    # Create the figure and add the traces
+    fig = go.Figure()
 
-    if config.show_ss and nonzero_revenue:
-        ss_percentages = df["percent_rev_ss"]
-        ax.plot(x_values, ss_percentages, color=config.ss_color)
-        label_pos_y = ss_percentages.iloc[-1] - 0.02 * ax.get_ylim()[1]
-        ax.annotate(
-            "Substack",
-            (label_pos_x, label_pos_y),
-            color=config.ss_color,
-            fontsize=config.fs_brand_label,
-        )
+    if nl_config.show_gp and nonzero_revenue:
+        fig.add_trace(trace_gp)
+    if nl_config.show_bd and nonzero_revenue:
+        fig.add_trace(trace_bd)
+    if nl_config.show_bh and nonzero_revenue:
+        fig.add_trace(trace_bh)
+    if nl_config.show_ss and nonzero_revenue:
+        fig.add_trace(trace_ss)
 
-    if config.show_gp and nonzero_revenue:
-        gp_percentages = df["percent_rev_gp"]
-        ax.plot(x_values, gp_percentages, color=config.gp_color)
-        label_pos_y = gp_percentages.iloc[-1] - 0.0002 * ax.get_ylim()[1]
-        ax.annotate(
-            "Ghost Pro",
-            (label_pos_x, label_pos_y),
-            color=config.gp_color,
-            fontsize=config.fs_brand_label,
-        )
-
-    if config.show_bh and nonzero_revenue:
-        bh_percentages = df["percent_rev_bh"]
-        ax.plot(x_values, bh_percentages, color=config.bh_color)
-        label_pos_y = bh_percentages.iloc[-1] - 0.0002 * ax.get_ylim()[1]
-        ax.annotate(
-            "beehiiv",
-            (label_pos_x, label_pos_y),
-            color=config.bh_color,
-            fontsize=config.fs_brand_label,
-        )
-
-    if config.show_bd and nonzero_revenue:
-        bd_percentages = df["percent_rev_bd"]
-        ax.plot(x_values, bd_percentages, color=config.bd_color)
-        label_pos_y = bd_percentages.iloc[-1] - 0.0002 * ax.get_ylim()[1]
-        ax.annotate(
-            "Buttondown",
-            (label_pos_x, label_pos_y),
-            color=config.bd_color,
-            fontsize=config.fs_brand_label,
-        )
+    # Label lines.
+    for col, name, color, show in [
+        ("percent_rev_gp", "Ghost Pro", nl_config.gp_color, nl_config.show_gp),
+        ("percent_rev_bd", "Buttondown", nl_config.bd_color, nl_config.show_bd),
+        ("percent_rev_bh", "beehiiv", nl_config.bh_color, nl_config.show_bh),
+        ("percent_rev_ss", "Substack", nl_config.ss_color, nl_config.show_ss),
+    ]:
+        if show:
+            fig.add_annotation(
+                x=df["user_levels"].iloc[-1],
+                y=df[col].iloc[-1],
+                text=name,
+                showarrow=False,
+                xanchor="left",
+                xshift=5,
+                font=dict(color=color),
+            )
 
     # Limit of y-axis needs to be at least 15%, but shouldn't over-emphasize high values
     # for only the lowest subscriber levels. Use percentage 1/10 of the way through the set
     # of values, so most of each platform's line is visible.
     if nonzero_revenue:
         try:
-            y_max = max(0.15, gp_percentages[int(0.1 * len(gp_percentages))])
+            y_max = max(0.15, df["percent_rev_gp"][int(0.1 * df["user_levels"].size)])
         except NameError:
             # Temp fix for when Ghost Pro is not selected.
-            y_max = 0.2
-        ax.axis([0, 1.05 * config.max_subs, 0, y_max])
-        y_vals = ax.get_yticks()
-        ax.set_yticklabels(["{:,.1%}".format(y_val) for y_val in y_vals])
+            y_max = 0.15
     else:
-        x_pos = ax.get_xlim()[1] * 0.1
-        y_pos = ax.get_ylim()[1] / 2
-        ax.annotate("No revenue generated.", (x_pos, y_pos), fontsize=16)
+        y_max = 0.15
 
-    ax.xaxis.set_major_formatter(mpl.ticker.StrMethodFormatter("{x:,.0f}"))
+    # Update layout with title and axis labels
+    fig.update_layout(
+        title=title,
+        xaxis_title=labels["x"],
+        xaxis=dict(
+            tickformat=",",
+            showgrid=True,
+        ),
+        yaxis_title=labels["y"],
+        yaxis=dict(
+            range=[0, y_max],
+            tickformat=".0%",
+        ),
+        showlegend=False,
+    )
 
-    ax.set_title("Annual cost as percent of revenue", pad=config.title_pad, x=-0.1)
-    ax.set_xlabel("Number of subscribers")
-    ax.set_ylabel("Percent of revenue")
+    if not nonzero_revenue:
+        # Empty chart. Set consistent bounds, then show appropriate message.
+        fig.update_layout(
+            xaxis=dict(
+                range=[0, df["user_levels"].iloc[-1]],
+            ),
+        )
+
+        fig.add_annotation(
+            x=fig.layout.xaxis.range[1] * 0.1,
+            y=fig.layout.yaxis.range[1] * 0.5,
+            text="No revenue generated.",
+            xanchor="left",
+            showarrow=False,
+            font=dict(
+                size=20,
+            ),
+        )
 
     return fig
