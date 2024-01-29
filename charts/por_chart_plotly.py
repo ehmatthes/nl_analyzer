@@ -94,6 +94,7 @@ def get_plot(nl_config, df):
         yaxis_title=labels["y"],
         yaxis=dict(
             range=[0, y_max],
+            tickformat=".0%",
         ),
         showlegend=False,
     )

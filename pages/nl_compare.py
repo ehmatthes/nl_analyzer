@@ -134,7 +134,7 @@ with st.expander("Annual cost", expanded=True):
 
 # Percent of revenue chart
 por_fig = por_chart_plotly.get_plot(nl_config, pricer.df)
-with st.expander("Annual cost as percent of revenue plotly", expanded=True):
+with st.expander("Annual cost as percent of revenue", expanded=True):
     st.plotly_chart(por_fig)
 
 # Profit chart
