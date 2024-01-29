@@ -55,21 +55,22 @@ def get_plot(nl_config, df):
         fig.add_trace(trace_ss)
 
     # Label lines.
-    for col, name, color in [
-        ("percent_rev_gp", "Ghost Pro", nl_config.ss_color),
-        ("percent_rev_bd", "Buttondown", nl_config.bd_color),
-        ("percent_rev_bh", "beehiiv", nl_config.bh_color),
-        ("percent_rev_ss", "Substack", nl_config.ss_color),
+    for col, name, color, show in [
+        ("percent_rev_gp", "Ghost Pro", nl_config.gp_color, nl_config.show_gp),
+        ("percent_rev_bd", "Buttondown", nl_config.bd_color, nl_config.show_bd),
+        ("percent_rev_bh", "beehiiv", nl_config.bh_color, nl_config.show_bh),
+        ("percent_rev_ss", "Substack", nl_config.ss_color, nl_config.show_ss),
     ]:
-        fig.add_annotation(
-            x=df["user_levels"].iloc[-1],
-            y=df[col].iloc[-1],
-            text=name,
-            showarrow=False,
-            xanchor="left",
-            xshift=5,
-            font=dict(color=color),
-        )
+        if show:
+            fig.add_annotation(
+                x=df["user_levels"].iloc[-1],
+                y=df[col].iloc[-1],
+                text=name,
+                showarrow=False,
+                xanchor="left",
+                xshift=5,
+                font=dict(color=color),
+            )
 
     # Limit of y-axis needs to be at least 15%, but shouldn't over-emphasize high values
     # for only the lowest subscriber levels. Use percentage 1/10 of the way through the set

@@ -55,33 +55,22 @@ def get_plot(nl_config, df):
         fig.add_trace(trace_ss)
 
     # Label lines.
-    for col, name, color in [
-        ("profits_gp", "Ghost Pro", nl_config.ss_color),
-        ("profits_bd", "Buttondown", nl_config.bd_color),
-        ("profits_bh", "beehiiv", nl_config.bh_color),
-        ("profits_ss", "Substack", nl_config.ss_color),
+    for col, name, color, show in [
+        ("profits_gp", "Ghost Pro", nl_config.gp_color, nl_config.show_gp),
+        ("profits_bd", "Buttondown", nl_config.bd_color, nl_config.show_bd),
+        ("profits_bh", "beehiiv", nl_config.bh_color, nl_config.show_bh),
+        ("profits_ss", "Substack", nl_config.ss_color, nl_config.show_ss),
     ]:
-        fig.add_annotation(
-            x=df["user_levels"].iloc[-1],
-            y=df[col].iloc[-1],
-            text=name,
-            showarrow=False,
-            xanchor="left",
-            xshift=5,
-            font=dict(color=color),
-        )
-
-    # Limit of y-axis needs to be at least 15%, but shouldn't over-emphasize high values
-    # for only the lowest subscriber levels. Use percentage 1/10 of the way through the set
-    # of values, so most of each platform's line is visible.
-    # if nonzero_revenue:
-    #     try:
-    #         y_max = max(0.15, df["profits_gp"][int(0.1 * df["user_levels"].size)])
-    #     except NameError:
-    #         # Temp fix for when Ghost Pro is not selected.
-    #         y_max = 0.15
-    # else:
-    #     y_max = 0.15
+        if show:
+            fig.add_annotation(
+                x=df["user_levels"].iloc[-1],
+                y=df[col].iloc[-1],
+                text=name,
+                showarrow=False,
+                xanchor="left",
+                xshift=5,
+                font=dict(color=color),
+            )
 
     # Update layout with title and axis labels
     fig.update_layout(
@@ -93,10 +82,6 @@ def get_plot(nl_config, df):
         ),
         yaxis_title=labels["y"],
         yaxis=dict(tickprefix="$", tickformat=","),
-        # yaxis=dict(
-        #     # range=[0, y_max],
-        #     # tickformat=".0%",
-        # ),
         showlegend=False,
     )
 

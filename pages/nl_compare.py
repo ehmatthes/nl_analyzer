@@ -137,16 +137,7 @@ por_fig = por_chart_plotly.get_plot(nl_config, pricer.df)
 with st.expander("Annual cost as percent of revenue", expanded=True):
     st.plotly_chart(por_fig)
 
-# Profit chart
-msg_profit = """
-"Profit" here refers to your overall revenue, minus the platform's fees and/or percentage. This does not include payment processing fees, and any other costs associated with hosting.
-"""
-profit_fig = profit_chart.get_plot(nl_config, pricer.df)
-with st.expander("Annual profit*", expanded=True):
-    st.pyplot(profit_fig)
-    st.info(msg_profit)
-
-# Profit chart plotly
+# Profit chart.
 msg_profit = """
 "Profit" here refers to your overall revenue, minus the platform's fees and/or percentage. This does not include payment processing fees, and any other costs associated with hosting.
 """
