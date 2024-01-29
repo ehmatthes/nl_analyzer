@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from pricer import Pricer
 from nl_config import NLConfig
 
-from charts import cost_chart, por_chart, profit_chart, profit_comparison_chart
+from charts import profit_comparison_chart
 from charts import cost_chart_plotly, por_chart_plotly, profit_chart_plotly
 
 
