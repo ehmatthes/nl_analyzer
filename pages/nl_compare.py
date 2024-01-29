@@ -3,13 +3,12 @@
 import sys
 
 import streamlit as st
-import matplotlib.pyplot as plt
 
 from pricer import Pricer
 from nl_config import NLConfig
 
-from charts import profit_comparison_chart
 from charts import cost_chart, por_chart, profit_chart
+from charts import profit_comparison_chart
 
 
 # Suppress matplotlib warning about ticks.
@@ -122,7 +121,7 @@ with cols[3]:
 # --- Charts ---
 
 if nl_config.max_subs == 0:
-    st.error("Number of subscribers must be more than 0.")
+    st.error("Number of subscribers must be greater than 0.")
     st.stop()
 
 pricer = Pricer(nl_config)
@@ -132,7 +131,7 @@ cost_fig = cost_chart.get_plot(nl_config, pricer.df)
 with st.expander("Annual cost", expanded=True):
     st.plotly_chart(cost_fig)
 
-# Percent of revenue chart
+# Percent of revenue chart.
 por_fig = por_chart.get_plot(nl_config, pricer.df)
 with st.expander("Annual cost as percent of revenue", expanded=True):
     st.plotly_chart(por_fig)

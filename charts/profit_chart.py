@@ -90,7 +90,7 @@ def get_plot(nl_config, df):
             ),
             yaxis=dict(
                 range=[0, 1_000],
-            )
+            ),
         )
 
         fig.add_annotation(
