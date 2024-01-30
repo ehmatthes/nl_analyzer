@@ -17,6 +17,7 @@ class NLConfig:
     show_gp: bool = True
     show_bh: bool = True
     show_bd: bool = True
+    show_ck: bool = True
 
     show_exp_features: bool = False
 
@@ -29,6 +30,7 @@ class NLConfig:
     gp_color: str = "black"
     bh_color: str = "#ee87d8"
     bd_color: str = "#006aff"
+    ck_color: str = "#34946d"
 
     aspect_ratio: float = 2.0
 

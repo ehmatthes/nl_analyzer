@@ -6,7 +6,7 @@ st.header("Comparing newsletter platforms")
 st.write("*How much will it cost to host **my** newsletter?*")
 
 msg = """
-Figuring out how much it will cost to host your newsletter on a platform such as [Ghost](https://ghost.org), [Buttondown](https://buttondown.email), [beehiiv](https://www.beehiiv.com), or [Substack](https://substack.com) can be really confusing. This is especially true if you expect your newsletter to grow over time.
+Figuring out how much it will cost to host your newsletter on a platform such as [Ghost](https://ghost.org), [Buttondown](https://buttondown.email), [beehiiv](https://www.beehiiv.com), [Substack](https://substack.com), or [ConvertKit](https://convertkit.com) can be really confusing. This is especially true if you expect your newsletter to grow over time.
 
 This tool can help, by letting you set the parameters that match your situation.
 """

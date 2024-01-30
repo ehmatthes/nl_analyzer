@@ -53,6 +53,10 @@ class Pricer:
                 "costs_bd": np.nan,
                 "percent_rev_bd": np.nan,
                 "profits_bd": np.nan,
+                # ConvertKit
+                "costs_ck": np.nan,
+                "percent_rev_ck": np.nan,
+                "profits_ck": np.nan,
             }
         )
 
@@ -66,6 +70,8 @@ class Pricer:
             self._fill_data_bh()
         if self.nl_config.show_bd:
             self._fill_data_bd()
+        if self.nl_config.show_ck:
+            self._fill_data_ck()
 
     def _fill_data_ss(self):
         """Fill Substack data."""
@@ -118,6 +124,20 @@ class Pricer:
             [rev - cost for rev, cost in zip(self.df["revenues"], self.df["costs_bd"])]
         )
 
+    def _fill_data_ck(self):
+        """Fill ConvertKit data."""
+        self._fill_costs_ck()
+        self.df["percent_rev_ck"] = pd.Series(
+            [
+                cost / rev if rev > 0 else np.nan
+                for cost, rev in zip(self.df["costs_ck"], self.df["revenues"])
+            ]
+        )
+
+        self.df["profits_ck"] = pd.Series(
+            [rev - cost for rev, cost in zip(self.df["revenues"], self.df["costs_ck"])]
+        )
+
     def _fill_costs_gp(self):
         """Fill costs column for Ghost Pro."""
         costs = []
@@ -167,6 +187,48 @@ class Pricer:
                 cost = self._get_cost_bd_high(num_users)
                 costs.append(cost)
         self.df["costs_bd"] = pd.Series(costs)
+
+    def _fill_costs_ck(self):
+        """Fill costs column for ConvertKit.
+
+        Annual plan gets two months free, so cost is 10*monthly rate.
+        """
+        costs = []
+        for num_users in self.df["user_levels"]:
+            # Note: This works out to $600/10k users above 25k users.
+            if num_users <= 1_000:
+                costs.append(0)
+            elif num_users <= 3_000:
+                costs.append(490)
+            elif num_users <= 5_000:
+                costs.append(790)
+            elif num_users <= 8_000:
+                costs.append(990)
+            elif num_users <= 10_000:
+                costs.append(1190)
+            elif num_users <= 15_000:
+                costs.append(1490)
+            elif num_users <= 20_000:
+                costs.append(1790)
+            elif num_users <= 25_000:
+                costs.append(1990)
+            elif num_users <= 35_000:
+                costs.append(2590)
+            elif num_users <= 45_000:
+                costs.append(3190)
+            elif num_users <= 55_000:
+                costs.append(3790)
+            elif num_users <= 65_000:
+                costs.append(4390)
+            elif num_users <= 75_000:
+                costs.append(4990)
+            elif num_users <= 85_000:
+                costs.append(5590)
+            elif num_users <= 95_000:
+                costs.append(6190)
+            elif num_users <= 105_000:
+                costs.append(6_790)
+        self.df["costs_ck"] = pd.Series(costs)
 
     @staticmethod
     def _get_cost_bd_high(num_users):
