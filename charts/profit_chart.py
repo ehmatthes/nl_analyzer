@@ -57,6 +57,8 @@ def get_plot(nl_config, df):
         fig.add_trace(trace_bh)
     if nl_config.show_ss and nonzero_revenue:
         fig.add_trace(trace_ss)
+    if nl_config.show_ck and nonzero_revenue:
+        fig.add_trace(trace_ck)
 
     # Label lines.
     for col, name, color, show in [
