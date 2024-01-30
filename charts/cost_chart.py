@@ -35,6 +35,13 @@ def get_plot(nl_config, df):
         name="Substack",
         line=dict(color=nl_config.ss_color),
     )
+    trace_ck = go.Scatter(
+        x=df["user_levels"],
+        y=df["costs_ck"],
+        mode="lines",
+        name="ConvertKit",
+        line=dict(color=nl_config.ck_color),
+    )
 
     # Create the figure and add the traces
     fig = go.Figure()
@@ -46,6 +53,8 @@ def get_plot(nl_config, df):
         fig.add_trace(trace_bh)
     if nl_config.show_ss:
         fig.add_trace(trace_ss)
+    if nl_config.show_ck:
+        fig.add_trace(trace_ck)
 
     # Label lines.
     for col, name, color, show in [
@@ -53,6 +62,7 @@ def get_plot(nl_config, df):
         ("costs_bd", "Buttondown", nl_config.bd_color, nl_config.show_bd),
         ("costs_bh", "beehiiv", nl_config.bh_color, nl_config.show_bh),
         ("costs_ss", "Substack", nl_config.ss_color, nl_config.show_ss),
+        ("costs_ck", "ConvertKit", nl_config.ck_color, nl_config.show_ck),
     ]:
         if show:
             fig.add_annotation(
