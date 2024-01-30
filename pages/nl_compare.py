@@ -107,15 +107,18 @@ st.write(
 help_ss = """
 Remember that Substack is not free if you have paid subscribers. It might *seem* free because you never pay them directly, but they keep 10% of the revenue you generate.
 """
-cols = st.columns(4)
+cols = st.columns(3)
 with cols[0]:
     nl_config.show_gp = st.checkbox("Ghost Pro", value=True)
 with cols[1]:
     nl_config.show_bd = st.checkbox("Buttondown", value=True)
 with cols[2]:
     nl_config.show_bh = st.checkbox("beehiiv", value=True)
-with cols[3]:
+cols = st.columns(3)
+with cols[0]:
     nl_config.show_ss = st.checkbox("Substack", value=True, help=help_ss)
+with cols[1]:
+    nl_config.show_ck = st.checkbox("ConvertKit", value=True)
 
 
 # --- Charts ---
