@@ -163,6 +163,7 @@ msg_data_src = """
 - Buttondown [pricing page](https://buttondown.email/pricing)
 - beehiiv [pricing page](https://www.beehiiv.com/pricing)
 - Substack [pricing page](https://substack.com/going-paid)
+- ConvertKit [pricing page](https://convertkit.com/pricing)
 """
 st.info(msg_data_src)
 
