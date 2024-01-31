@@ -6,10 +6,14 @@ def get_plot(nl_config, df):
     title = "Annual cost of hosting a newsletter"
     labels = {"x": "Number of subscribers", "y": "Annual cost"}
 
+    platform_codes = [("gp", "Gost Pro"), ("bd", "Buttondown"), ("bh", "beehiiv"), ("ss", "Substack"), ("ck", "ConvertKit")]
+
     fig = go.Figure()
-    for pf, name in [("gp", "Gost Pro"), ("bd", "Buttondown"), ("bh", "beehiiv"), ("ss", "Substack"), ("ck", "ConvertKit")]:
+    for pf, name in platform_codes:
+        # Don't create trace if we're not showing that platform.
         if not getattr(nl_config, f"show_{pf}"):
             continue
+
         color = getattr(nl_config, f"{pf}_color")
         fig.add_trace(
             go.Scatter(
@@ -39,6 +43,14 @@ def get_plot(nl_config, df):
                 xshift=5,
                 font=dict(color=color),
             )
+
+
+    # for pf, name in [
+    #     ("gp")
+    # ]
+
+
+
 
     # Update layout with title and axis labels
     fig.update_layout(
