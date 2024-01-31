@@ -9,23 +9,37 @@ from dataclasses import dataclass
 
 
 @dataclass
+class PlatformConfig:
+    name: str
+    show: bool
+    color: str
+
+@dataclass
 class NLConfig:
     """Class for keeping track of overall project settings."""
 
-    platform_codes = [
-        ("gp", "Gost Pro"),
-        ("bd", "Buttondown"),
-        ("bh", "beehiiv"),
-        ("ss", "Substack"),
-        ("ck", "ConvertKit"),
-    ]
+    platforms = {
+        "gp": PlatformConfig(name="Ghost Pro", show=True, color="black"),
+        "bd": PlatformConfig(name="Buttondown", show=False, color="#006aff"),
+        "bh": PlatformConfig(name="beehiiv", show=False, color="#ee87d8"),
+        "ss": PlatformConfig(name="Substack", show=True, color="#DC6931"),
+        "ck": PlatformConfig(name="ConvertKit", show=False, color="#34946d"),
+    }
 
-    # Input widget settings.
-    show_gp: bool = True
-    show_bd: bool = False
-    show_bh: bool = False
-    show_ss: bool = True
-    show_ck: bool = False
+    # platform_codes = [
+    #     ("gp", "Gost Pro"),
+    #     ("bd", "Buttondown"),
+    #     ("bh", "beehiiv"),
+    #     ("ss", "Substack"),
+    #     ("ck", "ConvertKit"),
+    # ]
+
+    # # Input widget settings.
+    # show_gp: bool = True
+    # show_bd: bool = False
+    # show_bh: bool = False
+    # show_ss: bool = True
+    # show_ck: bool = False
 
     show_exp_features: bool = False
 
@@ -33,12 +47,12 @@ class NLConfig:
     paid_ratio: float = 0.02
     avg_revenue: int = 50
 
-    # Plot settings, that can't be covered in a Matplotlib stylesheet.
-    gp_color: str = "black"
-    bd_color: str = "#006aff"
-    bh_color: str = "#ee87d8"
-    ss_color: str = "#DC6931"
-    ck_color: str = "#34946d"
+    # # Plot settings, that can't be covered in a Matplotlib stylesheet.
+    # gp_color: str = "black"
+    # bd_color: str = "#006aff"
+    # bh_color: str = "#ee87d8"
+    # ss_color: str = "#DC6931"
+    # ck_color: str = "#34946d"
 
     aspect_ratio: float = 2.0
 
