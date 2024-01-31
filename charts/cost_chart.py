@@ -3,32 +3,26 @@ import plotly.graph_objects as go
 
 def get_plot(nl_config, df):
     """Generate the cost chart."""
-    title = "Annual cost of hosting a newsletter"
-    labels = {"x": "Number of subscribers", "y": "Annual cost"}
-
     fig = go.Figure()
 
-    # Add trace for each visible platform.
-    for pf, name in nl_config.platform_codes:
-        if not getattr(nl_config, f"show_{pf}"):
+    # Add and label trace for each visible platform.
+    for code, name in nl_config.platform_codes:
+        if not getattr(nl_config, f"show_{code}"):
             continue
 
-        color = getattr(nl_config, f"{pf}_color")
+        # Add trace.
+        color = getattr(nl_config, f"{code}_color")
         fig.add_trace(
             go.Scatter(
                 x=df["user_levels"],
-                y=df[f"costs_{pf}"],
+                y=df[f"costs_{code}"],
                 mode="lines",
                 name=name,
                 line=dict(color=color),
             )
         )
 
-    # Label lines.
-    for code, name in nl_config.platform_codes:
-        if not getattr(nl_config, f"show_{code}"):
-            continue
-        color = getattr(nl_config, f"{code}_color")
+        # Label trace.
         fig.add_annotation(
             x=df["user_levels"].iloc[-1],
             y=df[f"costs_{code}"].iloc[-1],
@@ -39,7 +33,10 @@ def get_plot(nl_config, df):
             font=dict(color=color),
         )
 
-    # Update layout with title and axis labels
+    # Update layout.
+    title = "Annual cost of hosting a newsletter"
+    labels = {"x": "Number of subscribers", "y": "Annual cost"}
+
     fig.update_layout(
         title=title,
         xaxis_title=labels["x"],
