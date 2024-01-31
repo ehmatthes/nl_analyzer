@@ -33,32 +33,78 @@ class Pricer:
             ]
         )
 
-        self.df = pd.DataFrame(
-            {
-                "user_levels": user_levels,
-                "revenues": revenues,
-                # Substack
-                "costs_ss": np.nan,
-                "percent_rev_ss": np.nan,
-                "profits_ss": np.nan,
-                # Ghost pro
-                "costs_gp": np.nan,
-                "percent_rev_gp": np.nan,
-                "profits_gp": np.nan,
-                # beehiiv
-                "costs_bh": np.nan,
-                "percent_rev_bh": np.nan,
-                "profits_bh": np.nan,
-                # Buttondown
-                "costs_bd": np.nan,
-                "percent_rev_bd": np.nan,
-                "profits_bd": np.nan,
-                # ConvertKit
-                "costs_ck": np.nan,
-                "percent_rev_ck": np.nan,
-                "profits_ck": np.nan,
-            }
-        )
+        df_data = {
+            "user_levels": user_levels,
+            "revenues": revenues,
+        }
+        if self.nl_config.show_ss:
+            df_data.update(
+                {
+                    "costs_ss": np.nan,
+                    "percent_rev_ss": np.nan,
+                    "profits_ss": np.nan,
+                }
+            )
+        if self.nl_config.show_gp:
+            df_data.update(
+                {
+                    "costs_gp": np.nan,
+                    "percent_rev_gp": np.nan,
+                    "profits_gp": np.nan,
+                }
+            )
+        if self.nl_config.show_bh:
+            df_data.update(
+                {
+                    "costs_bh": np.nan,
+                    "percent_rev_bh": np.nan,
+                    "profits_bh": np.nan,
+                }
+            )
+        if self.nl_config.show_bd:
+            df_data.update(
+                {
+                    "costs_bd": np.nan,
+                    "percent_rev_bd": np.nan,
+                    "profits_bd": np.nan,
+                }
+            )
+        if self.nl_config.show_ck:
+            df_data.update(
+                {
+                    "costs_ck": np.nan,
+                    "percent_rev_ck": np.nan,
+                    "profits_ck": np.nan,
+                }
+            )
+
+        # self.df = pd.DataFrame(
+        #     {
+        #         "user_levels": user_levels,
+        #         "revenues": revenues,
+        #         # Substack
+        #         "costs_ss": np.nan,
+        #         "percent_rev_ss": np.nan,
+        #         "profits_ss": np.nan,
+        #         # Ghost pro
+        #         "costs_gp": np.nan,
+        #         "percent_rev_gp": np.nan,
+        #         "profits_gp": np.nan,
+        #         # beehiiv
+        #         "costs_bh": np.nan,
+        #         "percent_rev_bh": np.nan,
+        #         "profits_bh": np.nan,
+        #         # Buttondown
+        #         "costs_bd": np.nan,
+        #         "percent_rev_bd": np.nan,
+        #         "profits_bd": np.nan,
+        #         # ConvertKit
+        #         "costs_ck": np.nan,
+        #         "percent_rev_ck": np.nan,
+        #         "profits_ck": np.nan,
+        #     }
+        # )
+        self.df = pd.DataFrame(df_data)
 
     def _fill_platform_data(self):
         """Fill only platform data that's currently being used."""
