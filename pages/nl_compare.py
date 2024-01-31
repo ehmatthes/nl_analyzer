@@ -109,16 +109,16 @@ Remember that Substack is not free if you have paid subscribers. It might *seem*
 """
 cols = st.columns(3)
 with cols[0]:
-    nl_config.show_gp = st.checkbox("Ghost Pro", value=True)
+    nl_config.show_gp = st.checkbox("Ghost Pro", value=nl_config.show_gp)
 with cols[1]:
-    nl_config.show_bd = st.checkbox("Buttondown", value=True)
+    nl_config.show_bd = st.checkbox("Buttondown", value=nl_config.show_bd)
 with cols[2]:
-    nl_config.show_bh = st.checkbox("beehiiv", value=True)
+    nl_config.show_bh = st.checkbox("beehiiv", value=nl_config.show_bh)
 cols = st.columns(3)
 with cols[0]:
-    nl_config.show_ss = st.checkbox("Substack", value=True, help=help_ss)
+    nl_config.show_ss = st.checkbox("Substack", value=nl_config.show_ss, help=help_ss)
 with cols[1]:
-    nl_config.show_ck = st.checkbox("ConvertKit", value=True)
+    nl_config.show_ck = st.checkbox("ConvertKit", value=nl_config.show_ck)
 
 
 # --- Charts ---

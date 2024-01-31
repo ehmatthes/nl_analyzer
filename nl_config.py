@@ -15,9 +15,9 @@ class NLConfig:
     # Input widget settings.
     show_ss: bool = True
     show_gp: bool = True
-    show_bh: bool = True
-    show_bd: bool = True
-    show_ck: bool = True
+    show_bh: bool = False
+    show_bd: bool = False
+    show_ck: bool = False
 
     show_exp_features: bool = False
 
