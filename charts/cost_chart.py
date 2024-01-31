@@ -6,12 +6,10 @@ def get_plot(nl_config, df):
     title = "Annual cost of hosting a newsletter"
     labels = {"x": "Number of subscribers", "y": "Annual cost"}
 
-    platform_codes = [("gp", "Gost Pro"), ("bd", "Buttondown"), ("bh", "beehiiv"), ("ss", "Substack"), ("ck", "ConvertKit")]
-
     fig = go.Figure()
 
     # Add trace for each visible platform.
-    for pf, name in platform_codes:
+    for pf, name in nl_config.platform_codes:
         if not getattr(nl_config, f"show_{pf}"):
             continue
 
@@ -27,7 +25,7 @@ def get_plot(nl_config, df):
         )
 
     # Label lines.
-    for code, name in platform_codes:
+    for code, name in nl_config.platform_codes:
         if not getattr(nl_config, f"show_{code}"):
             continue
         color = getattr(nl_config, f"{code}_color")

@@ -12,11 +12,19 @@ from dataclasses import dataclass
 class NLConfig:
     """Class for keeping track of overall project settings."""
 
+    platform_codes = [
+        ("gp", "Gost Pro"),
+        ("bd", "Buttondown"),
+        ("bh", "beehiiv"),
+        ("ss", "Substack"),
+        ("ck", "ConvertKit"),
+    ]
+
     # Input widget settings.
-    show_ss: bool = True
     show_gp: bool = True
-    show_bh: bool = False
     show_bd: bool = False
+    show_bh: bool = False
+    show_ss: bool = True
     show_ck: bool = False
 
     show_exp_features: bool = False
@@ -26,10 +34,10 @@ class NLConfig:
     avg_revenue: int = 50
 
     # Plot settings, that can't be covered in a Matplotlib stylesheet.
-    ss_color: str = "#DC6931"
     gp_color: str = "black"
-    bh_color: str = "#ee87d8"
     bd_color: str = "#006aff"
+    bh_color: str = "#ee87d8"
+    ss_color: str = "#DC6931"
     ck_color: str = "#34946d"
 
     aspect_ratio: float = 2.0
