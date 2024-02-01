@@ -88,7 +88,7 @@ nl_config.avg_revenue = st.sidebar.slider(
 
 st.sidebar.write("---")
 
-nl_config.show_exp_features = st.sidebar.checkbox(
+nl_config.show_exp_features = st.sidebar.toggle(
     "Show experimental features", value=False
 )
 
@@ -100,7 +100,7 @@ if st.button("Home", type="primary"):
 # --- Summary of settings
 st.write("#### Settings in use:")
 st.write(
-    f"Up to **{nl_config.max_subs:,}** subscribers, with a paid ratio of **{nl_config.paid_ratio*100}%**, and an average annual revenue of **${nl_config.avg_revenue:.2f}** per paid subscriber."
+    f"Up to **{nl_config.max_subs:,}** subscribers, with a paid ratio of **{round(nl_config.paid_ratio*100, 2)}%**, and an average annual revenue of **${nl_config.avg_revenue:.2f}** per paid subscriber."
 )
 
 # Platforms to include.
@@ -109,16 +109,17 @@ Remember that Substack is not free if you have paid subscribers. It might *seem*
 """
 cols = st.columns(3)
 with cols[0]:
-    nl_config.show_gp = st.checkbox("Ghost Pro", value=True)
+    nl_config.gp_config.show = st.toggle("Ghost Pro", value=True)
 with cols[1]:
-    nl_config.show_bd = st.checkbox("Buttondown", value=True)
+    nl_config.bd_config.show = st.toggle("Buttondown", value=False)
 with cols[2]:
-    nl_config.show_bh = st.checkbox("beehiiv", value=True)
+    nl_config.bh_config.show = st.toggle("beehiiv", value=False)
+
 cols = st.columns(3)
 with cols[0]:
-    nl_config.show_ss = st.checkbox("Substack", value=True, help=help_ss)
+    nl_config.ss_config.show = st.toggle("Substack", value=True, help=help_ss)
 with cols[1]:
-    nl_config.show_ck = st.checkbox("ConvertKit", value=True)
+    nl_config.ck_config.show = st.toggle("ConvertKit", value=False)
 
 
 # --- Charts ---
@@ -134,10 +135,15 @@ cost_fig = cost_chart.get_plot(nl_config, pricer.df)
 with st.expander("Annual cost", expanded=True):
     st.plotly_chart(cost_fig)
 
+
 # Percent of revenue chart.
+msg_por = """
+For lower revenue amounts, the cost as a percent of revenue can be extremely high. The height of the chart is calculated in a way that tries to avoid over-emphasizing these outlier values.
+"""
 por_fig = por_chart.get_plot(nl_config, pricer.df)
 with st.expander("Annual cost as percent of revenue", expanded=True):
     st.plotly_chart(por_fig)
+    st.info(msg_por)
 
 # Profit chart.
 msg_profit = """
@@ -149,10 +155,17 @@ with st.expander("Annual profit*", expanded=True):
     st.info(msg_profit)
 
 # Profit comparison chart.
-if nl_config.show_exp_features:
+if (
+    nl_config.show_exp_features
+    and nl_config.ss_config.show
+    and nl_config.gp_config.show
+):
     pc_fig = profit_comparison_chart.get_plot(nl_config, pricer.df)
     with st.expander("Profit comparison", expanded=True):
         st.pyplot(pc_fig)
+        st.info(
+            "This is an experimental plot, and only works for Ghost Pro vs Substack at the moment. It also uses a different plotting library, so it looks different than the other plots."
+        )
 
 st.write("---")
 
@@ -171,3 +184,15 @@ st.write("---")
 
 if st.button("Home", type="primary", key="home_2"):
     st.switch_page("nl_analyzer.py")
+
+if nl_config.show_exp_features:
+    st.write("---")
+    st.write("##### Metrics")
+
+    # pricer.df memory footprint, sys.getsizeof()
+    df_size_kb = round(sys.getsizeof(pricer.df) / 1_000, 0)
+    st.write(f"Dataframe size (sys): {df_size_kb}kB")
+
+    # pricer.df.memory_usage()
+    df_size_kb = round(pricer.df.memory_usage(deep=True).sum() / 1_000, 0)
+    st.write(f"Dataframe size (df): {df_size_kb}kB")
