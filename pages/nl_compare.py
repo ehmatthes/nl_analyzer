@@ -100,7 +100,7 @@ if st.button("Home", type="primary"):
 # --- Summary of settings
 st.write("#### Settings in use:")
 st.write(
-    f"Up to **{nl_config.max_subs:,}** subscribers, with a paid ratio of **{nl_config.paid_ratio*100}%**, and an average annual revenue of **${nl_config.avg_revenue:.2f}** per paid subscriber."
+    f"Up to **{nl_config.max_subs:,}** subscribers, with a paid ratio of **{round(nl_config.paid_ratio*100, 2)}%**, and an average annual revenue of **${nl_config.avg_revenue:.2f}** per paid subscriber."
 )
 
 # Platforms to include.
