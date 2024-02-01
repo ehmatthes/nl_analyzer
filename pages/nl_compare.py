@@ -144,7 +144,6 @@ por_fig = por_chart.get_plot(nl_config, pricer.df)
 with st.expander("Annual cost as percent of revenue", expanded=True):
     st.plotly_chart(por_fig)
     st.info(msg_por)
-st.stop()
 
 # Profit chart.
 msg_profit = """
@@ -154,6 +153,7 @@ profit_fig = profit_chart.get_plot(nl_config, pricer.df)
 with st.expander("Annual profit*", expanded=True):
     st.plotly_chart(profit_fig)
     st.info(msg_profit)
+st.stop()
 
 # Profit comparison chart.
 if nl_config.show_exp_features:
