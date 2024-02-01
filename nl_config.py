@@ -12,22 +12,24 @@ from dataclasses import dataclass
 class PlatformConfig:
     code: str
     name: str
-    show: bool
     color: str
+
+    show: bool = False
+
 
 @dataclass
 class NLConfig:
     """Class for keeping track of overall project settings."""
 
     # Platform config.
-    gp_config = PlatformConfig(code="gp", name="Ghost Pro", show=True, color="black")
-    bd_config = PlatformConfig(code="bd", name="Buttondown", show=False, color="#006aff")
-    bh_config = PlatformConfig(code="bh", name="beehiiv", show=False, color="#ee87d8")
-    ss_config = PlatformConfig(code="ss", name="Substack", show=True, color="#DC6931")
-    ck_config = PlatformConfig(code="ck", name="ConvertKit", show=False, color="#34946d")
+    gp_config = PlatformConfig(code="gp", name="Ghost Pro", color="black")
+    bd_config = PlatformConfig(code="bd", name="Buttondown", color="#006aff")
+    bh_config = PlatformConfig(code="bh", name="beehiiv", color="#ee87d8")
+    ss_config = PlatformConfig(code="ss", name="Substack", color="#DC6931")
+    ck_config = PlatformConfig(code="ck", name="ConvertKit", color="#34946d")
 
     platforms = [gp_config, bd_config, bh_config, ss_config, ck_config]
-    
+
     # General config.
     show_exp_features: bool = False
 
