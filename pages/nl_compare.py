@@ -137,9 +137,13 @@ with st.expander("Annual cost", expanded=True):
 
 
 # Percent of revenue chart.
+msg_por = """
+For lower revenue amounts, the cost as a percent of revenue can be extremely high. The height of the chart is calculated in a way that tries to avoid over-emphasizing these outlier values.
+"""
 por_fig = por_chart.get_plot(nl_config, pricer.df)
 with st.expander("Annual cost as percent of revenue", expanded=True):
     st.plotly_chart(por_fig)
+    st.info(msg_por)
 st.stop()
 
 # Profit chart.
