@@ -33,92 +33,24 @@ class Pricer:
             ]
         )
 
+        # These columns are used by all platforms.
         df_data = {
             "user_levels": user_levels,
             "revenues": revenues,
         }
-        # if self.nl_config.ss_config.show:
-        #     df_data.update(
-        #         {
-        #             "costs_ss": np.nan,
-        #             "percent_rev_ss": np.nan,
-        #             "profits_ss": np.nan,
-        #         }
-        #     )
-        # if self.nl_config.gp_config.show:
-        #     df_data.update(
-        #         {
-        #             "costs_gp": np.nan,
-        #             "percent_rev_gp": np.nan,
-        #             "profits_gp": np.nan,
-        #         }
-        #     )
-        # if self.nl_config.bh_config.show:
-        #     df_data.update(
-        #         {
-        #             "costs_bh": np.nan,
-        #             "percent_rev_bh": np.nan,
-        #             "profits_bh": np.nan,
-        #         }
-        #     )
-        # if self.nl_config.bd_config.show:
-        #     df_data.update(
-        #         {
-        #             "costs_bd": np.nan,
-        #             "percent_rev_bd": np.nan,
-        #             "profits_bd": np.nan,
-        #         }
-        #     )
-        # if self.nl_config.ck_config.show:
-        #     df_data.update(
-        #         {
-        #             "costs_ck": np.nan,
-        #             "percent_rev_ck": np.nan,
-        #             "profits_ck": np.nan,
-        #         }
-        #     )
 
-        # DEV: This could be made as a loop using the dict lookup for configs.
-        if self.nl_config.gp_config.show:
-            df_data.update(
-                {
-                    ("gp", "costs"): np.nan,
-                    ("gp", "percent_rev"): np.nan,
-                    ("gp", "profits"): np.nan,
-                }
-            )
-        if self.nl_config.bd_config.show:
-            df_data.update(
-                {
-                    ("bd", "costs"): np.nan,
-                    ("bd", "percent_rev"): np.nan,
-                    ("bd", "profits"): np.nan,
-                }
-            )
-        if self.nl_config.bh_config.show:
-            df_data.update(
-                {
-                    ("bh", "costs"): np.nan,
-                    ("bh", "percent_rev"): np.nan,
-                    ("bh", "profits"): np.nan,
-                }
-            )
-        if self.nl_config.ss_config.show:
-            df_data.update(
-                {
-                    ("ss", "costs"): np.nan,
-                    ("ss", "percent_rev"): np.nan,
-                    ("ss", "profits"): np.nan,
-                }
-            )
-        if self.nl_config.ck_config.show:
-            df_data.update(
-                {
-                    ("ck", "costs"): np.nan,
-                    ("ck", "percent_rev"): np.nan,
-                    ("ck", "profits"): np.nan,
-                }
-            )
+        # Add a group of columns for each platform that's visible.
+        # If Ghost Pro is visible:
+        # df[("gp", "costs")] will return the series of costs for Ghost.
+        for platform in self.nl_config.platforms:
+            if platform.show:
+                df_data.update(
+                    {
+                        (platform.code, "costs"): np.nan,
+                        (platform.code, "percent_rev"): np.nan,
+                        (platform.code, "profits"): np.nan,
+                    }
+                )
 
         self.df = pd.DataFrame(df_data)
 
