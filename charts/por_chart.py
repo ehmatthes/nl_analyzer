@@ -36,17 +36,8 @@ def get_plot(nl_config, df):
             font=dict(color=platform.color),
         )
 
-    # Limit of y-axis needs to be at least 15%, but shouldn't over-emphasize high values
-    # for only the lowest subscriber levels. Use percentage 1/10 of the way through the set
-    # of values, so most of each platform's line is visible.
-    if nonzero_revenue:
-        try:
-            y_max = max(0.15, df[("gp", "percent_rev")][int(0.1 * df["user_levels"].size)])
-        except NameError:
-            # Temp fix for when Ghost Pro is not selected.
-            y_max = 0.15
-    else:
-        y_max = 0.15
+    # Get an appropriate value for y_max.
+    y_max = _get_ymax(df, nl_config, nonzero_revenue)
 
     # Update layout with title and axis labels
     title = "Annual cost as percent of revenue"
@@ -86,3 +77,25 @@ def get_plot(nl_config, df):
         )
 
     return fig
+
+
+# --- Helper functions ---
+
+def _get_ymax(df, nl_config, nonzero_revenue):
+    """Get an appropriate value for y_max."""
+    # If no revenue, return a set amount.
+    if not nonzero_revenue:
+        return 0.15
+
+    # y_max needs to be at least 15%, but shouldn't over-emphasize high values for only
+    # the lowest subscriber levels. Use percentage part of the way through the set
+    # of values, so most of each platform's line is visible.
+    index = int(0.1 * df["user_levels"].size)
+    max_percent_rev = 0.15
+    for platform in nl_config.platforms:
+        if not platform.show:
+            continue
+        percent_rev = df[(platform.code, "percent_rev")][index]
+        max_percent_rev = max(max_percent_rev, percent_rev)
+
+    return max_percent_rev
