@@ -98,4 +98,8 @@ def _get_ymax(df, nl_config, nonzero_revenue):
         percent_rev = df[(platform.code, "percent_rev")][index]
         max_percent_rev = max(max_percent_rev, percent_rev)
 
+        # Make sure value is above last value of any visible platform.
+        last_value = df[(platform.code, "percent_rev")].iloc[-1]
+        max_percent_rev = max(max_percent_rev, 1.5*last_value)
+
     return max_percent_rev
