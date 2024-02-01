@@ -283,9 +283,3 @@ class Pricer:
         monthly_cost += 2 * 20
 
         return monthly_cost
-
-
-# Simple profiling tool.
-if __name__ == "__main__":
-    nl_config = NLConfig()
-    pricer = Pricer(nl_config)
