@@ -20,10 +20,10 @@ class Pricer:
         if step_size == 0:
             step_size = 1
 
+        # The columns user_levels and revenues are used by all platforms.
         user_levels = pd.Series(
             [num_users for num_users in range(0, self.nl_config.max_subs, step_size)]
         )
-
         revenues = pd.Series(
             [
                 num_users * self.nl_config.paid_ratio * self.nl_config.avg_revenue
@@ -31,14 +31,13 @@ class Pricer:
             ]
         )
 
-        # These columns are used by all platforms.
         df_data = {
             "user_levels": user_levels,
             "revenues": revenues,
         }
 
         # Add a group of columns for each platform that's visible.
-        # If Ghost Pro is visible:
+        # For example, if Ghost Pro is visible:
         # df[("gp", "costs")] will return the series of costs for Ghost.
         for platform in self.nl_config.platforms:
             if platform.show:
