@@ -190,5 +190,3 @@ if nl_config.show_exp_features:
     # pricer.df.memory_usage()
     df_size_kb = round(pricer.df.memory_usage(deep=True).sum() / 1_000, 0)
     st.write(f"Dataframe size (df): {df_size_kb}kB")
-
-    st.write(pricer.df.info)
