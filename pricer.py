@@ -56,25 +56,16 @@ class Pricer:
 
     def _fill_platform_data(self):
         """Fill only platform data that's currently being used."""
-        if self.nl_config.ss_config.show:
-            self._fill_data_ss()
         if self.nl_config.gp_config.show:
             self._fill_data_gp()
-        if self.nl_config.bh_config.show:
-            self._fill_data_bh()
         if self.nl_config.bd_config.show:
             self._fill_data_bd()
+        if self.nl_config.bh_config.show:
+            self._fill_data_bh()
+        if self.nl_config.ss_config.show:
+            self._fill_data_ss()
         if self.nl_config.ck_config.show:
             self._fill_data_ck()
-
-    def _fill_data_ss(self):
-        """Fill Substack data."""
-        self.df[("ss", "costs")] = pd.Series([int(0.1 * rev) for rev in self.df["revenues"]])
-        self.df[("ss", "percent_rev")] = pd.Series([0.1 for _ in self.df["user_levels"]])
-
-        self.df[("ss", "profits")] = pd.Series(
-            [rev - cost for rev, cost in zip(self.df["revenues"], self.df[("ss", "costs")])]
-        )
 
     def _fill_data_gp(self):
         """Fill Ghost Pro data."""
@@ -87,24 +78,11 @@ class Pricer:
         )
 
         self.df[("gp", "profits")] = pd.Series(
-            [rev - cost for rev, cost in zip(self.df["revenues"], self.df[("gp", "costs")])]
-        )
-
-
-    def _fill_data_bh(self):
-        """Fill beehiiv data."""
-        self._fill_costs_bh()
-        self.df[("bh", "percent_rev")] = pd.Series(
             [
-                cost / rev if rev > 0 else np.nan
-                for cost, rev in zip(self.df[("bh", "costs")], self.df["revenues"])
+                rev - cost
+                for rev, cost in zip(self.df["revenues"], self.df[("gp", "costs")])
             ]
         )
-
-        self.df[("bh", "profits")] = pd.Series(
-            [rev - cost for rev, cost in zip(self.df["revenues"], self.df[("bh", "costs")])]
-        )
-
 
     def _fill_data_bd(self):
         """Fill Buttondown data."""
@@ -117,9 +95,44 @@ class Pricer:
         )
 
         self.df[("bd", "profits")] = pd.Series(
-            [rev - cost for rev, cost in zip(self.df["revenues"], self.df[("bd", "costs")])]
+            [
+                rev - cost
+                for rev, cost in zip(self.df["revenues"], self.df[("bd", "costs")])
+            ]
         )
 
+    def _fill_data_bh(self):
+        """Fill beehiiv data."""
+        self._fill_costs_bh()
+        self.df[("bh", "percent_rev")] = pd.Series(
+            [
+                cost / rev if rev > 0 else np.nan
+                for cost, rev in zip(self.df[("bh", "costs")], self.df["revenues"])
+            ]
+        )
+
+        self.df[("bh", "profits")] = pd.Series(
+            [
+                rev - cost
+                for rev, cost in zip(self.df["revenues"], self.df[("bh", "costs")])
+            ]
+        )
+
+    def _fill_data_ss(self):
+        """Fill Substack data."""
+        self.df[("ss", "costs")] = pd.Series(
+            [int(0.1 * rev) for rev in self.df["revenues"]]
+        )
+        self.df[("ss", "percent_rev")] = pd.Series(
+            [0.1 for _ in self.df["user_levels"]]
+        )
+
+        self.df[("ss", "profits")] = pd.Series(
+            [
+                rev - cost
+                for rev, cost in zip(self.df["revenues"], self.df[("ss", "costs")])
+            ]
+        )
 
     def _fill_data_ck(self):
         """Fill ConvertKit data."""
@@ -132,9 +145,11 @@ class Pricer:
         )
 
         self.df[("ck", "profits")] = pd.Series(
-            [rev - cost for rev, cost in zip(self.df["revenues"], self.df[("ck", "costs")])]
+            [
+                rev - cost
+                for rev, cost in zip(self.df["revenues"], self.df[("ck", "costs")])
+            ]
         )
-
 
     def _fill_costs_gp(self):
         """Fill costs column for Ghost Pro."""
@@ -151,18 +166,6 @@ class Pricer:
             costs.append(yearly_cost)
 
         self.df[("gp", "costs")] = pd.Series(costs)
-
-    def _fill_costs_bh(self):
-        """Fill costs column for beehiiv."""
-        costs = []
-        for num_users in self.df["user_levels"]:
-            if num_users <= 2500:
-                costs.append(0)
-            elif num_users <= 10_000:
-                costs.append(42 * 12)
-            elif num_users <= 100_000:
-                costs.append(84 * 12)
-        self.df[("bh", "costs")] = pd.Series(costs)
 
     def _fill_costs_bd(self):
         """Fill costs column for Buttondown.
@@ -185,6 +188,18 @@ class Pricer:
                 cost = self._get_cost_bd_high(num_users)
                 costs.append(cost)
         self.df[("bd", "costs")] = pd.Series(costs)
+
+    def _fill_costs_bh(self):
+        """Fill costs column for beehiiv."""
+        costs = []
+        for num_users in self.df["user_levels"]:
+            if num_users <= 2500:
+                costs.append(0)
+            elif num_users <= 10_000:
+                costs.append(42 * 12)
+            elif num_users <= 100_000:
+                costs.append(84 * 12)
+        self.df[("bh", "costs")] = pd.Series(costs)
 
     def _fill_costs_ck(self):
         """Fill costs column for ConvertKit.
