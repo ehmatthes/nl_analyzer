@@ -54,16 +54,11 @@ class Pricer:
 
     def _fill_platform_data(self):
         """Fill only platform data that's currently being used."""
-        if self.nl_config.gp_config.show:
-            self._fill_data_gp()
-        if self.nl_config.bd_config.show:
-            self._fill_data_bd()
-        if self.nl_config.bh_config.show:
-            self._fill_data_bh()
-        if self.nl_config.ss_config.show:
-            self._fill_data_ss()
-        if self.nl_config.ck_config.show:
-            self._fill_data_ck()
+        # Call each platform's _fill_data_{platform_code}() method.
+        for platform in self.nl_config.platforms:
+            if platform.show:
+                fn_name = getattr(self, f"_fill_data_{platform.code}")
+                fn_name()
 
     def _fill_data_gp(self):
         """Fill Ghost Pro data."""
