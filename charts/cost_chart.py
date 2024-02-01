@@ -14,7 +14,7 @@ def get_plot(nl_config, df):
         fig.add_trace(
             go.Scatter(
                 x=df["user_levels"],
-                y = df[(platform.code, "costs")],
+                y=df[(platform.code, "costs")],
                 mode="lines",
                 name=platform.name,
                 line=dict(color=platform.color),
