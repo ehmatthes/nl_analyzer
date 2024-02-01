@@ -42,7 +42,7 @@ class NLConfig:
     # Fig size is 6.4x4, so 6.4" * 200dpi -> 1280 pixels per chart.
     # Use of int makes this fairly approximate, but aiming for order of magnitude.
     # That uses too much data, so actually using a fraction of 1280.
-    num_points = 1280
+    num_points = 256
 
     # font sizes
     fs_brand_label: int = 10
