@@ -6,31 +6,35 @@ def get_plot(nl_config, df):
     fig = go.Figure()
 
     # Add and label trace for each visible platform.
-    for code, name in nl_config.platform_codes:
-        if not getattr(nl_config, f"show_{code}"):
+    # for code, name in nl_config.platform_codes:
+    for platform in nl_config.platforms:
+        if not platform.show:
             continue
 
         # Add trace.
-        color = getattr(nl_config, f"{code}_color")
+        # color = getattr(nl_config, f"{code}_color")
         fig.add_trace(
             go.Scatter(
                 x=df["user_levels"],
-                y=df[f"costs_{code}"],
+                # y=df[f"costs_{code}"],
+                # y = df[platform.code]["costs"],
+                y = df[(platform.code, "costs")],
                 mode="lines",
-                name=name,
-                line=dict(color=color),
+                name=platform.name,
+                line=dict(color=platform.color),
             )
         )
 
         # Label trace.
         fig.add_annotation(
             x=df["user_levels"].iloc[-1],
-            y=df[f"costs_{code}"].iloc[-1],
-            text=name,
+            # y=df[f"costs_{code}"].iloc[-1],
+            y=df[(platform.code, "costs")].iloc[-1],
+            text=platform.name,
             showarrow=False,
             xanchor="left",
             xshift=5,
-            font=dict(color=color),
+            font=dict(color=platform.color),
         )
 
     # Update layout.

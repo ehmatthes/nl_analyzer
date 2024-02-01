@@ -37,152 +37,172 @@ class Pricer:
             "user_levels": user_levels,
             "revenues": revenues,
         }
-        if self.nl_config.show_ss:
+        # if self.nl_config.ss_config.show:
+        #     df_data.update(
+        #         {
+        #             "costs_ss": np.nan,
+        #             "percent_rev_ss": np.nan,
+        #             "profits_ss": np.nan,
+        #         }
+        #     )
+        # if self.nl_config.gp_config.show:
+        #     df_data.update(
+        #         {
+        #             "costs_gp": np.nan,
+        #             "percent_rev_gp": np.nan,
+        #             "profits_gp": np.nan,
+        #         }
+        #     )
+        # if self.nl_config.bh_config.show:
+        #     df_data.update(
+        #         {
+        #             "costs_bh": np.nan,
+        #             "percent_rev_bh": np.nan,
+        #             "profits_bh": np.nan,
+        #         }
+        #     )
+        # if self.nl_config.bd_config.show:
+        #     df_data.update(
+        #         {
+        #             "costs_bd": np.nan,
+        #             "percent_rev_bd": np.nan,
+        #             "profits_bd": np.nan,
+        #         }
+        #     )
+        # if self.nl_config.ck_config.show:
+        #     df_data.update(
+        #         {
+        #             "costs_ck": np.nan,
+        #             "percent_rev_ck": np.nan,
+        #             "profits_ck": np.nan,
+        #         }
+        #     )
+
+        # DEV: This could be made as a loop using the dict lookup for configs.
+        if self.nl_config.gp_config.show:
             df_data.update(
                 {
-                    "costs_ss": np.nan,
-                    "percent_rev_ss": np.nan,
-                    "profits_ss": np.nan,
+                    ("gp", "costs"): np.nan,
+                    ("gp", "percent_rev"): np.nan,
+                    ("gp", "profits"): np.nan,
                 }
             )
-        if self.nl_config.show_gp:
+        if self.nl_config.bd_config.show:
             df_data.update(
                 {
-                    "costs_gp": np.nan,
-                    "percent_rev_gp": np.nan,
-                    "profits_gp": np.nan,
+                    ("bd", "costs"): np.nan,
+                    ("bd", "percent_rev"): np.nan,
+                    ("bd", "profits"): np.nan,
                 }
             )
-        if self.nl_config.show_bh:
+        if self.nl_config.bh_config.show:
             df_data.update(
                 {
-                    "costs_bh": np.nan,
-                    "percent_rev_bh": np.nan,
-                    "profits_bh": np.nan,
+                    ("bh", "costs"): np.nan,
+                    ("bh", "percent_rev"): np.nan,
+                    ("bh", "profits"): np.nan,
                 }
             )
-        if self.nl_config.show_bd:
+        if self.nl_config.ss_config.show:
             df_data.update(
                 {
-                    "costs_bd": np.nan,
-                    "percent_rev_bd": np.nan,
-                    "profits_bd": np.nan,
+                    ("ss", "costs"): np.nan,
+                    ("ss", "percent_rev"): np.nan,
+                    ("ss", "profits"): np.nan,
                 }
             )
-        if self.nl_config.show_ck:
+        if self.nl_config.ck_config.show:
             df_data.update(
                 {
-                    "costs_ck": np.nan,
-                    "percent_rev_ck": np.nan,
-                    "profits_ck": np.nan,
+                    ("ck", "costs"): np.nan,
+                    ("ck", "percent_rev"): np.nan,
+                    ("ck", "profits"): np.nan,
                 }
             )
 
-        # self.df = pd.DataFrame(
-        #     {
-        #         "user_levels": user_levels,
-        #         "revenues": revenues,
-        #         # Substack
-        #         "costs_ss": np.nan,
-        #         "percent_rev_ss": np.nan,
-        #         "profits_ss": np.nan,
-        #         # Ghost pro
-        #         "costs_gp": np.nan,
-        #         "percent_rev_gp": np.nan,
-        #         "profits_gp": np.nan,
-        #         # beehiiv
-        #         "costs_bh": np.nan,
-        #         "percent_rev_bh": np.nan,
-        #         "profits_bh": np.nan,
-        #         # Buttondown
-        #         "costs_bd": np.nan,
-        #         "percent_rev_bd": np.nan,
-        #         "profits_bd": np.nan,
-        #         # ConvertKit
-        #         "costs_ck": np.nan,
-        #         "percent_rev_ck": np.nan,
-        #         "profits_ck": np.nan,
-        #     }
-        # )
         self.df = pd.DataFrame(df_data)
 
     def _fill_platform_data(self):
         """Fill only platform data that's currently being used."""
-        if self.nl_config.show_ss:
+        if self.nl_config.ss_config.show:
             self._fill_data_ss()
-        if self.nl_config.show_gp:
+        if self.nl_config.gp_config.show:
             self._fill_data_gp()
-        if self.nl_config.show_bh:
+        if self.nl_config.bh_config.show:
             self._fill_data_bh()
-        if self.nl_config.show_bd:
+        if self.nl_config.bd_config.show:
             self._fill_data_bd()
-        if self.nl_config.show_ck:
+        if self.nl_config.ck_config.show:
             self._fill_data_ck()
 
     def _fill_data_ss(self):
         """Fill Substack data."""
-        self.df["costs_ss"] = pd.Series([int(0.1 * rev) for rev in self.df["revenues"]])
-        self.df["percent_rev_ss"] = pd.Series([0.1 for _ in self.df["user_levels"]])
+        self.df[("ss", "costs")] = pd.Series([int(0.1 * rev) for rev in self.df["revenues"]])
+        self.df[("ss", "percent_rev")] = pd.Series([0.1 for _ in self.df["user_levels"]])
 
-        self.df["profits_ss"] = pd.Series(
-            [rev - cost for rev, cost in zip(self.df["revenues"], self.df["costs_ss"])]
+        self.df[("ss", "profits")] = pd.Series(
+            [rev - cost for rev, cost in zip(self.df["revenues"], self.df[("ss", "costs")])]
         )
 
     def _fill_data_gp(self):
         """Fill Ghost Pro data."""
         self._fill_costs_gp()
-        self.df["percent_rev_gp"] = pd.Series(
+        self.df[("gp", "percent_rev")] = pd.Series(
             [
                 cost / rev if rev > 0 else np.nan
-                for cost, rev in zip(self.df["costs_gp"], self.df["revenues"])
+                for cost, rev in zip(self.df[("gp", "costs")], self.df["revenues"])
             ]
         )
 
-        self.df["profits_gp"] = pd.Series(
-            [rev - cost for rev, cost in zip(self.df["revenues"], self.df["costs_gp"])]
+        self.df[("gp", "profits")] = pd.Series(
+            [rev - cost for rev, cost in zip(self.df["revenues"], self.df[("gp", "costs")])]
         )
+
 
     def _fill_data_bh(self):
         """Fill beehiiv data."""
         self._fill_costs_bh()
-        self.df["percent_rev_bh"] = pd.Series(
+        self.df[("bh", "percent_rev")] = pd.Series(
             [
                 cost / rev if rev > 0 else np.nan
-                for cost, rev in zip(self.df["costs_bh"], self.df["revenues"])
+                for cost, rev in zip(self.df[("bh", "costs")], self.df["revenues"])
             ]
         )
 
-        self.df["profits_bh"] = pd.Series(
-            [rev - cost for rev, cost in zip(self.df["revenues"], self.df["costs_bh"])]
+        self.df[("bh", "profits")] = pd.Series(
+            [rev - cost for rev, cost in zip(self.df["revenues"], self.df[("bh", "costs")])]
         )
+
 
     def _fill_data_bd(self):
         """Fill Buttondown data."""
         self._fill_costs_bd()
-        self.df["percent_rev_bd"] = pd.Series(
+        self.df[("bd", "percent_rev")] = pd.Series(
             [
                 cost / rev if rev > 0 else np.nan
-                for cost, rev in zip(self.df["costs_bd"], self.df["revenues"])
+                for cost, rev in zip(self.df[("bd", "costs")], self.df["revenues"])
             ]
         )
 
-        self.df["profits_bd"] = pd.Series(
-            [rev - cost for rev, cost in zip(self.df["revenues"], self.df["costs_bd"])]
+        self.df[("bd", "profits")] = pd.Series(
+            [rev - cost for rev, cost in zip(self.df["revenues"], self.df[("bd", "costs")])]
         )
+
 
     def _fill_data_ck(self):
         """Fill ConvertKit data."""
         self._fill_costs_ck()
-        self.df["percent_rev_ck"] = pd.Series(
+        self.df[("ck", "percent_rev")] = pd.Series(
             [
                 cost / rev if rev > 0 else np.nan
-                for cost, rev in zip(self.df["costs_ck"], self.df["revenues"])
+                for cost, rev in zip(self.df[("ck", "costs")], self.df["revenues"])
             ]
         )
 
-        self.df["profits_ck"] = pd.Series(
-            [rev - cost for rev, cost in zip(self.df["revenues"], self.df["costs_ck"])]
+        self.df[("ck", "profits")] = pd.Series(
+            [rev - cost for rev, cost in zip(self.df["revenues"], self.df[("ck", "costs")])]
         )
+
 
     def _fill_costs_gp(self):
         """Fill costs column for Ghost Pro."""
@@ -198,7 +218,7 @@ class Pricer:
 
             costs.append(yearly_cost)
 
-        self.df["costs_gp"] = pd.Series(costs)
+        self.df[("gp", "costs")] = pd.Series(costs)
 
     def _fill_costs_bh(self):
         """Fill costs column for beehiiv."""
@@ -210,7 +230,7 @@ class Pricer:
                 costs.append(42 * 12)
             elif num_users <= 100_000:
                 costs.append(84 * 12)
-        self.df["costs_bh"] = pd.Series(costs)
+        self.df[("bh", "costs")] = pd.Series(costs)
 
     def _fill_costs_bd(self):
         """Fill costs column for Buttondown.
@@ -232,7 +252,7 @@ class Pricer:
             else:
                 cost = self._get_cost_bd_high(num_users)
                 costs.append(cost)
-        self.df["costs_bd"] = pd.Series(costs)
+        self.df[("bd", "costs")] = pd.Series(costs)
 
     def _fill_costs_ck(self):
         """Fill costs column for ConvertKit.
@@ -274,7 +294,7 @@ class Pricer:
                 costs.append(6190)
             elif num_users <= 105_000:
                 costs.append(6_790)
-        self.df["costs_ck"] = pd.Series(costs)
+        self.df[("ck", "costs")] = pd.Series(costs)
 
     @staticmethod
     def _get_cost_bd_high(num_users):

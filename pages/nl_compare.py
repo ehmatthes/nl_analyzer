@@ -88,7 +88,7 @@ nl_config.avg_revenue = st.sidebar.slider(
 
 st.sidebar.write("---")
 
-nl_config.show_exp_features = st.sidebar.checkbox(
+nl_config.show_exp_features = st.sidebar.toggle(
     "Show experimental features", value=False
 )
 
@@ -107,18 +107,22 @@ st.write(
 help_ss = """
 Remember that Substack is not free if you have paid subscribers. It might *seem* free because you never pay them directly, but they keep 10% of the revenue you generate.
 """
+# nl_config.gp_config.__dict__
 cols = st.columns(3)
 with cols[0]:
-    nl_config.show_gp = st.checkbox("Ghost Pro", value=nl_config.show_gp)
+    nl_config.gp_config.show = st.toggle("Ghost Pro", value=True)
 with cols[1]:
-    nl_config.show_bd = st.checkbox("Buttondown", value=nl_config.show_bd)
+    nl_config.bd_config.show = st.toggle("Buttondown", value=False)
 with cols[2]:
-    nl_config.show_bh = st.checkbox("beehiiv", value=nl_config.show_bh)
+    nl_config.bh_config.show = st.toggle("beehiiv", value=False)
 cols = st.columns(3)
 with cols[0]:
-    nl_config.show_ss = st.checkbox("Substack", value=nl_config.show_ss, help=help_ss)
+    nl_config.ss_config.show = st.toggle("Substack", value=True, help=help_ss)
 with cols[1]:
-    nl_config.show_ck = st.checkbox("ConvertKit", value=nl_config.show_ck)
+    nl_config.ck_config.show = st.toggle("ConvertKit", value=False)
+
+# nl_config.gp_config.__dict__
+# st.stop()
 
 
 # --- Charts ---
@@ -133,6 +137,8 @@ pricer = Pricer(nl_config)
 cost_fig = cost_chart.get_plot(nl_config, pricer.df)
 with st.expander("Annual cost", expanded=True):
     st.plotly_chart(cost_fig)
+
+st.stop()
 
 # Percent of revenue chart.
 por_fig = por_chart.get_plot(nl_config, pricer.df)
