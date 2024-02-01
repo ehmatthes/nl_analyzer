@@ -9,12 +9,17 @@ def get_plot(config, df):
 
     Note: Will need logic to bail gracefully if more than two platforms selected.
     """
+    # Only works for Ghost vs Substack at the moment.
+    if not config.ss_config.show and config.gp_config.show:
+        return None
+
     # Calculate the comparisons.
-    ss_profits = df["profits_ss"]
-    gp_profits = df["profits_gp"]
+    ss_profits = df[(config.ss_config.code, "profits")]
+    gp_profits = df[(config.gp_config.code, "profits")]
     x_values = df["user_levels"]
     diffs = pd.Series(
-        [p_gp - p_ss for p_gp, p_ss in zip(df["profits_gp"], df["profits_ss"])]
+        # [p_gp - p_ss for p_gp, p_ss in zip(df["profits_gp"], df["profits_ss"])]
+        [p_gp - p_ss for p_gp, p_ss in zip(df[(config.gp_config.code, "profits")], df[(config.ss_config.code, "profits")])]
     )
     pos_diffs = diffs.where(diffs > 0, other=np.nan)
     neg_diffs = diffs.where(diffs < 0, other=np.nan)
