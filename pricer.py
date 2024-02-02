@@ -57,89 +57,92 @@ class Pricer:
             fn_name = getattr(self, f"_fill_data_{platform.code}")
             fn_name()
 
+            self._fill_percent_rev_data(platform)
+            self._fill_profit_data(platform)
+
     def _fill_data_gp(self):
         """Fill Ghost Pro data."""
         self._fill_costs_gp()
-        self.df[("gp", "percent_rev")] = pd.Series(
-            [
-                cost / rev if rev > 0 else np.nan
-                for cost, rev in zip(self.df[("gp", "costs")], self.df["revenues"])
-            ]
-        )
+        # self.df[("gp", "percent_rev")] = pd.Series(
+        #     [
+        #         cost / rev if rev > 0 else np.nan
+        #         for cost, rev in zip(self.df[("gp", "costs")], self.df["revenues"])
+        #     ]
+        # )
 
-        self.df[("gp", "profits")] = pd.Series(
-            [
-                rev - cost
-                for rev, cost in zip(self.df["revenues"], self.df[("gp", "costs")])
-            ]
-        )
+        # self.df[("gp", "profits")] = pd.Series(
+        #     [
+        #         rev - cost
+        #         for rev, cost in zip(self.df["revenues"], self.df[("gp", "costs")])
+        #     ]
+        # )
 
     def _fill_data_bd(self):
         """Fill Buttondown data."""
         self._fill_costs_bd()
-        self.df[("bd", "percent_rev")] = pd.Series(
-            [
-                cost / rev if rev > 0 else np.nan
-                for cost, rev in zip(self.df[("bd", "costs")], self.df["revenues"])
-            ]
-        )
+        # self.df[("bd", "percent_rev")] = pd.Series(
+        #     [
+        #         cost / rev if rev > 0 else np.nan
+        #         for cost, rev in zip(self.df[("bd", "costs")], self.df["revenues"])
+        #     ]
+        # )
 
-        self.df[("bd", "profits")] = pd.Series(
-            [
-                rev - cost
-                for rev, cost in zip(self.df["revenues"], self.df[("bd", "costs")])
-            ]
-        )
+        # self.df[("bd", "profits")] = pd.Series(
+        #     [
+        #         rev - cost
+        #         for rev, cost in zip(self.df["revenues"], self.df[("bd", "costs")])
+        #     ]
+        # )
 
     def _fill_data_bh(self):
         """Fill beehiiv data."""
         self._fill_costs_bh()
-        self.df[("bh", "percent_rev")] = pd.Series(
-            [
-                cost / rev if rev > 0 else np.nan
-                for cost, rev in zip(self.df[("bh", "costs")], self.df["revenues"])
-            ]
-        )
+        # self.df[("bh", "percent_rev")] = pd.Series(
+        #     [
+        #         cost / rev if rev > 0 else np.nan
+        #         for cost, rev in zip(self.df[("bh", "costs")], self.df["revenues"])
+        #     ]
+        # )
 
-        self.df[("bh", "profits")] = pd.Series(
-            [
-                rev - cost
-                for rev, cost in zip(self.df["revenues"], self.df[("bh", "costs")])
-            ]
-        )
+        # self.df[("bh", "profits")] = pd.Series(
+        #     [
+        #         rev - cost
+        #         for rev, cost in zip(self.df["revenues"], self.df[("bh", "costs")])
+        #     ]
+        # )
 
     def _fill_data_ss(self):
         """Fill Substack data."""
         self.df[("ss", "costs")] = pd.Series(
             [int(0.1 * rev) for rev in self.df["revenues"]]
         )
-        self.df[("ss", "percent_rev")] = pd.Series(
-            [0.1 for _ in self.df["user_levels"]]
-        )
+        # self.df[("ss", "percent_rev")] = pd.Series(
+        #     [0.1 for _ in self.df["user_levels"]]
+        # )
 
-        self.df[("ss", "profits")] = pd.Series(
-            [
-                rev - cost
-                for rev, cost in zip(self.df["revenues"], self.df[("ss", "costs")])
-            ]
-        )
+        # self.df[("ss", "profits")] = pd.Series(
+        #     [
+        #         rev - cost
+        #         for rev, cost in zip(self.df["revenues"], self.df[("ss", "costs")])
+        #     ]
+        # )
 
     def _fill_data_ck(self):
         """Fill ConvertKit data."""
         self._fill_costs_ck()
-        self.df[("ck", "percent_rev")] = pd.Series(
-            [
-                cost / rev if rev > 0 else np.nan
-                for cost, rev in zip(self.df[("ck", "costs")], self.df["revenues"])
-            ]
-        )
+        # self.df[("ck", "percent_rev")] = pd.Series(
+        #     [
+        #         cost / rev if rev > 0 else np.nan
+        #         for cost, rev in zip(self.df[("ck", "costs")], self.df["revenues"])
+        #     ]
+        # )
 
-        self.df[("ck", "profits")] = pd.Series(
-            [
-                rev - cost
-                for rev, cost in zip(self.df["revenues"], self.df[("ck", "costs")])
-            ]
-        )
+        # self.df[("ck", "profits")] = pd.Series(
+        #     [
+        #         rev - cost
+        #         for rev, cost in zip(self.df["revenues"], self.df[("ck", "costs")])
+        #     ]
+        # )
 
     def _fill_costs_gp(self):
         """Fill costs column for Ghost Pro."""
@@ -288,3 +291,27 @@ class Pricer:
         monthly_cost += 2 * 20
 
         return monthly_cost
+
+
+    def _fill_percent_rev_data(self, platform):
+        """Fill the platform's percent of revenue column."""
+        if platform.code == "ss":
+            self.df[("ss", "percent_rev")] = pd.Series(
+                [0.1 for _ in self.df["user_levels"]]
+            )
+        else:
+            self.df[(platform.code, "percent_rev")] = pd.Series(
+                [
+                    cost / rev if rev > 0 else np.nan
+                    for cost, rev in zip(self.df[(platform.code, "costs")], self.df["revenues"])
+                ]
+            )
+
+    def _fill_profit_data(self, platform):
+        """Fill the platform's profit column."""
+        self.df[(platform.code, "profits")] = pd.Series(
+            [
+                rev - cost
+                for rev, cost in zip(self.df["revenues"], self.df[(platform.code, "costs")])
+            ]
+        )
