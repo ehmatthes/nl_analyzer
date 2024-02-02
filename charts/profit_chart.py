@@ -10,10 +10,7 @@ def get_plot(nl_config, df):
     fig = go.Figure()
 
     # Add and label trace for each visible platform.
-    for platform in nl_config.platforms:
-        if not platform.show:
-            continue
-
+    for platform in nl_config.visible_platforms:
         # Add trace.
         trace = go.Scatter(
             x=df["user_levels"],
