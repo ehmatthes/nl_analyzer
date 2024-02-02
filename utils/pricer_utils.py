@@ -40,7 +40,7 @@ def get_costs_bd(df):
         elif num_users <= 20_000:
             costs.append(1390)
         else:
-            cost = pricer_utils.get_cost_bd_high(num_users)
+            cost = get_cost_bd_high(num_users)
             costs.append(cost)
 
     return pd.Series(costs)
@@ -103,7 +103,7 @@ def get_cost_bd_high(num_users):
 def get_costs_bh(df):
     """Return costs for beehiiv."""
     costs = []
-    for num_users in self.df["user_levels"]:
+    for num_users in df["user_levels"]:
         if num_users <= 2500:
             costs.append(0)
         elif num_users <= 10_000:
