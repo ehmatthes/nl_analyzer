@@ -53,18 +53,19 @@ class Pricer:
     def _fill_data(self):
         """Fill only platform data that's currently being used."""
         # Call each platform's _fill_costs_{platform_code}() method.
+        # Call each platorm's get_costs_{platform_code}() function.
         for platform in self.nl_config.visible_platforms:
-            fn_name = getattr(self, f"_fill_costs_{platform.code}")
-            fn_name()
+            # fn_name = f"pricer_utils.get_costs_{platform.code}"
+            # fn_name(self.df)
+            fn_name = getattr(pricer_utils, f"get_costs_{platform.code}")
+            print(fn_name)
+            self.df[(platform.code, "costs")] = fn_name(self.df)
 
             self._fill_percent_rev_data(platform)
             self._fill_profit_data(platform)
 
     def _fill_costs_ss(self):
         """Fill Substack data."""
-        # self.df[("ss", "costs")] = pd.Series(
-        #     [int(0.1 * rev) for rev in self.df["revenues"]]
-        # )
         self.df[("ss", "costs")] = pricer_utils.get_costs_ss(self.df)
 
     def _fill_costs_gp(self):
