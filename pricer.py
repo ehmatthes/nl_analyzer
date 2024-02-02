@@ -78,6 +78,7 @@ class Pricer:
 
 
 if __name__ == "__main__":
+    # This block allows this file to be run directly, for profiling purposes.
     nl_config = NLConfig()
     for platform in nl_config.platforms:
         platform.show = True
