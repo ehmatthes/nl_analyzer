@@ -64,13 +64,10 @@ class Pricer:
         """Fill the platform's percent of revenue column."""
         # Substack is 0.1 for all user levels, but it's not worth a conditional block
         # for that. This returns 0.1 for Substack costs anyways.
-        self.df[(platform.code, "percent_rev")] = pd.Series(
-            [
-                cost / rev if rev > 0 else np.nan
-                for cost, rev in zip(
-                    self.df[(platform.code, "costs")], self.df["revenues"]
-                )
-            ]
+        costs = self.df[(platform.code, "costs")]
+        revenues = self.df["revenues"]
+        self.df[(platform.code, "percent_rev")] = np.where(
+            revenues > 0, costs / revenues, np.nan
         )
 
     def _fill_profit_data(self, platform):
@@ -83,3 +80,10 @@ class Pricer:
                 )
             ]
         )
+
+
+if __name__ == "__main__":
+    nl_config = NLConfig()
+    for platform in nl_config.platforms:
+        platform.show = True
+    pricer = Pricer(nl_config)
