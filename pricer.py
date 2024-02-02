@@ -10,7 +10,7 @@ class Pricer:
         self.nl_config = nl_config
 
         self._initialize_df()
-        self._fill_platform_data()
+        self._fill_data()
 
     # --- Helper methods ---
 
@@ -50,7 +50,7 @@ class Pricer:
 
         self.df = pd.DataFrame(df_data)
 
-    def _fill_platform_data(self):
+    def _fill_data(self):
         """Fill only platform data that's currently being used."""
         # Call each platform's _fill_data_{platform_code}() method.
         for platform in self.nl_config.visible_platforms:
