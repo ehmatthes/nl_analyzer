@@ -124,7 +124,6 @@ class Pricer:
         """
         costs = []
         for num_users in self.df["user_levels"]:
-            # Note: This works out to $600/10k users above 25k users.
             if num_users <= 1_000:
                 costs.append(0)
             elif num_users <= 3_000:
@@ -141,22 +140,13 @@ class Pricer:
                 costs.append(1790)
             elif num_users <= 25_000:
                 costs.append(1990)
-            elif num_users <= 35_000:
-                costs.append(2590)
-            elif num_users <= 45_000:
-                costs.append(3190)
-            elif num_users <= 55_000:
-                costs.append(3790)
-            elif num_users <= 65_000:
-                costs.append(4390)
-            elif num_users <= 75_000:
-                costs.append(4990)
-            elif num_users <= 85_000:
-                costs.append(5590)
-            elif num_users <= 95_000:
-                costs.append(6190)
-            elif num_users <= 105_000:
-                costs.append(6_790)
+            else:
+                # Above 25k users, it's $1990 plus $600 for every 10k users.
+                above_25k = num_users - 25_000
+                multiplier = (above_25k // 10_000) + 1
+                cost = 1990 + multiplier * 600
+                costs.append(cost)
+
         self.df[("ck", "costs")] = pd.Series(costs)
 
 
