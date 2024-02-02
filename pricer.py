@@ -52,35 +52,19 @@ class Pricer:
 
     def _fill_data(self):
         """Fill only platform data that's currently being used."""
-        # Call each platform's _fill_data_{platform_code}() method.
+        # Call each platform's _fill_costs_{platform_code}() method.
         for platform in self.nl_config.visible_platforms:
-            fn_name = getattr(self, f"_fill_data_{platform.code}")
+            fn_name = getattr(self, f"_fill_costs_{platform.code}")
             fn_name()
 
             self._fill_percent_rev_data(platform)
             self._fill_profit_data(platform)
 
-    def _fill_data_gp(self):
-        """Fill Ghost Pro data."""
-        self._fill_costs_gp()
-
-    def _fill_data_bd(self):
-        """Fill Buttondown data."""
-        self._fill_costs_bd()
-
-    def _fill_data_bh(self):
-        """Fill beehiiv data."""
-        self._fill_costs_bh()
-
-    def _fill_data_ss(self):
+    def _fill_costs_ss(self):
         """Fill Substack data."""
         self.df[("ss", "costs")] = pd.Series(
             [int(0.1 * rev) for rev in self.df["revenues"]]
         )
-
-    def _fill_data_ck(self):
-        """Fill ConvertKit data."""
-        self._fill_costs_ck()
 
     def _fill_costs_gp(self):
         """Fill costs column for Ghost Pro."""
