@@ -72,13 +72,8 @@ class Pricer:
 
     def _fill_profit_data(self, platform):
         """Fill the platform's profit column."""
-        self.df[(platform.code, "profits")] = pd.Series(
-            [
-                rev - cost
-                for rev, cost in zip(
-                    self.df["revenues"], self.df[(platform.code, "costs")]
-                )
-            ]
+        self.df[(platform.code, "profits")] = (
+            self.df["revenues"] - self.df[(platform.code, "costs")]
         )
 
 
