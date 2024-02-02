@@ -9,12 +9,12 @@ class Pricer:
     def __init__(self, nl_config):
         self.nl_config = nl_config
 
-        self._initialize_data()
+        self._initialize_df()
         self._fill_platform_data()
 
     # --- Helper methods ---
 
-    def _initialize_data(self):
+    def _initialize_df(self):
         """Build the dataframe that will be used throughout class."""
         step_size = int(self.nl_config.max_subs / self.nl_config.num_points)
         if step_size == 0:
