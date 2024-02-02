@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 
 from nl_config import NLConfig
-from data import ghost_resources as gr
+from utils import ghost_resources as gr
 from utils import pricer_utils
 
 
@@ -152,17 +152,14 @@ class Pricer:
 
     def _fill_percent_rev_data(self, platform):
         """Fill the platform's percent of revenue column."""
-        if platform.code == "ss":
-            self.df[("ss", "percent_rev")] = pd.Series(
-                [0.1 for _ in self.df["user_levels"]]
-            )
-        else:
-            self.df[(platform.code, "percent_rev")] = pd.Series(
-                [
-                    cost / rev if rev > 0 else np.nan
-                    for cost, rev in zip(self.df[(platform.code, "costs")], self.df["revenues"])
-                ]
-            )
+        # Substack is 0.1 for all user levels, but it's not worth a conditional block
+        # for that. This returns 0.1 for Substack costs anyways.
+        self.df[(platform.code, "percent_rev")] = pd.Series(
+            [
+                cost / rev if rev > 0 else np.nan
+                for cost, rev in zip(self.df[(platform.code, "costs")], self.df["revenues"])
+            ]
+        )
 
     def _fill_profit_data(self, platform):
         """Fill the platform's profit column."""
