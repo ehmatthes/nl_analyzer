@@ -39,25 +39,23 @@ class Pricer:
         # Add a group of columns for each platform that's visible.
         # For example, if Ghost Pro is visible:
         # df[("gp", "costs")] will return the series of costs for Ghost.
-        for platform in self.nl_config.platforms:
-            if platform.show:
-                df_data.update(
-                    {
-                        (platform.code, "costs"): np.nan,
-                        (platform.code, "percent_rev"): np.nan,
-                        (platform.code, "profits"): np.nan,
-                    }
-                )
+        for platform in self.nl_config.visible_platforms:
+            df_data.update(
+                {
+                    (platform.code, "costs"): np.nan,
+                    (platform.code, "percent_rev"): np.nan,
+                    (platform.code, "profits"): np.nan,
+                }
+            )
 
         self.df = pd.DataFrame(df_data)
 
     def _fill_platform_data(self):
         """Fill only platform data that's currently being used."""
         # Call each platform's _fill_data_{platform_code}() method.
-        for platform in self.nl_config.platforms:
-            if platform.show:
-                fn_name = getattr(self, f"_fill_data_{platform.code}")
-                fn_name()
+        for platform in self.nl_config.visible_platforms:
+            fn_name = getattr(self, f"_fill_data_{platform.code}")
+            fn_name()
 
     def _fill_data_gp(self):
         """Fill Ghost Pro data."""
