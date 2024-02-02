@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 
 from nl_config import NLConfig
-from utils import ghost_resources as gr
 from utils import pricer_utils
 
 
@@ -63,91 +62,97 @@ class Pricer:
 
     def _fill_costs_ss(self):
         """Fill Substack data."""
-        self.df[("ss", "costs")] = pd.Series(
-            [int(0.1 * rev) for rev in self.df["revenues"]]
-        )
+        # self.df[("ss", "costs")] = pd.Series(
+        #     [int(0.1 * rev) for rev in self.df["revenues"]]
+        # )
+        self.df[("ss", "costs")] = pricer_utils.get_costs_ss(self.df)
 
     def _fill_costs_gp(self):
         """Fill costs column for Ghost Pro."""
-        costs = []
-        price_tiers = gr.get_price_tiers()
-        price_tiers.reverse()
-        for num_users in self.df["user_levels"]:
-            yearly_cost = -1
-            for threshold, cost in price_tiers:
-                if num_users >= threshold:
-                    yearly_cost = cost
-                    break
+        # costs = []
+        # price_tiers = gr.get_price_tiers()
+        # price_tiers.reverse()
+        # for num_users in self.df["user_levels"]:
+        #     yearly_cost = -1
+        #     for threshold, cost in price_tiers:
+        #         if num_users >= threshold:
+        #             yearly_cost = cost
+        #             break
 
-            costs.append(yearly_cost)
+        #     costs.append(yearly_cost)
 
-        self.df[("gp", "costs")] = pd.Series(costs)
+        # self.df[("gp", "costs")] = pd.Series(costs)
+        self.df[("gp", "costs")] = pricer_utils.get_costs_gp(self.df)
 
     def _fill_costs_bd(self):
         """Fill costs column for Buttondown.
 
         Annual plan gets two months free, so cost is 10*monthly rate.
         """
-        costs = []
-        for num_users in self.df["user_levels"]:
-            if num_users <= 100:
-                costs.append(0)
-            elif num_users <= 1_000:
-                costs.append(90)
-            elif num_users <= 5_000:
-                costs.append(290)
-            elif num_users <= 10_000:
-                costs.append(790)
-            elif num_users <= 20_000:
-                costs.append(1390)
-            else:
-                cost = pricer_utils._get_cost_bd_high(num_users)
-                costs.append(cost)
-        self.df[("bd", "costs")] = pd.Series(costs)
+        # costs = []
+        # for num_users in self.df["user_levels"]:
+        #     if num_users <= 100:
+        #         costs.append(0)
+        #     elif num_users <= 1_000:
+        #         costs.append(90)
+        #     elif num_users <= 5_000:
+        #         costs.append(290)
+        #     elif num_users <= 10_000:
+        #         costs.append(790)
+        #     elif num_users <= 20_000:
+        #         costs.append(1390)
+        #     else:
+        #         print('here')
+        #         cost = pricer_utils.get_cost_bd_high(num_users)
+        #         costs.append(cost)
+        # self.df[("bd", "costs")] = pd.Series(costs)
+        self.df[("bd", "costs")] = pricer_utils.get_costs_bd(self.df)
 
     def _fill_costs_bh(self):
         """Fill costs column for beehiiv."""
-        costs = []
-        for num_users in self.df["user_levels"]:
-            if num_users <= 2500:
-                costs.append(0)
-            elif num_users <= 10_000:
-                costs.append(42 * 12)
-            elif num_users <= 100_000:
-                costs.append(84 * 12)
-        self.df[("bh", "costs")] = pd.Series(costs)
+        # costs = []
+        # for num_users in self.df["user_levels"]:
+        #     if num_users <= 2500:
+        #         costs.append(0)
+        #     elif num_users <= 10_000:
+        #         costs.append(42 * 12)
+        #     elif num_users <= 100_000:
+        #         costs.append(84 * 12)
+        # self.df[("bh", "costs")] = pd.Series(costs)
+        self.df[("bh", "costs")] = pricer_utils.get_costs_bh(self.df)
 
     def _fill_costs_ck(self):
         """Fill costs column for ConvertKit.
 
         Annual plan gets two months free, so cost is 10*monthly rate.
         """
-        costs = []
-        for num_users in self.df["user_levels"]:
-            if num_users <= 1_000:
-                costs.append(0)
-            elif num_users <= 3_000:
-                costs.append(490)
-            elif num_users <= 5_000:
-                costs.append(790)
-            elif num_users <= 8_000:
-                costs.append(990)
-            elif num_users <= 10_000:
-                costs.append(1190)
-            elif num_users <= 15_000:
-                costs.append(1490)
-            elif num_users <= 20_000:
-                costs.append(1790)
-            elif num_users <= 25_000:
-                costs.append(1990)
-            else:
-                # Above 25k users, it's $1990 plus $600 for every 10k users.
-                above_25k = num_users - 25_000
-                multiplier = (above_25k // 10_000) + 1
-                cost = 1990 + multiplier * 600
-                costs.append(cost)
+        # costs = []
+        # for num_users in self.df["user_levels"]:
+        #     if num_users <= 1_000:
+        #         costs.append(0)
+        #     elif num_users <= 3_000:
+        #         costs.append(490)
+        #     elif num_users <= 5_000:
+        #         costs.append(790)
+        #     elif num_users <= 8_000:
+        #         costs.append(990)
+        #     elif num_users <= 10_000:
+        #         costs.append(1190)
+        #     elif num_users <= 15_000:
+        #         costs.append(1490)
+        #     elif num_users <= 20_000:
+        #         costs.append(1790)
+        #     elif num_users <= 25_000:
+        #         costs.append(1990)
+        #     else:
+        #         # Above 25k users, it's $1990 plus $600 for every 10k users.
+        #         above_25k = num_users - 25_000
+        #         multiplier = (above_25k // 10_000) + 1
+        #         cost = 1990 + multiplier * 600
+        #         costs.append(cost)
 
-        self.df[("ck", "costs")] = pd.Series(costs)
+        # self.df[("ck", "costs")] = pd.Series(costs)
+        self.df[("ck", "costs")] = pricer_utils.get_costs_ck(self.df)
 
 
     def _fill_percent_rev_data(self, platform):
