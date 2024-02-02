@@ -67,7 +67,9 @@ class Pricer:
         self.df[(platform.code, "percent_rev")] = pd.Series(
             [
                 cost / rev if rev > 0 else np.nan
-                for cost, rev in zip(self.df[(platform.code, "costs")], self.df["revenues"])
+                for cost, rev in zip(
+                    self.df[(platform.code, "costs")], self.df["revenues"]
+                )
             ]
         )
 
@@ -76,6 +78,8 @@ class Pricer:
         self.df[(platform.code, "profits")] = pd.Series(
             [
                 rev - cost
-                for rev, cost in zip(self.df["revenues"], self.df[(platform.code, "costs")])
+                for rev, cost in zip(
+                    self.df["revenues"], self.df[(platform.code, "costs")]
+                )
             ]
         )

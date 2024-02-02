@@ -9,6 +9,7 @@ def get_costs_ss(df):
     """Get costs for substack."""
     return pd.Series([int(0.1 * rev) for rev in df["revenues"]])
 
+
 def get_costs_gp(df):
     """Get costs for Ghost Pro."""
     costs = []
@@ -24,6 +25,7 @@ def get_costs_gp(df):
         costs.append(yearly_cost)
 
     return pd.Series(costs)
+
 
 def get_costs_bd(df):
     """Get costs for Buttondown."""
@@ -44,6 +46,7 @@ def get_costs_bd(df):
             costs.append(cost)
 
     return pd.Series(costs)
+
 
 def get_cost_bd_high(num_users):
     """Calculate enterprise tier costs for Buttondown (>20k subscribers)."""
@@ -100,6 +103,7 @@ def get_cost_bd_high(num_users):
 
     return monthly_cost
 
+
 def get_costs_bh(df):
     """Return costs for beehiiv."""
     costs = []
@@ -112,6 +116,7 @@ def get_costs_bh(df):
             costs.append(84 * 12)
 
     return pd.Series(costs)
+
 
 def get_costs_ck(df):
     """Return costs for ConvertKit."""
