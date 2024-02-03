@@ -10,11 +10,6 @@ from nl_config import NLConfig
 from charts import cost_chart, por_chart, profit_chart
 
 
-# Suppress matplotlib warning about ticks.
-import warnings
-
-warnings.filterwarnings("ignore", message=".*set_ticklabels().*")
-
 # Streamlit config
 st.set_page_config(layout="wide")
 
