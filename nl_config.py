@@ -50,3 +50,8 @@ class NLConfig:
     # Spacing
     title_x = -0.1
     title_pad = 20
+
+    @property
+    def visible_platforms(self):
+        """Get only the platforms that are currently selected."""
+        return [p for p in self.platforms if p.show]

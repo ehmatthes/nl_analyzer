@@ -10,10 +10,7 @@ def get_plot(nl_config, df):
     fig = go.Figure()
 
     # Add and label trace for each visible platform.
-    for platform in nl_config.platforms:
-        if not platform.show:
-            continue
-
+    for platform in nl_config.visible_platforms:
         # Add trace.
         trace = go.Scatter(
             x=df["user_levels"],
@@ -92,9 +89,7 @@ def _get_ymax(df, nl_config, nonzero_revenue):
     # of values, so most of each platform's line is visible.
     index = int(0.1 * df["user_levels"].size)
     max_percent_rev = 0.15
-    for platform in nl_config.platforms:
-        if not platform.show:
-            continue
+    for platform in nl_config.visible_platforms:
         percent_rev = df[(platform.code, "percent_rev")][index]
         max_percent_rev = max(max_percent_rev, percent_rev)
 
