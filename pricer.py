@@ -83,3 +83,6 @@ if __name__ == "__main__":
     for platform in nl_config.platforms:
         platform.show = True
     pricer = Pricer(nl_config)
+
+    from charts import cost_chart
+    chart = cost_chart.get_plot(nl_config, pricer.df)
