@@ -8,7 +8,6 @@ from pricer import Pricer
 from nl_config import NLConfig
 
 from charts import cost_chart, por_chart, profit_chart
-from charts import profit_comparison_chart
 
 
 # Suppress matplotlib warning about ticks.
@@ -154,18 +153,6 @@ with st.expander("Annual profit*", expanded=True):
     st.plotly_chart(profit_fig)
     st.info(msg_profit)
 
-# Profit comparison chart.
-if (
-    nl_config.show_exp_features
-    and nl_config.ss_config.show
-    and nl_config.gp_config.show
-):
-    pc_fig = profit_comparison_chart.get_plot(nl_config, pricer.df)
-    with st.expander("Profit comparison", expanded=True):
-        st.pyplot(pc_fig)
-        st.info(
-            "This is an experimental plot, and only works for Ghost Pro vs Substack at the moment. It also uses a different plotting library, so it looks different than the other plots."
-        )
 
 st.write("---")
 
