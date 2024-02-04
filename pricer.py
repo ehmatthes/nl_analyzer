@@ -62,8 +62,12 @@ class Pricer:
 
     def _fill_percent_rev_data(self, platform):
         """Fill the platform's percent of revenue column."""
-        # Substack is 0.1 for all user levels, but it's not worth a conditional block
-        # for that. This returns 0.1 for Substack costs anyways.
+        # Substack keeps a flat 10%. If it's calculated like other platforms, it will be
+        # off for the lowest subscriber levels.
+        if platform.code == "ss":
+            self.df[(platform.code, "percent_rev")] = 0.10
+            return
+
         costs = self.df[(platform.code, "costs")]
         revenues = self.df["revenues"]
         self.df[(platform.code, "percent_rev")] = np.where(
@@ -85,4 +89,5 @@ if __name__ == "__main__":
     pricer = Pricer(nl_config)
 
     from charts import cost_chart
+
     chart = cost_chart.get_plot(nl_config, pricer.df)

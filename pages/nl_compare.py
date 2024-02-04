@@ -8,13 +8,8 @@ from pricer import Pricer
 from nl_config import NLConfig
 
 from charts import cost_chart, por_chart, profit_chart
-from charts import profit_comparison_chart
+from utils import ui_utils
 
-
-# Suppress matplotlib warning about ticks.
-import warnings
-
-warnings.filterwarnings("ignore", message=".*set_ticklabels().*")
 
 # Streamlit config
 st.set_page_config(layout="wide")
@@ -28,65 +23,41 @@ st.sidebar.write("---")
 
 # Max number of subscribers.
 st.sidebar.write("*How many subscribers will you need to support?*")
-max_subs_macro = st.sidebar.slider(
-    "Number of subscribers",
-    value=10_000,
-    max_value=100_000,
-    step=1_000,
-    label_visibility="collapsed",
+nl_config.max_subs = int(
+    st.sidebar.select_slider(
+        "Number of subscribers",
+        options=ui_utils.max_subs_options(),
+        value=10_000,
+        format_func=ui_utils.format_max_subs,
+        label_visibility="collapsed",
+    )
 )
-help_micro_subs = """
-To focus on a smaller number of subscribers, move the main slider to zero and then adjust this slider. The app will combine the values from each slider.
-"""
-max_subs_micro = st.sidebar.slider(
-    "(fine adjustment)", value=0, max_value=1_000, step=10, help=help_micro_subs
-)
-nl_config.max_subs = max_subs_macro + max_subs_micro
-
-
-st.sidebar.write("---")
 
 # Paid subscriber ratio.
 st.sidebar.write("*What percent of your subscribers have a paid subscription?*")
-paid_ratio_macro = st.sidebar.slider(
+nl_config.paid_ratio = st.sidebar.select_slider(
     "Ratio of paid subscribers",
-    value=0.0,
-    max_value=100.0,
-    step=0.1,
-    format="%.1f%%",
+    options=ui_utils.paid_ratio_options(),
+    value=0.025,
+    format_func=ui_utils.format_paid_ratio,
     label_visibility="collapsed",
 )
-help_micro_pr = """
-To focus on a smaller percentage, move the main slider to zero and then adjust this slider. The app will combine the values from each slider.
-"""
-paid_ratio_micro = st.sidebar.slider(
-    "(fine adjustment)",
-    value=2.0,
-    max_value=10.0,
-    step=0.1,
-    format="%.1f%%",
-    help=help_micro_pr,
-)
-nl_config.paid_ratio = round((paid_ratio_macro + paid_ratio_micro) / 100.0, 3)
-
-st.sidebar.write("---")
 
 # Average annual revenue per paid user.
-st.sidebar.write("*What is your average annual revenue per paid subscriber?*")
-help_rev_paid = """
-Remember to take into account discounts, and differences between monthly and annual plans.
-"""
-nl_config.avg_revenue = st.sidebar.slider(
+st.sidebar.write("*What's your average annual revenue per paid subscriber?**")
+nl_config.avg_revenue = st.sidebar.select_slider(
     "Avergae annual revenue per paid subscriber",
+    options=ui_utils.avg_revenue_options(),
     value=50,
-    max_value=500,
-    step=1,
+    format_func=ui_utils.format_avg_revenue,
     label_visibility="collapsed",
-    format="$%d",
-    help=help_rev_paid,
 )
 
 st.sidebar.write("---")
+
+st.sidebar.write(
+    "**Remember to take into account discounts, and differences between monthly and annual plans.*"
+)
 
 nl_config.show_exp_features = st.sidebar.toggle(
     "Show experimental features", value=False
@@ -154,18 +125,6 @@ with st.expander("Annual profit*", expanded=True):
     st.plotly_chart(profit_fig)
     st.info(msg_profit)
 
-# Profit comparison chart.
-if (
-    nl_config.show_exp_features
-    and nl_config.ss_config.show
-    and nl_config.gp_config.show
-):
-    pc_fig = profit_comparison_chart.get_plot(nl_config, pricer.df)
-    with st.expander("Profit comparison", expanded=True):
-        st.pyplot(pc_fig)
-        st.info(
-            "This is an experimental plot, and only works for Ghost Pro vs Substack at the moment. It also uses a different plotting library, so it looks different than the other plots."
-        )
 
 st.write("---")
 

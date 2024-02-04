@@ -6,4 +6,5 @@ __pycache__/
 sandbox/
 notes.md
 profile.txt
+mprofile_*.dat
 
