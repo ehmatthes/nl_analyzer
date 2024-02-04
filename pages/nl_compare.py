@@ -43,36 +43,6 @@ nl_config.paid_ratio = st.sidebar.select_slider(
     label_visibility="collapsed",
 )
 
-
-
-
-
-
-# st.sidebar.write("---")
-
-# # Paid subscriber ratio.
-# st.sidebar.write("*What percent of your subscribers have a paid subscription?*")
-# paid_ratio_macro = st.sidebar.slider(
-#     "Ratio of paid subscribers",
-#     value=0.0,
-#     max_value=100.0,
-#     step=0.1,
-#     format="%.1f%%",
-#     label_visibility="collapsed",
-# )
-# help_micro_pr = """
-# To focus on a smaller percentage, move the main slider to zero and then adjust this slider. The app will combine the values from each slider.
-# """
-# paid_ratio_micro = st.sidebar.slider(
-#     "(fine adjustment)",
-#     value=2.0,
-#     max_value=10.0,
-#     step=0.1,
-#     format="%.1f%%",
-#     help=help_micro_pr,
-# )
-# nl_config.paid_ratio = round((paid_ratio_macro + paid_ratio_micro) / 100.0, 3)
-
 st.sidebar.write("---")
 
 # Average annual revenue per paid user.
