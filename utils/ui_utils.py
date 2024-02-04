@@ -32,3 +32,16 @@ def paid_ratio_options():
 
 def format_paid_ratio(num):
     return f"{num*100:.2f}%"
+
+
+def avg_revenue_options():
+    """Return options for average annual revenue select_slider."""
+    options = list(range(0, 50, 5))
+    options += list(range(50, 100, 10))
+    options += list(range(100, 251, 50))
+
+    return options
+
+
+def format_avg_revenue(num):
+    return f"${num}"
