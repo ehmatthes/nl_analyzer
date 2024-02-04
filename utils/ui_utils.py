@@ -1,7 +1,8 @@
 """Utility functions for the overall UI."""
 
 
-def get_max_subs_options():
+def max_subs_options():
+    """Return options for max_subs select_slider."""
     # Open end of each range is included by start of next range.
     options = list(range(0, 300, 50))
     options += list(range(300, 1_000, 100))
@@ -15,3 +16,23 @@ def get_max_subs_options():
 
 def format_max_subs(num):
     return f"{int(num):,}"
+
+def paid_ratio_options():
+    """Return options for paid_ratio select_slider."""
+    options = list(range(0, 500, 25))
+    options += list(range(500, 1_000, 50))
+    options += list(range(1_000, 2_500, 100))
+    options += list(range(2_500, 10_001, 500))
+    options = [option/10_000 for option in options]
+
+    return options
+
+def format_paid_ratio(num):
+    return f"{num*100:.2f}%"
+
+
+if __name__ == "__main__":
+    options = paid_ratio_options()
+    print(len(options))
+    print(options[:10])
+    print(options[-1])
