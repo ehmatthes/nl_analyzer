@@ -1,5 +1,6 @@
 """Utility functions for the overall UI."""
 
+
 def get_max_subs_options():
     # Open end of each range is included by start of next range.
     options = list(range(0, 300, 50))
@@ -10,6 +11,7 @@ def get_max_subs_options():
     options += list(range(50_000, 100_001, 10_000))
 
     return options
+
 
 def format_max_subs(num):
     return f"{int(num):,}"

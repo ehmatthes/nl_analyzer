@@ -85,4 +85,5 @@ if __name__ == "__main__":
     pricer = Pricer(nl_config)
 
     from charts import cost_chart
+
     chart = cost_chart.get_plot(nl_config, pricer.df)

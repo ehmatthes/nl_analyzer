@@ -23,7 +23,15 @@ st.sidebar.write("---")
 
 # Max number of subscribers.
 st.sidebar.write("*How many subscribers will you need to support?*")
-nl_config.max_subs = int(st.sidebar.select_slider("Number of subscribers", options=ui_utils.get_max_subs_options(), value=10_000, format_func=ui_utils.format_max_subs,label_visibility="collapsed"))
+nl_config.max_subs = int(
+    st.sidebar.select_slider(
+        "Number of subscribers",
+        options=ui_utils.get_max_subs_options(),
+        value=10_000,
+        format_func=ui_utils.format_max_subs,
+        label_visibility="collapsed",
+    )
+)
 
 st.sidebar.write("---")
 
