@@ -8,6 +8,7 @@ from pricer import Pricer
 from nl_config import NLConfig
 
 from charts import cost_chart, por_chart, profit_chart
+from utils import ui_utils
 
 
 # Streamlit config
@@ -21,20 +22,8 @@ st.sidebar.title("Settings")
 st.sidebar.write("---")
 
 # Max number of subscribers.
-
-# Open end of each range is included by start of next range.
-options = list(range(0, 300, 50))
-options += list(range(300, 1_000, 100))
-options += list(range(1_000, 10_000, 1_000))
-options += list(range(10_000, 25_000, 2_500))
-options += list(range(25_000, 50_000, 5_000))
-options += list(range(50_000, 100_001, 10_000))
-
-def add_commas(num):
-    return f"{int(num):,}"
-
 st.sidebar.write("*How many subscribers will you need to support?*")
-nl_config.max_subs = int(st.sidebar.select_slider("Number of subscribers", options=options, value=10_000, format_func=add_commas,label_visibility="collapsed"))
+nl_config.max_subs = int(st.sidebar.select_slider("Number of subscribers", options=ui_utils.get_max_subs_options(), value=10_000, format_func=ui_utils.format_max_subs,label_visibility="collapsed"))
 
 st.sidebar.write("---")
 
