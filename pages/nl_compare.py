@@ -44,42 +44,20 @@ nl_config.paid_ratio = st.sidebar.select_slider(
 )
 
 # Average annual revenue per paid user.
-st.sidebar.write("*What is your average annual revenue per paid subscriber?*")
-help_rev_paid = """
-Remember to take into account discounts, and differences between monthly and annual plans.
-"""
+st.sidebar.write("*What's your average annual revenue per paid subscriber?**")
 nl_config.avg_revenue = st.sidebar.select_slider(
     "Avergae annual revenue per paid subscriber",
     options=ui_utils.avg_revenue_options(),
     value=50,
     format_func=ui_utils.format_avg_revenue,
     label_visibility="collapsed",
-    help=help_rev_paid,
 )
 
-
-
-
-
-
-# st.sidebar.write("---")
-
-# # Average annual revenue per paid user.
-# st.sidebar.write("*What is your average annual revenue per paid subscriber?*")
-# help_rev_paid = """
-# Remember to take into account discounts, and differences between monthly and annual plans.
-# """
-# nl_config.avg_revenue = st.sidebar.slider(
-#     "Avergae annual revenue per paid subscriber",
-#     value=50,
-#     max_value=500,
-#     step=1,
-#     label_visibility="collapsed",
-#     format="$%d",
-#     help=help_rev_paid,
-# )
-
 st.sidebar.write("---")
+
+st.sidebar.write(
+    "**Remember to take into account discounts, and differences between monthly and annual plans.*"
+)
 
 nl_config.show_exp_features = st.sidebar.toggle(
     "Show experimental features", value=False
