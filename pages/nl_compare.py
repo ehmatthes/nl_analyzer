@@ -21,22 +21,20 @@ st.sidebar.title("Settings")
 st.sidebar.write("---")
 
 # Max number of subscribers.
-st.sidebar.write("*How many subscribers will you need to support?*")
-max_subs_macro = st.sidebar.slider(
-    "Number of subscribers",
-    value=10_000,
-    max_value=100_000,
-    step=1_000,
-    label_visibility="collapsed",
-)
-help_micro_subs = """
-To focus on a smaller number of subscribers, move the main slider to zero and then adjust this slider. The app will combine the values from each slider.
-"""
-max_subs_micro = st.sidebar.slider(
-    "(fine adjustment)", value=0, max_value=1_000, step=10, help=help_micro_subs
-)
-nl_config.max_subs = max_subs_macro + max_subs_micro
 
+# Open end of each range is included by start of next range.
+options = list(range(0, 300, 50))
+options += list(range(300, 1_000, 100))
+options += list(range(1_000, 10_000, 1_000))
+options += list(range(10_000, 25_000, 2_500))
+options += list(range(25_000, 50_000, 5_000))
+options += list(range(50_000, 100_001, 10_000))
+
+def add_commas(num):
+    return f"{int(num):,}"
+
+st.sidebar.write("*How many subscribers will you need to support?*")
+nl_config.max_subs = int(st.sidebar.select_slider("Number of subscribers", options=options, value=10_000, format_func=add_commas,label_visibility="collapsed"))
 
 st.sidebar.write("---")
 
